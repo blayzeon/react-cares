@@ -3,7 +3,7 @@ import React from "react";
 export default function Linklist(props) {
   const handleClick = (e) => {
     if (props.click) {
-      props.click(e.target.innerText);
+      props.click(e.target);
     }
   };
   return (

@@ -5,7 +5,17 @@ export default function Sidebar(props) {
   const [account, setAccount] = useState("");
 
   const handleChange = (e) => {
-    console.log(e);
+    const value = e.target.value;
+
+    if (isNaN(value)) {
+      return;
+    } else {
+      setAccount(value);
+    }
+  };
+
+  const handleSubmit = () => {
+    props.loadAccount(account);
   };
 
   return (
@@ -13,8 +23,15 @@ export default function Sidebar(props) {
       <img src={props.logo} alt={props.brand} />
       <div className="input-group">
         <label htmlFor="lookup-number">Phone Number:</label>
-        <input type="text" id="lookup-number" onChange={handleChange} />
-        <button type="button">Lookup</button>
+        <input
+          type="text"
+          id="lookup-number"
+          onChange={handleChange}
+          value={account}
+        />
+        <button type="button" onClick={handleSubmit}>
+          Lookup
+        </button>
       </div>
       <Linklist links={props.links[0]} />
       <h4 className="navy-bg">Links</h4>

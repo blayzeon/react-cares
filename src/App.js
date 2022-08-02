@@ -1,7 +1,22 @@
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Linklist from "./components/Linklist";
+import Main from "./components/Main";
 import "./style/app.css";
+
+function generateData() {
+  const date = new Date();
+
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+  function returnCall(age, connected = true, facility = false) {
+    return {};
+  }
+}
 
 const sidebarLinks = [
   [
@@ -126,10 +141,20 @@ const nav = [
 
 function App() {
   const [page, setPage] = useState("Account Summary");
+  const [account, setAccount] = useState("");
 
-  const updatePage = (newPage) => {
-    setPage(newPage);
-    console.log(page);
+  const loadAccount = (number) => {
+    setAccount(number);
+  };
+
+  const updatePage = (target) => {
+    setPage(target.innerText);
+    const links = document.querySelectorAll(".nav");
+    links.forEach((item) => {
+      item.classList.remove("active");
+    });
+
+    target.classList.add("active");
   };
 
   return (
@@ -139,6 +164,7 @@ function App() {
           logo="../images/simulator-logo.png"
           brand="CARES Simulator"
           links={sidebarLinks}
+          loadAccount={loadAccount}
         />
       </aside>
       <div id="content" className="flex-grow">
@@ -152,12 +178,13 @@ function App() {
             Current Path: Home {">"} Billing {">"} CARES
           </span>
           <Linklist
-            propClass="flex no-link bold"
+            propClass="flex no-link bold blue-bg"
+            childClass="nav"
             links={nav}
             click={updatePage}
           />
         </header>
-        <main></main>
+        <Main page={page} account={account} />
       </div>
     </>
   );

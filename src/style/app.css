@@ -34,7 +34,7 @@ body,
 
 .flex {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .flex-grow {
@@ -78,6 +78,19 @@ ul {
   text-align: left;
 }
 
+.blue-bg {
+  background-color: var(--lightBlue);
+}
+
 .blue-hover:hover {
-  background-color: #72a3d5;
+  background-color: var(--lightBlue);
+}
+
+.nav {
+  padding: 0 0.2rem;
+  margin-left: 0.3rem;
+}
+
+.nav.active {
+  background-color: var(--greenBlue);
 }
