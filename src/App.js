@@ -139,6 +139,14 @@ const nav = [
   },
 ];
 
+const as = {
+  thead: [[1, 2, 3]],
+  tbody: [
+    ["body1", "body2", "aa"],
+    ["body3", "body4", "aa"],
+  ],
+};
+
 function App() {
   const [page, setPage] = useState("Account Summary");
   const [account, setAccount] = useState("");
@@ -184,7 +192,7 @@ function App() {
             click={updatePage}
           />
         </header>
-        <Main page={page} account={account} />
+        <Main page={page} account={account} data={as} />
       </div>
     </>
   );
