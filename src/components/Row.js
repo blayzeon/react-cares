@@ -8,7 +8,7 @@ export default function Row(props) {
   const rows = [];
   props.data.forEach((item) => {
     if (Array.isArray(item)) {
-      content.push(<Data data={item} key={uuid()} />);
+      content.push(<Data data={item} />);
     } else {
       rows.push(<Table data={item} />);
     }
@@ -21,7 +21,7 @@ export default function Row(props) {
           return <tr key={uuid()}>{item}</tr>;
         })
       ) : (
-        <tr>
+        <tr key="meow">
           {rows.map((item) => {
             return <td key={uuid()}>{item}</td>;
           })}
@@ -30,9 +30,3 @@ export default function Row(props) {
     </>
   );
 }
-
-/*
-    {props.data.map((row) => {
-        return <td key={row}>{row}</td>;
-      })}
-*/

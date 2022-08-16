@@ -1,10 +1,11 @@
 import React from "react";
 import Row from "./Row";
+import { v4 as uuid } from "uuid";
 
 export default function Table(props) {
   const data = props.data;
   return (
-    <table>
+    <table key={uuid()}>
       {data.thead ? (
         <thead>
           <Row data={data.thead} />

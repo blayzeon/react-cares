@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Linklist from "./components/Linklist";
 import Main from "./components/Main";
+import { v4 as uuid } from "uuid";
 import "./style/app.css";
 
 function generateData() {
@@ -140,12 +141,18 @@ const nav = [
 ];
 
 function tableGroup(label) {
-  return [<label>{label}</label>, <input type="text" />];
+  return [
+    <label key={uuid()}>{label}</label>,
+    <input key={uuid()} type="text" />,
+  ];
 }
 
 const as = {
   thead: false,
-  tbody: [{ tbody: [["meow", "purr"]] }, { tbody: [["bork", "arf"]] }],
+  tbody: [
+    { tbody: [[tableGroup("First Name: ")], [tableGroup("Last Name: ")]] },
+    { tbody: [["bork", "arf"]] },
+  ],
 };
 
 /*
