@@ -139,13 +139,25 @@ const nav = [
   },
 ];
 
+function tableGroup(label) {
+  return [<label>{label}</label>, <input type="text" />];
+}
+
 const as = {
-  thead: [[1, 2, 3]],
+  thead: false,
+  tbody: [{ tbody: [["meow", "purr"]] }, { tbody: [["bork", "arf"]] }],
+};
+
+/*
+  const as = {
+  thead: [[1, 2]],
   tbody: [
-    ["body1", "body2", "aa"],
-    ["body3", "body4", "aa"],
+    { thead: false, tbody: [["text", "text"]] },
+    { thead: false, tbody: [["text", "text"]] },
   ],
 };
+
+*/
 
 function App() {
   const [page, setPage] = useState("Account Summary");

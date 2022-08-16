@@ -1,16 +1,27 @@
 import React from "react";
 import Table from "./Table";
 import Data from "./Data";
+import { v4 as uuid } from "uuid";
 
 export default function Row(props) {
+  const content = [];
+  const rows = [];
+  props.data.forEach((item) => {
+    if (Array.isArray(item)) {
+      content.push(<Data data={item} key={uuid()} />);
+    } else {
+      content.push(
+        <td key={uuid()}>
+          <Table data={item} />
+        </td>
+      );
+    }
+  });
+
   return (
     <>
-      {props.data.map((row) => {
-        return (
-          <tr key={row}>
-            <Data data={row} />
-          </tr>
-        );
+      {content.map((item) => {
+        return <tr key={uuid()}>{item}</tr>;
       })}
     </>
   );
