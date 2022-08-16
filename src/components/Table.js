@@ -7,16 +7,12 @@ export default function Table(props) {
     <table>
       {data.thead ? (
         <thead>
-          <tr>
-            <Row data={data.thead} />
-          </tr>
+          <Row data={data.thead} />
         </thead>
       ) : null}
       {data.tbody ? (
         <tbody>
-          <tr>
-            <Row data={data.tbody} />
-          </tr>
+          <Row data={data.tbody} />
         </tbody>
       ) : null}
     </table>

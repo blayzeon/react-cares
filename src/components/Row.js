@@ -10,19 +10,23 @@ export default function Row(props) {
     if (Array.isArray(item)) {
       content.push(<Data data={item} key={uuid()} />);
     } else {
-      content.push(
-        <td key={uuid()}>
-          <Table data={item} />
-        </td>
-      );
+      rows.push(<Table data={item} />);
     }
   });
 
   return (
     <>
-      {content.map((item) => {
-        return <tr key={uuid()}>{item}</tr>;
-      })}
+      {content.length > 0 ? (
+        content.map((item) => {
+          return <tr key={uuid()}>{item}</tr>;
+        })
+      ) : (
+        <tr>
+          {rows.map((item) => {
+            return <td key={uuid()}>{item}</td>;
+          })}
+        </tr>
+      )}
     </>
   );
 }
