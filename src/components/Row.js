@@ -21,7 +21,7 @@ export default function Row(props) {
           return <tr key={uuid()}>{item}</tr>;
         })
       ) : (
-        <tr key="meow">
+        <tr key={uuid()}>
           {rows.map((item) => {
             return <td key={uuid()}>{item}</td>;
           })}

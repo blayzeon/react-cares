@@ -6,5 +6,5 @@ function returnTransactions(account) {}
 
 export default function Main(props) {
   //console.log(transactions);
-  return <Table data={props.data} />;
+  return <Table data={props.data} page={props.page} />;
 }
