@@ -1,6 +1,19 @@
 [
   {
+    "link": "",
+    "services": ["AdvancePay"],
+    "platform": "",
+    "system": "",
+    "rates": [0.0, 0.0],
+    "fees": [],
+    "names": [],
+    "subs": [],
+    "ids": [],
+    "centers": []
+  },
+  {
     "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Ohio/OHxx_OH_DOCs.xlsx?d=w97c42b3ab1bf45f69c58a792621a929a&csf=1&web=1&e=Knh3zS",
+    "public": "Ohio DOC",
     "services": ["AdvancePay", "PIN Debit", "Trust", "Debit Link"],
     "platform": "PCS",
     "system": "ICMv",
@@ -141,6 +154,7 @@
   },
   {
     "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/CA-DOC_CA-DJJ_CA-TTY.xlsx?d=wa35f9aa8c4e0410cb9cc92b02aff27fd&csf=1&web=1&e=1YFhst",
+    "public": "California DOC",
     "services": ["AdvancePay", "Trust", "Community Corrections"],
     "platform": "VAC",
     "system": "Focus Centralized HMP",
@@ -509,6 +523,7 @@
   },
   {
     "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/LCxx_Los%20Angeles%20County.xlsx?d=w07c9da6204024b79a90d7fceff2879f0&csf=1&web=1&e=Cv94uF",
+    "public": "Los Angeles County CA",
     "services": ["AdvancePay", "Video Visitation", "Visitation Scheduling"],
     "platform": "ICMv",
     "system": "PCS",
@@ -799,20 +814,9 @@
     "rates": [0.0, 0.0, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13],
     "fees": [5.95, 3.0, 5.95],
     "names": ["MIDDLE RIVER VA-REGIONAL JAIL"],
+    "public": "Middle River VA-Regional Jail",
     "subs": ["4D01"],
     "ids": ["6106"],
     "centers": ["8106"]
-  },
-  {
-    "link": "",
-    "services": ["AdvancePay"],
-    "platform": "",
-    "system": "",
-    "rates": [0.0, 0.0],
-    "fees": [],
-    "names": [],
-    "subs": [],
-    "ids": [],
-    "centers": []
   }
 ]

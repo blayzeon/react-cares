@@ -118,3 +118,20 @@ td label {
 .AccountSummary > tbody > tr > td:nth-child(1) {
   width: 384.23px;
 }
+
+#adjustment-controls * {
+  font-weight: bold;
+  background-color: var(--greenBlue);
+  padding: 0.3rem 0 0 0.1rem;
+}
+
+.icon {
+  height: 15px;
+  width: 15px;
+}
+
+.flex-groups > div {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}

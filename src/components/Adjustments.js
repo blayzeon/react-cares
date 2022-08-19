@@ -1,5 +1,6 @@
 import React from "react";
-import Linklist from "./components/Linklist";
+import Linklist from "./Linklist";
+import { v4 as uuid } from "uuid";
 
 export default function As(props) {
   const controls = [
@@ -38,9 +39,14 @@ export default function As(props) {
   ];
   return (
     <>
-      <span>{props.status}</span>
-      <span>
-        Add {"("} <Linklist links={controls} /> {")"}
+      <span id="adjustment-controls" className="no-link" key={uuid()}>
+        <Linklist
+          links={controls}
+          propClass="flex"
+          start="Add ("
+          between="|"
+          end=")"
+        />
       </span>
     </>
   );

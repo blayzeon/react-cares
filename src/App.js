@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Linklist from "./components/Linklist";
 import Main from "./components/Main";
@@ -328,19 +328,8 @@ const as = {
   tbody: [{ tbody: asLeft }, { tbody: asRight }],
 };
 
-/*
-  const as = {
-  thead: [[1, 2]],
-  tbody: [
-    { thead: false, tbody: [["text", "text"]] },
-    { thead: false, tbody: [["text", "text"]] },
-  ],
-};
-
-*/
-
 function App() {
-  const [page, setPage] = useState("Account Summary");
+  const [page, setPage] = useState("");
   const [account, setAccount] = useState("");
 
   const loadAccount = (number) => {
@@ -348,14 +337,21 @@ function App() {
   };
 
   const updatePage = (target) => {
-    setPage(target.innerText);
+    const active = target ? target : document.querySelector(".nav");
+
+    setPage(active.innerText);
     const links = document.querySelectorAll(".nav");
     links.forEach((item) => {
       item.classList.remove("active");
     });
 
-    target.classList.add("active");
+    active.classList.add("active");
   };
+
+  /* sets account summary default page */
+  useEffect(() => {
+    updatePage();
+  }, []);
 
   return (
     <>
