@@ -101,42 +101,52 @@ const nav = [
   {
     link: "#",
     label: "Account Summary",
+    id: "page-account-summary",
   },
   {
     link: "#",
     label: "Transactions",
+    id: "page-transactions",
   },
   {
     link: "#",
     label: "Refund",
+    id: "page-refund",
   },
   {
     link: "#",
     label: "Transaction Summary",
+    id: "page-transaction-summary",
   },
   {
     link: "#",
     label: "CC Auths",
+    id: "page-cc-auths",
   },
   {
     link: "#",
     label: "Call Records",
+    id: "page-call-records",
   },
   {
     link: "#",
     label: "TAG Comments",
+    id: "page-tag-comments",
   },
   {
     link: "#",
     label: "Statements",
+    id: "page-statements",
   },
   {
     link: "#",
     label: "Auto Reload",
+    id: "page-auto-reload",
   },
   {
     link: "#",
     label: "Alerts",
+    id: "page-alerts",
   },
 ];
 
@@ -338,14 +348,17 @@ function App() {
 
   const updatePage = (target) => {
     const active = target ? target : document.querySelector(".nav");
-
     setPage(active.innerText);
-    const links = document.querySelectorAll(".nav");
-    links.forEach((item) => {
-      item.classList.remove("active");
-    });
 
-    active.classList.add("active");
+    // update the css
+    const links = document.querySelectorAll(".nav");
+    links.forEach((link) => {
+      if (link.innerText === page) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
   };
 
   /* sets account summary default page */

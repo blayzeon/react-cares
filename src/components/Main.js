@@ -3,6 +3,7 @@ import Table from "./Table";
 import transactions from "../data/transactions.json";
 import facilities from "../data/facilities.json";
 import Adjustments from "./Adjustments";
+import { v4 as uuid } from "uuid";
 
 function returnTransactions(account) {}
 
@@ -12,18 +13,39 @@ function returnSelect(selectObj) {
       {selectObj.label ? <label>{selectObj.label}</label> : null}
       <select disabled={selectObj.disabled}>
         {selectObj.options.map((option) => {
-          return <option>{option}</option>;
+          return <option key={uuid()}>{option}</option>;
         })}
       </select>
     </span>
   );
 }
 
+const accountComments = {
+  thead: [["Date", "Comment"]],
+  tbody: [
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+    ["8/29/2022", "asdafs"],
+  ],
+};
+
 export default function Main(props) {
   if (props.page === "Account Summary") {
     const facOptions = facilities.map((fac) => {
       return (
-        <option value={fac.public} data-link={fac.link}>
+        <option value={fac.public} data-link={fac.link} key={uuid()}>
           {fac.public}
         </option>
       );
@@ -96,6 +118,37 @@ export default function Main(props) {
           </div>
         </div>
         <Table data={props.data} page={props.page} />
+        <div className="green-blue-bg flex space-between w1080">
+          <span>
+            <strong>Account Comments</strong> (Add New) *{" "}
+            <em>
+              Use the paging controls at the bottom to see additional comments.
+            </em>
+          </span>
+          <span>
+            <strong>Filter: </strong>
+            <select>
+              <option>All</option>
+              <option>IVR</option>
+              <option>CreditLimitChange</option>
+              <option>Complaint</option>
+              <option>Connect Network</option>
+              <option>Trust</option>
+              <option>Chargeback</option>
+              <option>Inquiry-Payment/Balance</option>
+              <option>Inquiry-Rates</option>
+              <option>Inquiry-Refund/Close Account</option>
+              <option>Account Setup</option>
+              <option>Block Issue</option>
+              <option>Wireless Activation Team</option>
+              <option>Research Team</option>
+              <option>AP International Team</option>
+              <option>Fax Team Update</option>
+              <option>General</option>
+            </select>
+          </span>
+        </div>
+        <Table data={accountComments} page="as-comments" />
       </>
     );
   }

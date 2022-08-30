@@ -43,6 +43,14 @@ body,
   overflow: hidden;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+
+.w1080 {
+  width: 1080px;
+}
+
 #sidebar {
   display: flex;
   text-align: center;
@@ -80,6 +88,10 @@ ul {
 
 .blue-bg {
   background-color: var(--lightBlue);
+}
+
+.green-blue-bg {
+  background-color: var(--greenBlue);
 }
 
 .blue-hover:hover {
@@ -134,4 +146,51 @@ td label {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.as-comments {
+  width: 1080px;
+  overflow: hidden;
+  outline: 1px solid black;
+}
+
+.as-comments > tbody {
+  height: 50px !important;
+  overflow: auto;
+}
+
+.as-comments > thead > tr > td {
+  height: 16px !important;
+}
+
+.as-comments > thead > tr > td:first-child {
+  width: 164px;
+  background: linear-gradient(
+    0deg,
+    rgb(137, 137, 137) 0%,
+    rgb(218, 218, 218) 100%
+  );
+  font-weight: bold;
+}
+
+.as-comments > thead > tr > td:nth-child(2) {
+  width: 895.33px;
+  background: linear-gradient(
+    0deg,
+    rgb(162, 162, 162) 0%,
+    rgb(255, 255, 255) 100%
+  );
+  font-weight: bold;
+}
+
+.as-comments > * {
+  border: 1px solid black;
+}
+
+.as-comments tr:nth-child(even) {
+  background-color: hsla(0, 0%, 40%, 0.2);
+}
+
+.as-comments td:nth-child(odd) {
+  background-color: hsla(0, 0%, 40%, 0.2);
 }

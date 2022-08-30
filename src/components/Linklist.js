@@ -11,20 +11,18 @@ export default function Linklist(props) {
     <ul className={props.propClass} key={uuid()}>
       {props.start ? <span key={uuid()}>{props.start}</span> : null}
       {props.links.map((item) => {
+        const key = uuid();
         return (
-          <>
-            <li key={uuid()}>
-              <a
-                key={uuid()}
-                className={props.childClass}
-                href={item.link}
-                onClick={handleClick}
-              >
-                {item.label}
-              </a>
-            </li>
-            {props.between ? <span key={uuid()}>{props.between}</span> : null}
-          </>
+          <li key={key} id={item.id ? item.id : key}>
+            <a
+              className={props.childClass}
+              href={item.link}
+              onClick={handleClick}
+            >
+              {item.label}
+            </a>{" "}
+            {props.between ? <span>{props.between}</span> : null}
+          </li>
         );
       })}
       {props.end ? <span key={uuid()}>{props.end}</span> : null}
