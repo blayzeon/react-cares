@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Linklist from "./Linklist";
 
 export default function Sidebar(props) {
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState(props.account.account);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -10,12 +10,15 @@ export default function Sidebar(props) {
     if (isNaN(value)) {
       return;
     } else {
-      setAccount(value);
+      if (value !== "") {
+        setAccount(value);
+      }
     }
   };
 
   const handleSubmit = () => {
     props.loadAccount(account);
+    console.log(props.account);
   };
 
   return (
@@ -23,12 +26,7 @@ export default function Sidebar(props) {
       <img src={props.logo} alt={props.brand} />
       <div className="input-group">
         <label htmlFor="lookup-number">Phone Number:</label>
-        <input
-          type="text"
-          id="lookup-number"
-          onChange={handleChange}
-          value={account}
-        />
+        <input type="text" id="lookup-number" onChange={handleChange} />
         <button type="button" onClick={handleSubmit}>
           Lookup
         </button>

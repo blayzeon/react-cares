@@ -1,19 +1,32 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
-import Linklist from "./components/Linklist";
+import Nav from "./components/Nav";
 import Main from "./components/Main";
 import { v4 as uuid } from "uuid";
+import accounts from "./data/accounts.json";
 import "./style/app.css";
 
+const date = new Date();
+
+const formattedDate = date.toLocaleDateString({
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+function formatTime(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  const strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
+  return strTime;
+}
+
 function generateData() {
-  const date = new Date();
-
-  const formattedDate = date.toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
   function returnCall(age, connected = true, facility = false) {
     return {};
   }
@@ -195,155 +208,18 @@ function tableArray(array) {
   return result;
 }
 
-const formItems1 = [
-  {
-    label: "First Name: ",
-    id: "as-first-name",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Last Name: ",
-    id: "as-last-name",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Address 1: ",
-    id: "as-address-1",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Address 2: ",
-    id: "as-address-2",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Zip Code: ",
-    id: "as-zip-code",
-    placeholder: false,
-    style: { width: 80 + "px" },
-    type: "text",
-  },
-  {
-    label: "City, State: ",
-    id: "as-city-state",
-    placeholder: false,
-    style: "form-city-state",
-    type: 2,
-  },
-  {
-    label: "Phone Number: ",
-    id: "as-phone-number",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Alt Number: ",
-    id: "as-alt-number",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Email: ",
-    id: "as-email",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Federal Tax ID: ",
-    id: "as-fed-tax",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "IVR Passcode: ",
-    id: "as-passcode",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-];
-
-const formItems2 = [
-  {
-    label: "Tax Exempt: ",
-    id: "as-tax-exempt",
-    placeholder: false,
-    style: false,
-    type: "checkbox",
-  },
-  {
-    label: "Notes: ",
-    id: "as-notes",
-    placeholder: false,
-    style: false,
-    type: "textarea",
-  },
-  {
-    label: "Authorized User: ",
-    id: "as-authorized-user",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Original LEC: ",
-    id: "as-original-lec",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-  {
-    label: "Last Facility Called: ",
-    id: "as-last-fac",
-    placeholder: false,
-    style: false,
-    type: "text",
-  },
-];
-
-const asLeft = tableArray(formItems1);
-asLeft.push([
-  <button type="button">Save Changes</button>,
-  <button type="button">BNA This Number</button>,
-]);
-
-const asRight = tableArray(formItems2);
-asRight.push([
-  <label key="as-select-label" htmlFor="as-select">
-    Originating Facilities:
-  </label>,
-  <select
-    size="4"
-    key="as-select"
-    id="as-select"
-    style={{ width: 350 + "px" }}
-  ></select>,
-]);
-asRight.push([<button type="button">Policy Check List</button>]);
-
-const as = {
-  thead: false,
-  tbody: [{ tbody: asLeft }, { tbody: asRight }],
-};
-
 function App() {
+  const defaultAccount = accounts[0];
   const [page, setPage] = useState("");
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState(defaultAccount);
 
   const loadAccount = (number) => {
-    setAccount(number);
+    // find an account match on accounts.json
+    const match = accounts.find((account) => account.account === number);
+
+    // return either the account or a blank account
+    const currentAccount = match ? match : defaultAccount;
+    setAccount(currentAccount);
   };
 
   const updatePage = (target) => {
@@ -361,6 +237,150 @@ function App() {
     });
   };
 
+  /* data */
+  const formItems1 = [
+    {
+      label: "First Name: ",
+      id: "as-first-name",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Last Name: ",
+      id: "as-last-name",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Address 1: ",
+      id: "as-address-1",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Address 2: ",
+      id: "as-address-2",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Zip Code: ",
+      id: "as-zip-code",
+      placeholder: false,
+      style: { width: 80 + "px" },
+      type: "text",
+    },
+    {
+      label: "City, State: ",
+      id: "as-city-state",
+      placeholder: false,
+      style: "form-city-state",
+      type: 2,
+    },
+    {
+      label: "Phone Number: ",
+      id: "as-phone-number",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Alt Number: ",
+      id: "as-alt-number",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Email: ",
+      id: "as-email",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Federal Tax ID: ",
+      id: "as-fed-tax",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "IVR Passcode: ",
+      id: "as-passcode",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+  ];
+
+  const formItems2 = [
+    {
+      label: "Tax Exempt: ",
+      id: "as-tax-exempt",
+      placeholder: false,
+      style: false,
+      type: "checkbox",
+    },
+    {
+      label: "Notes: ",
+      id: "as-notes",
+      placeholder: false,
+      style: false,
+      type: "textarea",
+    },
+    {
+      label: "Authorized User: ",
+      id: "as-authorized-user",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Original LEC: ",
+      id: "as-original-lec",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+    {
+      label: "Last Facility Called: ",
+      id: "as-last-fac",
+      placeholder: false,
+      style: false,
+      type: "text",
+    },
+  ];
+
+  const asLeft = tableArray(formItems1);
+  asLeft.push([
+    <button type="button">Save Changes</button>,
+    <button type="button">BNA This Number</button>,
+  ]);
+
+  const asRight = tableArray(formItems2);
+  asRight.push([
+    <label key="as-select-label" htmlFor="as-select">
+      Originating Facilities:
+    </label>,
+    <select
+      size="4"
+      key="as-select"
+      id="as-select"
+      style={{ width: 350 + "px" }}
+    ></select>,
+  ]);
+  asRight.push([<button type="button">Policy Check List</button>]);
+
+  const as = {
+    thead: false,
+    tbody: [{ tbody: asLeft }, { tbody: asRight }],
+  };
+
   /* sets account summary default page */
   useEffect(() => {
     updatePage();
@@ -373,27 +393,25 @@ function App() {
           logo="../images/simulator-logo.png"
           brand="CARES Simulator"
           links={sidebarLinks}
+          account={account}
           loadAccount={loadAccount}
         />
       </aside>
       <div id="content" className="flex-grow">
-        <header>
-          <Linklist
-            propClass="navy-bg flex"
-            childClass="blue-hover"
-            links={topLinks}
-          />
-          <span>
-            Current Path: Home {">"} Billing {">"} CARES
-          </span>
-          <Linklist
-            propClass="flex no-link bold blue-bg"
-            childClass="nav"
-            links={nav}
-            click={updatePage}
-          />
-        </header>
-        <Main page={page} account={account} data={as} />
+        <Nav
+          topLinks={topLinks}
+          nav={nav}
+          updatePage={updatePage}
+          account={account}
+          page={page}
+        />
+        <Main
+          page={page}
+          account={account}
+          data={as}
+          date={formattedDate}
+          time={formatTime}
+        />
       </div>
     </>
   );

@@ -5,7 +5,8 @@ import { v4 as uuid } from "uuid";
 export default function Table(props) {
   const data = props.data;
   const propClass = props.page ? props.page.replace(/\s/g, "") : "table";
-  return (
+
+  return data.tbody ? (
     <table key={uuid()} className={propClass}>
       {data.thead ? (
         <thead>
@@ -18,5 +19,7 @@ export default function Table(props) {
         </tbody>
       ) : null}
     </table>
+  ) : (
+    "There are no records to display..."
   );
 }

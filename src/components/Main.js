@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "./Table";
 import transactions from "../data/transactions.json";
 import facilities from "../data/facilities.json";
@@ -20,28 +20,24 @@ function returnSelect(selectObj) {
   );
 }
 
-const accountComments = {
-  thead: [["Date", "Comment"]],
-  tbody: [
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-    ["8/29/2022", "asdafs"],
-  ],
-};
-
 export default function Main(props) {
+  let account = props.account;
+  useEffect(() => {
+    console.log(account);
+  }, []);
+
+  const formattedComments = props.account.comments.length > 0 ? [] : false;
+
+  props.account.comments.forEach((comment) => {
+    const date = comment.date ? comment.date : props.date;
+    const time = comment.time ? comment.time : props.time(new Date());
+    formattedComments.push([`${date} ${time}`, comment.comment]);
+  });
+
+  const accountComments = {
+    thead: [["Date", "Comment"]],
+    tbody: formattedComments,
+  };
   if (props.page === "Account Summary") {
     const facOptions = facilities.map((fac) => {
       return (
@@ -151,5 +147,15 @@ export default function Main(props) {
         <Table data={accountComments} page="as-comments" />
       </>
     );
+  } else if (props.page === "Transactions") {
+    return (
+      <>
+        <Adjustments />
+        <div>{props.page}</div>
+      </>
+    );
+  }
+  {
+    return <div>{props.page}</div>;
   }
 }

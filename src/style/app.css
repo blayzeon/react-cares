@@ -194,3 +194,12 @@ td label {
 .as-comments td:nth-child(odd) {
   background-color: hsla(0, 0%, 40%, 0.2);
 }
+
+.pad-left {
+  padding-left: 5rem;
+}
+
+.blue-text {
+  color: blue;
+  font-weight: bold;
+}

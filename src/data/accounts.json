@@ -1,14 +1,92 @@
 [
   {
     "account": "",
-    "bna": [
-      {
-        "label": ["First Name"],
-        "type": ["text"],
-        "value": [""]
+    "bna": {
+      "name": {
+        "first": "",
+        "last": ""
+      },
+      "address": {
+        "one": "",
+        "two": "",
+        "zip": "",
+        "city": "",
+        "state": ""
+      },
+      "phone": {
+        "one": "",
+        "two": ""
+      },
+      "email": "",
+      "tax": "",
+      "ivrPc": "",
+      "exempt": false,
+      "au": "",
+      "lec": "",
+      "facility": "",
+      "facilities": "",
+      "policies": {
+        "cell": false,
+        "fees": false,
+        "exp90": false,
+        "exp180": false
       }
-    ],
-    "status": {},
+    },
+    "status": "Active",
+    "block": false,
+    "ccBlock": false,
+    "type": "",
+    "created": false,
+    "indicator": "Not Indicated",
     "comments": []
+  },
+  {
+    "account": "8004838314",
+    "bna": {
+      "name": {
+        "first": "GTL",
+        "last": "IVR NUMBER"
+      },
+      "address": {
+        "one": "DO NOT SET UP",
+        "two": "",
+        "zip": "",
+        "city": "",
+        "state": ""
+      },
+      "phone": {
+        "one": "8004838314",
+        "two": ""
+      },
+      "email": "",
+      "tax": "",
+      "ivrPc": "",
+      "exempt": false,
+      "au": "",
+      "lec": "",
+      "facility": "",
+      "facilities": "",
+      "policies": {
+        "cell": true,
+        "fees": true,
+        "exp90": true,
+        "exp180": true
+      }
+    },
+    "status": "Blocked",
+    "block": true,
+    "ccBlock": true,
+    "type": "Advance Pay",
+    "created": true,
+    "indicator": "Land Line",
+    "comments": [
+      {
+        "date": false,
+        "time": false,
+        "filter": "general",
+        "comment": "CARES User new.trainee accessed account.",
+        "color": "black"
+      }
+    ]
   }
 ]
