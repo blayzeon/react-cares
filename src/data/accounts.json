@@ -1,84 +1,84 @@
 [
   {
+    "index": 0,
     "account": "",
-    "bna": {
-      "name": {
-        "first": "",
-        "last": ""
-      },
-      "address": {
-        "one": "",
-        "two": "",
-        "zip": "",
-        "city": "",
-        "state": ""
-      },
-      "phone": {
-        "one": "",
-        "two": ""
-      },
-      "email": "",
-      "tax": "",
-      "ivrPc": "",
-      "exempt": false,
-      "au": "",
-      "lec": "",
-      "facility": "",
-      "facilities": "",
-      "policies": {
-        "cell": false,
-        "fees": false,
-        "exp90": false,
-        "exp180": false
-      }
+    "name": {
+      "first": "",
+      "last": ""
     },
-    "status": "Active",
+    "address": {
+      "one": "",
+      "two": "",
+      "zip": "",
+      "city": "",
+      "state": ""
+    },
+    "phone": {
+      "one": "",
+      "two": ""
+    },
+    "email": "",
+    "tax": "",
+    "ivrPc": "",
+    "exempt": false,
+    "notes": "",
+    "au": "",
+    "lec": "",
+    "facility": "",
+    "facilities": "",
+    "policies": {
+      "cell": false,
+      "fees": false,
+      "exp90": false,
+      "exp180": false
+    },
+    "status": 0,
     "block": false,
     "ccBlock": false,
-    "type": "",
+    "type": 0,
     "created": false,
-    "indicator": "Not Indicated",
+    "indicator": 3,
     "comments": []
   },
   {
+    "index": 1,
     "account": "8004838314",
-    "bna": {
-      "name": {
-        "first": "GTL",
-        "last": "IVR NUMBER"
-      },
-      "address": {
-        "one": "DO NOT SET UP",
-        "two": "",
-        "zip": "",
-        "city": "",
-        "state": ""
-      },
-      "phone": {
-        "one": "8004838314",
-        "two": ""
-      },
-      "email": "",
-      "tax": "",
-      "ivrPc": "",
-      "exempt": false,
-      "au": "",
-      "lec": "",
-      "facility": "",
-      "facilities": "",
-      "policies": {
-        "cell": true,
-        "fees": true,
-        "exp90": true,
-        "exp180": true
-      }
+    "name": {
+      "first": "GTL",
+      "last": "IVR NUMBER"
     },
-    "status": "Blocked",
+    "address": {
+      "one": "DO NOT SET UP",
+      "two": "",
+      "zip": "",
+      "city": "",
+      "state": ""
+    },
+    "phone": {
+      "one": "8004838314",
+      "two": ""
+    },
+    "email": "",
+    "tax": "",
+    "ivrPc": "",
+    "exempt": true,
+    "notes": "DO NOT SET UP - KEEP BLOCKED",
+    "au": "",
+    "lec": "",
+    "facility": "Ohio DRC",
+    "facilities": "",
+    "policies": {
+      "cell": true,
+      "fees": true,
+      "exp90": true,
+      "exp180": true
+    },
+    "status": 3,
     "block": true,
     "ccBlock": true,
-    "type": "Advance Pay",
+    "type": 1,
     "created": true,
-    "indicator": "Land Line",
+    "indicator": 1,
     "comments": [
       {
         "date": false,

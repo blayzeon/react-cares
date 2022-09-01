@@ -3,7 +3,6 @@ import Sidebar from "./components/Sidebar";
 import Nav from "./components/Nav";
 import Main from "./components/Main";
 import { v4 as uuid } from "uuid";
-import accounts from "./data/accounts.json";
 import "./style/app.css";
 
 const date = new Date();
@@ -176,13 +175,15 @@ function tableGroup(labelObj) {
   if (type) {
     const toPush =
       type === "textarea" ? (
-        <textarea key={uuid()}></textarea>
+        <textarea key={uuid()} defaultValue={labelObj.value}></textarea>
       ) : (
         <input
           style={labelObj.style ? labelObj.style : { display: "block" }}
           key={uuid()}
           id={labelObj.id}
           type={labelObj.type}
+          defaultValue={labelObj.value}
+          defaultChecked={labelObj.value}
         />
       );
     result.push(toPush);
@@ -191,7 +192,13 @@ function tableGroup(labelObj) {
       const tempId = i === 0 ? labelObj.id : `${labelObj.id}-${i}`;
       const tempStyle = i === 0 ? { display: "block" } : { width: 40 + "px" };
       result.push(
-        <input key={uuid()} id={tempId} type="text" style={tempStyle} />
+        <input
+          key={uuid()}
+          id={tempId}
+          type="text"
+          style={tempStyle}
+          defaultValue={labelObj.value[i]}
+        />
       );
     }
   }
@@ -208,8 +215,10 @@ function tableArray(array) {
   return result;
 }
 
-function App() {
+function App(props) {
+  const accounts = props.accounts;
   const defaultAccount = accounts[0];
+
   const [page, setPage] = useState("");
   const [account, setAccount] = useState(defaultAccount);
 
@@ -245,6 +254,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.name.first,
     },
     {
       label: "Last Name: ",
@@ -252,6 +262,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.name.last,
     },
     {
       label: "Address 1: ",
@@ -259,6 +270,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.address.one,
     },
     {
       label: "Address 2: ",
@@ -266,6 +278,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.address.two,
     },
     {
       label: "Zip Code: ",
@@ -273,6 +286,7 @@ function App() {
       placeholder: false,
       style: { width: 80 + "px" },
       type: "text",
+      value: account.address.zip,
     },
     {
       label: "City, State: ",
@@ -280,6 +294,7 @@ function App() {
       placeholder: false,
       style: "form-city-state",
       type: 2,
+      value: [account.address.city, account.address.state],
     },
     {
       label: "Phone Number: ",
@@ -287,6 +302,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.phone.one,
     },
     {
       label: "Alt Number: ",
@@ -294,6 +310,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.phone.two,
     },
     {
       label: "Email: ",
@@ -301,6 +318,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.email,
     },
     {
       label: "Federal Tax ID: ",
@@ -308,6 +326,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.tax,
     },
     {
       label: "IVR Passcode: ",
@@ -315,6 +334,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.ivrPc,
     },
   ];
 
@@ -325,6 +345,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "checkbox",
+      value: account.exempt,
     },
     {
       label: "Notes: ",
@@ -332,6 +353,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "textarea",
+      value: account.notes,
     },
     {
       label: "Authorized User: ",
@@ -339,6 +361,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.au,
     },
     {
       label: "Original LEC: ",
@@ -346,6 +369,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.lec,
     },
     {
       label: "Last Facility Called: ",
@@ -353,6 +377,7 @@ function App() {
       placeholder: false,
       style: false,
       type: "text",
+      value: account.facility,
     },
   ];
 

@@ -7,24 +7,22 @@ import { v4 as uuid } from "uuid";
 
 function returnTransactions(account) {}
 
-function returnSelect(selectObj) {
-  return (
-    <span>
-      {selectObj.label ? <label>{selectObj.label}</label> : null}
-      <select disabled={selectObj.disabled}>
-        {selectObj.options.map((option) => {
-          return <option key={uuid()}>{option}</option>;
-        })}
-      </select>
-    </span>
-  );
-}
-
 export default function Main(props) {
-  let account = props.account;
-  useEffect(() => {
-    console.log(account);
-  }, []);
+  function returnSelect(selectObj) {
+    return (
+      <span>
+        {selectObj.label ? <label>{selectObj.label}</label> : null}
+        <select
+          disabled={selectObj.disabled}
+          defaultValue={selectObj.options[selectObj.value]}
+        >
+          {selectObj.options.map((option) => {
+            return <option key={uuid()}>{option}</option>;
+          })}
+        </select>
+      </span>
+    );
+  }
 
   const formattedComments = props.account.comments.length > 0 ? [] : false;
 
@@ -50,12 +48,14 @@ export default function Main(props) {
       <>
         <Adjustments />
         <div className="flex-groups">
-          <div>
+          <div key={props.account.index}>
             {returnSelect({
               options: ["Active", "Return Mail", "LEC/Inactive", "Blocked"],
+              value: props.account.status,
             })}
             {returnSelect({
               label: "Account Type: ",
+              value: props.account.type,
               options: [
                 "",
                 "Advance Pay",
@@ -67,9 +67,10 @@ export default function Main(props) {
             <img className="icon" src="../images/info_italic.png"></img>
             <button type="button">Show Contract Exceptions</button>
           </div>
-          <div>
+          <div key={props.account.index + 1}>
             {returnSelect({
               label: "Phone Indicator: ",
+              value: props.account.indicator,
               options: [
                 "Cell Phone",
                 "Land Line",
@@ -89,7 +90,8 @@ export default function Main(props) {
               disabled: true,
             })}
           </div>
-          <label>Customer Block Requested: </label> <input type="checkbox" />
+          <label>Customer Block Requested: </label>{" "}
+          <input type="checkbox" defaultChecked={props.account.block} />
           <div>
             <p>
               <strong>Available: </strong>$0.00
@@ -110,7 +112,8 @@ export default function Main(props) {
               options: ["No Export"],
               disabled: true,
             })}
-            <select>{facOptions}</select>
+            <select defaultValue={props.account.facility}>{facOptions}</select>
+            <button type="button">View Rates</button>
           </div>
         </div>
         <Table data={props.data} page={props.page} />
