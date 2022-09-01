@@ -4,6 +4,10 @@ import Linklist from "./Linklist";
 export default function Sidebar(props) {
   const [account, setAccount] = useState(props.account.account);
 
+  const formSubmit = () => {
+    return false;
+  };
+
   const handleChange = (e) => {
     e.preventDefault();
     const value = e.target.value;
@@ -30,7 +34,7 @@ export default function Sidebar(props) {
   return (
     <div id="sidebar">
       <img src={props.logo} alt={props.brand} />
-      <form className="input-group" onsubmit="return false">
+      <form className="input-group" onSubmit={formSubmit}>
         <label htmlFor="lookup-number">Phone Number:</label>
         <input type="text" id="lookup-number" onChange={handleChange} />
         <button type="submit" onClick={handleSubmit}>

@@ -1,13 +1,24 @@
 import React, { useEffect } from "react";
 import Table from "./Table";
-import transactions from "../data/transactions.json";
 import facilities from "../data/facilities.json";
 import Adjustments from "./Adjustments";
 import { v4 as uuid } from "uuid";
 
-function returnTransactions(account) {}
-
 export default function Main(props) {
+  const transactions = props.transactions.filter(
+    (transaction) => transaction.account === props.account.account
+  );
+
+  const balance = transactions
+    .reduce(
+      (sum, transaction) =>
+        transaction.type === "Deposit"
+          ? parseFloat(transaction.amount) + sum
+          : sum,
+      0
+    )
+    .toFixed(2);
+
   function returnSelect(selectObj) {
     return (
       <span>
@@ -29,7 +40,13 @@ export default function Main(props) {
   props.account.comments.forEach((comment) => {
     const date = comment.date ? comment.date : props.date;
     const time = comment.time ? comment.time : props.time(new Date());
-    formattedComments.push([`${date} ${time}`, comment.comment]);
+    const fontColor = `${comment.color}-text`;
+    formattedComments.unshift([
+      <span className={fontColor}>
+        {date} {time}
+      </span>,
+      <span className={fontColor}>{comment.comment}</span>,
+    ]);
   });
 
   const accountComments = {
@@ -90,14 +107,16 @@ export default function Main(props) {
               disabled: true,
             })}
           </div>
-          <label>Customer Block Requested: </label>{" "}
-          <input type="checkbox" defaultChecked={props.account.block} />
-          <div>
+          <span key={props.account.index + 2}>
+            <label>Customer Block Requested: </label>{" "}
+            <input type="checkbox" defaultChecked={props.account.block} />
+          </span>
+          <div key={props.account.index + 3}>
             <p>
-              <strong>Available: </strong>$0.00
+              <strong>Available: </strong>${balance}
             </p>
             <p>
-              <strong>Ledger: </strong>$0.00
+              <strong>Ledger: </strong>${balance}
             </p>
             <p>
               <strong>Hold Amount: </strong>$0.00

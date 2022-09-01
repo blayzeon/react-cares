@@ -25,7 +25,7 @@
     "au": "",
     "lec": "",
     "facility": "",
-    "facilities": "",
+    "facilities": [],
     "policies": {
       "cell": false,
       "fees": false,
@@ -65,8 +65,8 @@
     "notes": "DO NOT SET UP - KEEP BLOCKED",
     "au": "",
     "lec": "",
-    "facility": "Ohio DRC",
-    "facilities": "",
+    "facility": "Middle River VA-Regional Jail",
+    "facilities": ["Ohio DRC", "California DOC"],
     "policies": {
       "cell": true,
       "fees": true,
@@ -80,6 +80,20 @@
     "created": true,
     "indicator": 1,
     "comments": [
+      {
+        "date": "6/05/2022",
+        "time": "2:35:19 PM",
+        "filter": "general",
+        "comment": "CARES User kristine.carter accessed account.",
+        "color": "black"
+      },
+      {
+        "date": "6/05/2022",
+        "time": "2:38:25 PM",
+        "filter": "Account Setup",
+        "comment": "GTL/kristine.carter Bob Ross/cx states added funds to account by mistake. offered refund but cx failed cpni. they will call back.",
+        "color": "red"
+      },
       {
         "date": false,
         "time": false,

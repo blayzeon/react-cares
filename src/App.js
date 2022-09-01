@@ -397,7 +397,11 @@ function App(props) {
       key="as-select"
       id="as-select"
       style={{ width: 350 + "px" }}
-    ></select>,
+    >
+      {account.facilities.map((facility) => (
+        <option>{facility}</option>
+      ))}
+    </select>,
   ]);
   asRight.push([<button type="button">Policy Check List</button>]);
 
@@ -436,6 +440,7 @@ function App(props) {
           data={as}
           date={formattedDate}
           time={formatTime}
+          transactions={props.transactions}
         />
       </div>
     </>
