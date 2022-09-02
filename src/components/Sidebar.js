@@ -4,7 +4,8 @@ import Linklist from "./Linklist";
 export default function Sidebar(props) {
   const [account, setAccount] = useState(props.account.account);
 
-  const formSubmit = () => {
+  const formSubmit = (e) => {
+    e.preventDefault();
     return false;
   };
 
