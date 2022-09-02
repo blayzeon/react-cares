@@ -5,7 +5,7 @@ export default function Nav(props) {
   return (
     <header>
       <Linklist
-        propClass="navy-bg flex"
+        propClass="navy-bg flex gap-small"
         childClass="blue-hover"
         links={props.topLinks}
       />
@@ -13,7 +13,7 @@ export default function Nav(props) {
         Current Path: Home {">"} Billing {">"} CARES
       </span>
       <Linklist
-        propClass="flex no-link bold blue-bg"
+        propClass="flex gap-small no-link bold blue-bg"
         childClass="nav"
         links={props.nav}
         click={props.updatePage}

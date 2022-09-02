@@ -6,31 +6,31 @@ export default function As(props) {
   const controls = [
     {
       link: "#",
-      label: "CC Deposit",
+      label: "CC Deposit |",
     },
     {
       link: "#",
-      label: "Other Deposit",
+      label: "Other Deposit |",
     },
     {
       link: "#",
-      label: "Withdrawal",
+      label: "Withdrawal |",
     },
     {
       link: "#",
-      label: "Funds Transfer",
+      label: "Funds Transfer |",
     },
     {
       link: "#",
-      label: "Adj Increase",
+      label: "Adj Increase |",
     },
     {
       link: "#",
-      label: "Adj Decrease",
+      label: "Adj Decrease |",
     },
     {
       link: "#",
-      label: "Chargeback",
+      label: "Chargeback |",
     },
     {
       link: "#",
@@ -43,8 +43,8 @@ export default function As(props) {
         <Linklist
           links={controls}
           propClass="flex"
+          childClass="no-pad"
           start="Add ("
-          between="|"
           end=")"
         />
       </span>

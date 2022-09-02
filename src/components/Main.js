@@ -112,7 +112,8 @@ export default function Main(props) {
               <strong>Ledger: </strong>${balance}
             </p>
             <p>
-              <strong>Hold Amount: </strong>$0.00
+              <strong>Hold Amount: </strong>
+              <a href="#">$0.00</a>
             </p>
             <p>
               <strong>Liability Limit: </strong>$0.00
@@ -138,7 +139,14 @@ export default function Main(props) {
                 );
               })}
             </select>
-            <button type="button">View Rates</button>
+            <button
+              type="button"
+              onClick={function (e) {
+                console.log(e.target.closest("div select"));
+              }}
+            >
+              View Rates
+            </button>
           </div>
         </div>
         <Table data={props.data} page={props.page} />

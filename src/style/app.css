@@ -34,6 +34,18 @@ body,
 
 .flex {
   display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-tiny {
+  gap: 0.2rem;
+}
+
+.gap-small {
   gap: 0.5rem;
 }
 
@@ -128,7 +140,7 @@ td label {
 }
 
 .AccountSummary > tbody > tr > td:nth-child(1) {
-  width: 384.23px;
+  width: 480px;
 }
 
 #adjustment-controls * {
@@ -214,4 +226,17 @@ td label {
 
 .orange-text {
   color: orange;
+}
+
+.no-pad {
+  padding: 0;
+  margin: 0;
+}
+
+.small-margin {
+  margin: 0.5rem 0;
+}
+
+.margin-top {
+  margin-top: 1rem;
 }

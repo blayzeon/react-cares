@@ -20,7 +20,7 @@ export default function Linklist(props) {
               onClick={handleClick}
             >
               {item.label}
-            </a>{" "}
+            </a>
             {props.between ? <span>{props.between}</span> : null}
           </li>
         );

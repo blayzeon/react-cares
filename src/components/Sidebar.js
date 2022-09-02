@@ -41,9 +41,9 @@ export default function Sidebar(props) {
           Lookup
         </button>
       </form>
-      <Linklist links={props.links[0]} />
-      <h4 className="navy-bg">Links</h4>
-      <Linklist links={props.links[1]} />
+      <Linklist links={props.links[0]} propClass="flex-column gap-tiny" />
+      <h4 className="navy-bg small-margin margin-top">Links</h4>
+      <Linklist links={props.links[1]} propClass="flex-column gap-tiny" />
     </div>
   );
 }
