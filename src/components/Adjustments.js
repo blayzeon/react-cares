@@ -38,16 +38,16 @@ export default function As(props) {
     },
   ];
   return (
-    <>
+    <div>
       <span id="adjustment-controls" className="no-link" key={uuid()}>
         <Linklist
           links={controls}
-          propClass="flex"
+          propClass="flex tiny-pad margin-bottom"
           childClass="no-pad"
           start="Add ("
           end=")"
         />
       </span>
-    </>
+    </div>
   );
 }
