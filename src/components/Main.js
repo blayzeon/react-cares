@@ -54,13 +54,6 @@ export default function Main(props) {
     tbody: formattedComments,
   };
   if (props.page === "Account Summary") {
-    const facOptions = facilities.map((fac) => {
-      return (
-        <option value={fac.public} data-link={fac.link} key={uuid()}>
-          {fac.public}
-        </option>
-      );
-    });
     return (
       <>
         <Adjustments />
@@ -125,13 +118,26 @@ export default function Main(props) {
               <strong>Liability Limit: </strong>$0.00
             </p>
           </div>
-          <div>
+          <div key={props.account.index + 4}>
             {returnSelect({
               label: "Send Bill: ",
               options: ["No Export"],
               disabled: true,
             })}
-            <select defaultValue={props.account.facility}>{facOptions}</select>
+            <select
+              defaultValue={
+                facilities[props.account.facility ? props.account.facility : 0]
+                  .public
+              }
+            >
+              {facilities.map((fac) => {
+                return (
+                  <option value={fac.public} data-link={fac.link} key={uuid()}>
+                    {fac.public}
+                  </option>
+                );
+              })}
+            </select>
             <button type="button">View Rates</button>
           </div>
         </div>

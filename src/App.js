@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Nav from "./components/Nav";
 import Main from "./components/Main";
 import { v4 as uuid } from "uuid";
+import facilities from "./data/facilities.json";
 import "./style/app.css";
 
 const date = new Date();
@@ -377,7 +378,7 @@ function App(props) {
       placeholder: false,
       style: false,
       type: "text",
-      value: account.facility,
+      value: facilities[account.facility].public,
     },
   ];
 
@@ -399,7 +400,7 @@ function App(props) {
       style={{ width: 350 + "px" }}
     >
       {account.facilities.map((facility) => (
-        <option>{facility}</option>
+        <option key={facility}>{facility}</option>
       ))}
     </select>,
   ]);

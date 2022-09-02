@@ -24,7 +24,7 @@
     "notes": "",
     "au": "",
     "lec": "",
-    "facility": "",
+    "facility": 0,
     "facilities": [],
     "policies": {
       "cell": false,
@@ -65,7 +65,7 @@
     "notes": "DO NOT SET UP - KEEP BLOCKED",
     "au": "",
     "lec": "",
-    "facility": "Middle River VA-Regional Jail",
+    "facility": 4,
     "facilities": ["Ohio DRC", "California DOC"],
     "policies": {
       "cell": true,
