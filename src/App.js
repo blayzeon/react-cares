@@ -176,7 +176,11 @@ function tableGroup(labelObj) {
   if (type) {
     const toPush =
       type === "textarea" ? (
-        <textarea key={uuid()} defaultValue={labelObj.value}></textarea>
+        <textarea
+          key={uuid()}
+          defaultValue={labelObj.value}
+          data={labelObj.data}
+        ></textarea>
       ) : (
         <input
           style={labelObj.style ? labelObj.style : { display: "block" }}
@@ -185,6 +189,7 @@ function tableGroup(labelObj) {
           type={labelObj.type}
           defaultValue={labelObj.value}
           defaultChecked={labelObj.value}
+          data-form={labelObj.data}
         />
       );
     result.push(toPush);
@@ -199,6 +204,7 @@ function tableGroup(labelObj) {
           type="text"
           style={tempStyle}
           defaultValue={labelObj.value[i]}
+          data-form={labelObj.data[i]}
         />
       );
     }
@@ -256,6 +262,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.name.first,
+      data: "name.first",
     },
     {
       label: "Last Name: ",
@@ -264,6 +271,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.name.last,
+      data: "name.last",
     },
     {
       label: "Address 1: ",
@@ -272,6 +280,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.address.one,
+      data: "address.one",
     },
     {
       label: "Address 2: ",
@@ -280,6 +289,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.address.two,
+      data: "address.two",
     },
     {
       label: "Zip Code: ",
@@ -288,6 +298,7 @@ function App(props) {
       style: { width: 80 + "px" },
       type: "text",
       value: account.address.zip,
+      data: "address.zip",
     },
     {
       label: "City, State: ",
@@ -296,6 +307,7 @@ function App(props) {
       style: "form-city-state",
       type: 2,
       value: [account.address.city, account.address.state],
+      data: ["address.city", "address.state"],
     },
     {
       label: "Phone Number: ",
@@ -304,6 +316,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.phone.one,
+      data: "phone.one",
     },
     {
       label: "Alt Number: ",
@@ -312,6 +325,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.phone.two,
+      data: "phone.two",
     },
     {
       label: "Email: ",
@@ -320,6 +334,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.email,
+      data: "email",
     },
     {
       label: "Federal Tax ID: ",
@@ -328,6 +343,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.tax,
+      data: "tax",
     },
     {
       label: "IVR Passcode: ",
@@ -336,6 +352,7 @@ function App(props) {
       style: false,
       type: "text",
       value: account.ivrPc,
+      data: "ivrPc",
     },
   ];
 
@@ -382,9 +399,40 @@ function App(props) {
     },
   ];
 
+  // todo
+  function handleSave() {
+    const userInput = [...document.querySelectorAll("[data-form]")];
+    const obj = userInput.reduce(
+      (result, elm) => {
+        console.log(elm);
+        const dataValue = elm.getAttribute("data-form");
+        const splitData = dataValue.includes(".")
+          ? dataValue.split(".")
+          : false;
+        const key = splitData ? splitData[0] : false;
+        const key2 = splitData ? splitData[1] : dataValue;
+        const pair = { [key2]: elm.value };
+
+        if (key) {
+          // it's nested
+          console.log(result);
+          result[key] =
+            key in result ? { ...result[key], ...pair } : (result[key] = pair);
+        } else {
+          result = { ...result, ...pair };
+        }
+      },
+      { index: 0 }
+    );
+
+    return obj;
+  }
+
   const asLeft = tableArray(formItems1);
   asLeft.push([
-    <button type="button">Save Changes</button>,
+    <button type="button" onClick={handleSave}>
+      Save Changes
+    </button>,
     <button type="button">BNA This Number</button>,
   ]);
 

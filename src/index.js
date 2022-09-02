@@ -5,22 +5,13 @@ import accounts from "./data/accounts.json";
 import transactions from "./data/transactions.json";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const updateAccount = (index, key, value) => {
-  if (key === "comments") {
-    value.forEach((comment) => {
-      accounts[index].comments.push(comment);
-    });
-  } else {
-    accounts[index][key] = value;
-  }
+const updateAccount = (index, data) => {
+  const newAccount = { ...accounts[index], ...data };
+  accounts[index] = newAccount;
 };
 
 root.render(
   <React.StrictMode>
-    <App
-      accounts={accounts}
-      saveAccount={updateAccount}
-      transactions={transactions}
-    />
+    <App accounts={accounts} transactions={transactions} />
   </React.StrictMode>
 );
