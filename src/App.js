@@ -400,10 +400,68 @@ function App(props) {
   ];
 
   // todo
+  function handleSave() {
+    const userInput = [...document.querySelectorAll("[data-form]")];
+    let result = {};
+    userInput.forEach((elm) => {
+      if (elm.value === "") {
+        return;
+      }
+
+      const dataValue = elm.getAttribute("data-form");
+
+      // nested items
+      const split = dataValue.includes(".") ? dataValue.split(".") : false;
+
+      if (split) {
+        if (split[0] in result) {
+          result[split[0]][split[1]] = elm.value;
+        } else {
+          result[split[0]] = { [split[1]]: elm.value };
+        }
+      } else {
+        result[dataValue] = elm.value;
+      }
+
+      console.log(result);
+    });
+  }
+
+  /* 
+    function handleSave() {
+    const userInput = [...document.querySelectorAll("[data-form]")];
+    const obj = userInput.reduce(
+      (result, elm) => {
+        console.log(elm);
+        const dataValue = elm.getAttribute("data-form");
+        const splitData = dataValue.includes(".")
+          ? dataValue.split(".")
+          : false;
+        const key = splitData ? splitData[0] : false;
+        const key2 = splitData ? splitData[1] : dataValue;
+        const pair = { [key2]: elm.value };
+
+        if (key) {
+          // it's nested
+          console.log(result);
+          result[key] =
+            key in result ? { ...result[key], ...pair } : (result[key] = pair);
+        } else {
+          result = { ...result, ...pair };
+        }
+      },
+      { index: 0 }
+    );
+
+    return obj;
+  }
+  */
 
   const asLeft = tableArray(formItems1);
   asLeft.push([
-    <button type="button">Save Changes</button>,
+    <button type="button" onClick={handleSave}>
+      Save Changes
+    </button>,
     <button type="button">BNA This Number</button>,
   ]);
 

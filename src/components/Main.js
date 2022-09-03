@@ -58,10 +58,10 @@ export default function Main(props) {
       <>
         <Adjustments />
         <div className="flex-groups">
-          <div key={props.account.index}>
+          <div key={props.account.index + 5}>
             {returnSelect({
-              options: ["Active", "Return Mail", "LEC/Inactive", "Blocked"],
               value: props.account.status,
+              options: ["Active", "Return Mail", "LEC/Inactive", "Blocked"],
             })}
             {returnSelect({
               label: "Account Type: ",
