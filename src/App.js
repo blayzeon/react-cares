@@ -5,6 +5,8 @@ import Main from "./components/Main";
 import { v4 as uuid } from "uuid";
 import facilities from "./data/facilities.json";
 import "./style/app.css";
+import accountData from "./data/accounts.json";
+import transactions from "./data/transactions.json";
 
 const date = new Date();
 
@@ -222,185 +224,67 @@ function tableArray(array) {
   return result;
 }
 
-function App(props) {
-  const accounts = props.accounts;
-  const defaultAccount = accounts[0];
-
-  const [page, setPage] = useState("");
-  const [account, setAccount] = useState(defaultAccount);
-
-  const loadAccount = (number) => {
-    // find an account match on accounts.json
-    const match = accounts.find((account) => account.account === number);
-
-    // return either the account or a blank account
-    const currentAccount = match ? match : defaultAccount;
-    setAccount(currentAccount);
+function App() {
+  const defaultAccount = {
+    index: 0,
+    account: "",
+    name: {
+      first: "",
+      last: "",
+    },
+    address: {
+      one: "",
+      two: "",
+      zip: "",
+      city: "",
+      state: "",
+    },
+    phone: {
+      one: "",
+      two: "",
+    },
+    email: "",
+    tax: "",
+    ivrPc: "",
+    exempt: false,
+    notes: "",
+    au: "",
+    lec: "",
+    facility: 0,
+    facilities: [],
+    policies: {
+      cell: false,
+      fees: false,
+      exp90: false,
+      exp180: false,
+    },
+    status: 0,
+    block: false,
+    ccBlock: false,
+    type: 0,
+    created: false,
+    indicator: 3,
+    comments: [],
   };
 
-  const updatePage = (target) => {
-    const active = target ? target : document.querySelector(".nav");
-    setPage(active.innerText);
+  const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
+  const [index, setIndex] = useState(0); // current account that the user is on
+  const [page, setPage] = useState(""); // current page that the user is on
+  const [alertMsg, setAlert] = useState({
+    style: "green-blue-bg pad-left blue-text",
+    msg: <span>&nbsp;</span>,
+  });
 
-    // update the css
-    const links = document.querySelectorAll(".nav");
-    links.forEach((link) => {
-      if (link.innerText === page) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
-    });
-  };
+  /* data management */
+  function returnNewAccount(number) {
+    const result = defaultAccount;
+    result.index = accounts.length;
+    result.account = number;
 
-  /* data */
-  const formItems1 = [
-    {
-      label: "First Name: ",
-      id: "as-first-name",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.name.first,
-      data: "name.first",
-    },
-    {
-      label: "Last Name: ",
-      id: "as-last-name",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.name.last,
-      data: "name.last",
-    },
-    {
-      label: "Address 1: ",
-      id: "as-address-1",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.address.one,
-      data: "address.one",
-    },
-    {
-      label: "Address 2: ",
-      id: "as-address-2",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.address.two,
-      data: "address.two",
-    },
-    {
-      label: "Zip Code: ",
-      id: "as-zip-code",
-      placeholder: false,
-      style: { width: 80 + "px" },
-      type: "text",
-      value: account.address.zip,
-      data: "address.zip",
-    },
-    {
-      label: "City, State: ",
-      id: "as-city-state",
-      placeholder: false,
-      style: "form-city-state",
-      type: 2,
-      value: [account.address.city, account.address.state],
-      data: ["address.city", "address.state"],
-    },
-    {
-      label: "Phone Number: ",
-      id: "as-phone-number",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.phone.one,
-      data: "phone.one",
-    },
-    {
-      label: "Alt Number: ",
-      id: "as-alt-number",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.phone.two,
-      data: "phone.two",
-    },
-    {
-      label: "Email: ",
-      id: "as-email",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.email,
-      data: "email",
-    },
-    {
-      label: "Federal Tax ID: ",
-      id: "as-fed-tax",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.tax,
-      data: "tax",
-    },
-    {
-      label: "IVR Passcode: ",
-      id: "as-passcode",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.ivrPc,
-      data: "ivrPc",
-    },
-  ];
+    return result;
+  }
 
-  const formItems2 = [
-    {
-      label: "Tax Exempt: ",
-      id: "as-tax-exempt",
-      placeholder: false,
-      style: false,
-      type: "checkbox",
-      value: account.exempt,
-    },
-    {
-      label: "Notes: ",
-      id: "as-notes",
-      placeholder: false,
-      style: false,
-      type: "textarea",
-      value: account.notes,
-    },
-    {
-      label: "Authorized User: ",
-      id: "as-authorized-user",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.au,
-    },
-    {
-      label: "Original LEC: ",
-      id: "as-original-lec",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: account.lec,
-    },
-    {
-      label: "Last Facility Called: ",
-      id: "as-last-fac",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: facilities[account.facility].public,
-    },
-  ];
-
-  // todo
-  function handleSave() {
+  function returnSavedAccount() {
     const userInput = [...document.querySelectorAll("[data-form]")];
     let result = {};
     userInput.forEach((elm) => {
@@ -422,40 +306,251 @@ function App(props) {
       } else {
         result[dataValue] = elm.value;
       }
-
-      console.log(result);
     });
+
+    return result;
   }
 
-  /* 
-    function handleSave() {
-    const userInput = [...document.querySelectorAll("[data-form]")];
-    const obj = userInput.reduce(
-      (result, elm) => {
-        console.log(elm);
-        const dataValue = elm.getAttribute("data-form");
-        const splitData = dataValue.includes(".")
-          ? dataValue.split(".")
-          : false;
-        const key = splitData ? splitData[0] : false;
-        const key2 = splitData ? splitData[1] : dataValue;
-        const pair = { [key2]: elm.value };
+  const createAccount = () => {
+    const accountsCopy = accounts;
+    accountsCopy[index].created = true;
+    setAlert(returnLoadAlert(accountsCopy[index].account));
+  };
 
-        if (key) {
-          // it's nested
-          console.log(result);
-          result[key] =
-            key in result ? { ...result[key], ...pair } : (result[key] = pair);
-        } else {
-          result = { ...result, ...pair };
+  const createAccountAlert = {
+    style: "green-blue-bg pad-left blue-text",
+    msg: (
+      <span>
+        Account not found. Would you like to create one?{" "}
+        <button onClick={createAccount}>Create Account</button>
+      </span>
+    ),
+  };
+
+  const returnLoadAlert = (number) => {
+    return {
+      style: "green-blue-bg pad-left blue-text",
+      msg: `The Advance Pay account ${number} loaded successfully.`,
+    };
+  };
+
+  const loadAccount = (number) => {
+    // check if there is a matching account
+    const result = accounts.find((account) => account.account === number);
+    const match = result ? result : false;
+
+    if (match) {
+      // Match found
+      if (match.index === index) {
+        // @todo - add prompt to override unsaved changes
+      }
+
+      setIndex(match.index);
+      if (match.created) {
+        setAlert(returnLoadAlert(number));
+        return;
+      }
+    }
+
+    // New account
+    setAlert(createAccountAlert);
+
+    // no existing account, we will create a new account
+    if (!match) {
+      const newAccount = returnNewAccount(number);
+      setAccounts([...accounts, newAccount]);
+      setIndex(newAccount.index);
+    }
+  };
+
+  const returnAccount = {
+    save: function (accountIndex = index) {
+      const data = returnSavedAccount();
+      const accountsCopy = accounts;
+      accountsCopy[accountIndex] = { ...accountsCopy[accountIndex], ...data };
+      console.log(accountsCopy);
+      return accountsCopy;
+    },
+  };
+
+  /* data management */
+
+  const updatePage = (target) => {
+    const active = target ? target : document.querySelector(".nav");
+    setPage(active.innerText);
+
+    if (accounts[index].account) {
+      if (active.innerText === "Account Summary") {
+        if (!accounts[index].created) {
+          setAlert(createAccountAlert);
         }
-      },
-      { index: 0 }
-    );
+      } else {
+        setAlert(false);
+      }
+    }
 
-    return obj;
+    // update the css
+    const links = document.querySelectorAll(".nav");
+    links.forEach((link) => {
+      if (link.innerText === page) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  };
+
+  /* data */
+  const formItems1 = [
+    {
+      label: "First Name: ",
+      id: "as-first-name",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].name.first,
+      data: "name.first",
+    },
+    {
+      label: "Last Name: ",
+      id: "as-last-name",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].name.last,
+      data: "name.last",
+    },
+    {
+      label: "Address 1: ",
+      id: "as-address-1",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].address.one,
+      data: "address.one",
+    },
+    {
+      label: "Address 2: ",
+      id: "as-address-2",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].address.two,
+      data: "address.two",
+    },
+    {
+      label: "Zip Code: ",
+      id: "as-zip-code",
+      placeholder: false,
+      style: { width: 80 + "px" },
+      type: "text",
+      value: accounts[index].address.zip,
+      data: "address.zip",
+    },
+    {
+      label: "City, State: ",
+      id: "as-city-state",
+      placeholder: false,
+      style: "form-city-state",
+      type: 2,
+      value: [accounts[index].address.city, accounts[index].address.state],
+      data: ["address.city", "address.state"],
+    },
+    {
+      label: "Phone Number: ",
+      id: "as-phone-number",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].phone.one,
+      data: "phone.one",
+    },
+    {
+      label: "Alt Number: ",
+      id: "as-alt-number",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].phone.two,
+      data: "phone.two",
+    },
+    {
+      label: "Email: ",
+      id: "as-email",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].email,
+      data: "email",
+    },
+    {
+      label: "Federal Tax ID: ",
+      id: "as-fed-tax",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].tax,
+      data: "tax",
+    },
+    {
+      label: "IVR Passcode: ",
+      id: "as-passcode",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].ivrPc,
+      data: "ivrPc",
+    },
+  ];
+
+  const formItems2 = [
+    {
+      label: "Tax Exempt: ",
+      id: "as-tax-exempt",
+      placeholder: false,
+      style: false,
+      type: "checkbox",
+      value: accounts[index].exempt,
+    },
+    {
+      label: "Notes: ",
+      id: "as-notes",
+      placeholder: false,
+      style: false,
+      type: "textarea",
+      value: accounts[index].notes,
+    },
+    {
+      label: "Authorized User: ",
+      id: "as-authorized-user",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].au,
+    },
+    {
+      label: "Original LEC: ",
+      id: "as-original-lec",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: accounts[index].lec,
+    },
+    {
+      label: "Last Facility Called: ",
+      id: "as-last-fac",
+      placeholder: false,
+      style: false,
+      type: "text",
+      value: facilities[accounts[index].facility].public,
+    },
+  ];
+
+  function handleSave() {
+    const result = returnAccount.save(index);
+    console.log(result);
+    setAccounts([...result]);
   }
-  */
 
   const asLeft = tableArray(formItems1);
   asLeft.push([
@@ -476,7 +571,7 @@ function App(props) {
       id="as-select"
       style={{ width: 350 + "px" }}
     >
-      {account.facilities.map((facility) => (
+      {accounts[index].facilities.map((facility) => (
         <option key={facility}>{facility}</option>
       ))}
     </select>,
@@ -500,7 +595,7 @@ function App(props) {
           logo="../images/simulator-logo.png"
           brand="CARES Simulator"
           links={sidebarLinks}
-          account={account}
+          account={accounts[index]}
           loadAccount={loadAccount}
         />
       </aside>
@@ -509,16 +604,17 @@ function App(props) {
           topLinks={topLinks}
           nav={nav}
           updatePage={updatePage}
-          account={account}
+          account={accounts[index]}
           page={page}
+          message={alertMsg}
         />
         <Main
           page={page}
-          account={account}
+          account={accounts[index]}
           data={as}
           date={formattedDate}
           time={formatTime}
-          transactions={props.transactions}
+          transactions={transactions}
         />
       </div>
     </>

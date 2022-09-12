@@ -29,6 +29,7 @@ export default function Sidebar(props) {
   };
 
   const handleSubmit = () => {
+    if (account === "") return;
     props.loadAccount(account);
   };
 

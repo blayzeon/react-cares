@@ -58,7 +58,7 @@ export default function Main(props) {
       <>
         <Adjustments />
         <div className="flex-groups">
-          <div key={props.account.index + 5}>
+          <div key={props.account.index + uuid()}>
             {returnSelect({
               value: props.account.status,
               options: ["Active", "Return Mail", "LEC/Inactive", "Blocked"],
@@ -77,7 +77,7 @@ export default function Main(props) {
             <img className="icon" src="../images/info_italic.png"></img>
             <button type="button">Show Contract Exceptions</button>
           </div>
-          <div key={props.account.index + 1}>
+          <div key={props.account.index + uuid()}>
             {returnSelect({
               label: "Phone Indicator: ",
               value: props.account.indicator,
@@ -119,7 +119,7 @@ export default function Main(props) {
               <strong>Liability Limit: </strong>$0.00
             </p>
           </div>
-          <div key={props.account.index + 4}>
+          <div key={props.account.index + uuid()}>
             {returnSelect({
               label: "Send Bill: ",
               options: ["No Export"],
