@@ -3,7 +3,7 @@ import Linklist from "./Linklist";
 
 export default function Nav(props) {
   return (
-    <header>
+    <header className="no-border">
       <Linklist
         propClass="navy-bg flex gap-small"
         childClass="blue-hover"

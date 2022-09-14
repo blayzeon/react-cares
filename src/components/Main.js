@@ -1,8 +1,200 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import facilities from "../data/facilities.json";
-import Adjustments from "./Adjustments";
+import Linklist from "./Linklist";
+import Popup1 from "./Popup1";
 import { v4 as uuid } from "uuid";
+
+function returnSelect(selectObj) {
+  return (
+    <span>
+      {selectObj.label ? <label>{selectObj.label}</label> : null}
+      <select
+        disabled={selectObj.disabled}
+        defaultValue={selectObj.options[selectObj.value]}
+      >
+        {selectObj.options.map((option) => {
+          return <option key={uuid()}>{option}</option>;
+        })}
+      </select>
+    </span>
+  );
+}
+
+function Comments(props) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const addComment = () => {
+    // opens the Add Comment popup menu
+    if (props.account) {
+      /* todo popup2 */
+      const msg =
+        "Please enter a phone number and select a valid account type to add account comment.";
+      alert(msg);
+      return;
+    }
+
+    setIsOpen(true);
+  };
+
+  const handleSubmit = (e) => {
+    // allows comments to be added
+    const popup = document.querySelector("[data-popup='comment']");
+    const select = popup.querySelector("select");
+    const comment = document.querySelector("#as-comment");
+
+    if (select.value === "") {
+      alert("Please select a valid comment type.");
+      return false;
+    }
+
+    if (comment.value === "") {
+      props.updateAlert(
+        "A comment is required when adding a new comment.",
+        "red-text bold-text"
+      );
+    } else {
+      const newComment = {
+        date: props.date,
+        time: props.time(),
+        filter: select.value,
+        comment: "new.trainee " + comment.value,
+        color: "black",
+      };
+      props.addComment(newComment);
+    }
+
+    return true;
+  };
+
+  const top = returnSelect({
+    label: "Comment Type: ",
+    options: [
+      "",
+      "IVR",
+      "CreditLimitChange",
+      "Complaint",
+      "Connect Network",
+      "Trust",
+      "Chargeback",
+      "Inquiry-Payment/Balance",
+      "Inquiry-Rates",
+      "Inquiry-Refund/Close Account",
+      "Account Setup",
+      "Block Issue",
+      "Wireless Activation Team",
+      "Research Team",
+      "AP International Team",
+      "Fax Team Update",
+      "General",
+    ],
+  });
+
+  const content = (
+    <div className="input-group-row gap-large">
+      <p>Comment: </p>
+      <textarea id="as-comment"></textarea>
+    </div>
+  );
+
+  return (
+    <>
+      <Popup1
+        visible={isOpen}
+        content={content}
+        setIsOpen={setIsOpen}
+        top={top}
+        submit="Add Comment"
+        onSubmit={handleSubmit}
+        type="comment"
+      />
+      <div className="green-blue-bg flex space-between w1080">
+        <span>
+          <strong>Account Comments</strong> (
+          <span onClick={addComment} className="hover-pointer">
+            Add New
+          </span>
+          ) *{" "}
+          <em>
+            Use the paging controls at the bottom to see additional comments.
+          </em>
+        </span>
+        <span>
+          <strong>Filter: </strong>
+          <select>
+            <option>All</option>
+            <option>IVR</option>
+            <option>CreditLimitChange</option>
+            <option>Complaint</option>
+            <option>Connect Network</option>
+            <option>Trust</option>
+            <option>Chargeback</option>
+            <option>Inquiry-Payment/Balance</option>
+            <option>Inquiry-Rates</option>
+            <option>Inquiry-Refund/Close Account</option>
+            <option>Account Setup</option>
+            <option>Block Issue</option>
+            <option>Wireless Activation Team</option>
+            <option>Research Team</option>
+            <option>AP International Team</option>
+            <option>Fax Team Update</option>
+            <option>General</option>
+          </select>
+        </span>
+      </div>
+    </>
+  );
+}
+
+function Adjustments(props) {
+  const controls = [
+    {
+      link: "#",
+      label: "CC Deposit |",
+    },
+    {
+      link: "#",
+      label: "Other Deposit |",
+    },
+    {
+      link: "#",
+      label: "Withdrawal |",
+    },
+    {
+      link: "#",
+      label: "Funds Transfer |",
+    },
+    {
+      link: "#",
+      label: "Adj Increase |",
+    },
+    {
+      link: "#",
+      label: "Adj Decrease |",
+    },
+    {
+      link: "#",
+      label: "Chargeback |",
+    },
+    {
+      link: "#",
+      label: "Ret Check",
+    },
+  ];
+  return (
+    <div className="no-border">
+      <span id="adjustment-controls" className="no-link" key={uuid()}>
+        <Linklist
+          links={controls}
+          propClass="flex tiny-pad"
+          childClass="no-pad"
+          start="Add ("
+          end=")"
+        />
+      </span>
+    </div>
+  );
+}
 
 export default function Main(props) {
   const transactions = props.transactions.filter(
@@ -18,22 +210,6 @@ export default function Main(props) {
       0
     )
     .toFixed(2);
-
-  function returnSelect(selectObj) {
-    return (
-      <span>
-        {selectObj.label ? <label>{selectObj.label}</label> : null}
-        <select
-          disabled={selectObj.disabled}
-          defaultValue={selectObj.options[selectObj.value]}
-        >
-          {selectObj.options.map((option) => {
-            return <option key={uuid()}>{option}</option>;
-          })}
-        </select>
-      </span>
-    );
-  }
 
   const formattedComments = props.account.comments.length > 0 ? [] : false;
 
@@ -53,6 +229,7 @@ export default function Main(props) {
     thead: [["Date", "Comment"]],
     tbody: formattedComments,
   };
+
   if (props.page === "Account Summary") {
     return (
       <>
@@ -148,38 +325,19 @@ export default function Main(props) {
               View Rates
             </button>
           </div>
+          <span key={props.account.index + 4}>
+            <label>Credit Card Block: </label>{" "}
+            <input type="checkbox" defaultChecked={props.account.ccBlock} />
+          </span>
         </div>
         <Table data={props.data} page={props.page} />
-        <div className="green-blue-bg flex space-between w1080">
-          <span>
-            <strong>Account Comments</strong> (Add New) *{" "}
-            <em>
-              Use the paging controls at the bottom to see additional comments.
-            </em>
-          </span>
-          <span>
-            <strong>Filter: </strong>
-            <select>
-              <option>All</option>
-              <option>IVR</option>
-              <option>CreditLimitChange</option>
-              <option>Complaint</option>
-              <option>Connect Network</option>
-              <option>Trust</option>
-              <option>Chargeback</option>
-              <option>Inquiry-Payment/Balance</option>
-              <option>Inquiry-Rates</option>
-              <option>Inquiry-Refund/Close Account</option>
-              <option>Account Setup</option>
-              <option>Block Issue</option>
-              <option>Wireless Activation Team</option>
-              <option>Research Team</option>
-              <option>AP International Team</option>
-              <option>Fax Team Update</option>
-              <option>General</option>
-            </select>
-          </span>
-        </div>
+        <Comments
+          updateAlert={props.updateAlert}
+          account={props.account.account === "" ? true : false}
+          addComment={props.addComment}
+          date={props.date}
+          time={props.time}
+        />
         <Table data={accountComments} page="as-comments" />
       </>
     );

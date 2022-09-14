@@ -7,20 +7,14 @@
 }
 
 html,
-body,
-#root {
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  box-sizing: border-box;
 }
 
 #root {
   display: flex;
-}
-
-#content {
-  padding: 0.5rem 0;
 }
 
 .no-link * {
@@ -42,11 +36,15 @@ body,
 }
 
 .gap-tiny {
-  gap: 0.2rem;
+  gap: 0.2rem !important;
 }
 
 .gap-small {
-  gap: 0.5rem;
+  gap: 0.5rem !important;
+}
+
+.gap-large {
+  gap: 1rem !important;
 }
 
 .flex-grow {
@@ -56,11 +54,12 @@ body,
 }
 
 .space-between {
+  display: flex;
   justify-content: space-between;
 }
 
 .w1080 {
-  width: 1080px;
+  width: max(1080px, 99%);
 }
 
 #sidebar {
@@ -96,6 +95,12 @@ ul {
   display: flex;
   flex-direction: column;
   text-align: left;
+}
+
+.input-group-row {
+  display: flex;
+  text-align: left;
+  gap: 0.5rem;
 }
 
 .blue-bg {
@@ -154,6 +159,15 @@ td label {
   width: 15px;
 }
 
+.gray-border {
+  border: 1px solid gray;
+}
+
+.border-parent > * {
+  border-bottom: 1px solid gray;
+  border-collapse: collapse;
+}
+
 .flex-groups > div {
   display: flex;
   gap: 1rem;
@@ -163,7 +177,6 @@ td label {
 .as-comments {
   width: 1080px;
   overflow: hidden;
-  outline: 1px solid black;
 }
 
 .as-comments > tbody {
@@ -211,9 +224,12 @@ td label {
   padding-left: 5rem;
 }
 
+.bold-text {
+  font-weight: bold;
+}
+
 .blue-text {
   color: blue;
-  font-weight: bold;
 }
 
 .red-text {
@@ -236,6 +252,10 @@ td label {
   padding: 0.2rem 0 !important;
 }
 
+.small-pad {
+  padding: 0.5rem 0 !important;
+}
+
 .small-margin {
   margin: 0.5rem 0;
 }
@@ -246,4 +266,50 @@ td label {
 
 .margin-bottom {
   margin-bottom: 0.5rem;
+}
+
+.hover-pointer {
+  cursor: pointer;
+}
+
+.no-border {
+  border: none !important;
+}
+
+.popup {
+  position: absolute;
+  z-index: 1;
+  background-color: #006699;
+  color: white;
+  height: 160px;
+  width: 576px;
+  border-style: ridge;
+  top: 270px;
+  left: 300px;
+  gap: 0.3rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.popup.wide {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup textarea {
+  width: 100%;
+  margin-left: 22px;
+  height: 93px;
+  resize: none;
+}
+
+.flex-end {
+  align-self: flex-end;
+}
+
+.close-btn {
+  border: 2px solid gray;
+  color: #454545;
+  aspect-ratio: 1/1;
+  border-radius: 0;
+  cursor: pointer;
 }

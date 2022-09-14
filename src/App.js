@@ -16,7 +16,7 @@ const formattedDate = date.toLocaleDateString({
   day: "2-digit",
 });
 
-function formatTime(date) {
+const formatTime = () => {
   let hours = date.getHours();
   let minutes = date.getMinutes();
   let seconds = date.getSeconds();
@@ -24,9 +24,10 @@ function formatTime(date) {
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
   const strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
   return strTime;
-}
+};
 
 function generateData() {
   function returnCall(age, connected = true, facility = false) {
@@ -271,18 +272,34 @@ function App() {
   const [index, setIndex] = useState(0); // current account that the user is on
   const [page, setPage] = useState(""); // current page that the user is on
   const [alertMsg, setAlert] = useState({
-    style: "green-blue-bg pad-left blue-text",
+    style: "green-blue-bg pad-left blue-text bold-text",
     msg: <span>&nbsp;</span>,
   });
 
   /* data management */
-  function returnNewAccount(number) {
-    const result = defaultAccount;
-    result.index = accounts.length;
-    result.account = number;
+  const returnAccount = {
+    update: function (data, accountIndex = index) {
+      const result = accounts;
+      result[accountIndex] = { ...result[accountIndex], ...data };
+      return result;
+    },
+    new: function (number) {
+      const result = defaultAccount;
+      result.index = accounts.length;
+      result.account = number;
 
-    return result;
-  }
+      return result;
+    },
+    comment: function (comment, accountIndex = index) {
+      const result = accounts;
+      const account = accounts[accountIndex];
+      account.comments.push(comment);
+
+      result[accountIndex] = account;
+
+      return result;
+    },
+  };
 
   function returnSavedAccount() {
     const userInput = [...document.querySelectorAll("[data-form]")];
@@ -314,11 +331,21 @@ function App() {
   const createAccount = () => {
     const accountsCopy = accounts;
     accountsCopy[index].created = true;
+    // todo, make it update create
     setAlert(returnLoadAlert(accountsCopy[index].account));
   };
 
+  const updateAlert = (alertMsg, classColor = "blue-text bold-text") => {
+    const newAlert = {
+      style: `green-blue-bg pad-left ${classColor}`,
+      msg: alertMsg,
+    };
+
+    setAlert(newAlert);
+  };
+
   const createAccountAlert = {
-    style: "green-blue-bg pad-left blue-text",
+    style: "green-blue-bg pad-left blue-text bold-text",
     msg: (
       <span>
         Account not found. Would you like to create one?{" "}
@@ -329,7 +356,7 @@ function App() {
 
   const returnLoadAlert = (number) => {
     return {
-      style: "green-blue-bg pad-left blue-text",
+      style: "green-blue-bg pad-left blue-text bold-text",
       msg: `The Advance Pay account ${number} loaded successfully.`,
     };
   };
@@ -357,20 +384,10 @@ function App() {
 
     // no existing account, we will create a new account
     if (!match) {
-      const newAccount = returnNewAccount(number);
+      const newAccount = returnAccount.new(number);
       setAccounts([...accounts, newAccount]);
       setIndex(newAccount.index);
     }
-  };
-
-  const returnAccount = {
-    save: function (accountIndex = index) {
-      const data = returnSavedAccount();
-      const accountsCopy = accounts;
-      accountsCopy[accountIndex] = { ...accountsCopy[accountIndex], ...data };
-      console.log(accountsCopy);
-      return accountsCopy;
-    },
   };
 
   /* data management */
@@ -398,6 +415,13 @@ function App() {
         link.classList.remove("active");
       }
     });
+  };
+
+  const addComment = (commentObj) => {
+    const currentTime = formatTime();
+
+    const result = returnAccount.comment(commentObj);
+    setAccounts([...result]);
   };
 
   /* data */
@@ -547,8 +571,8 @@ function App() {
   ];
 
   function handleSave() {
-    const result = returnAccount.save(index);
-    console.log(result);
+    const data = returnSavedAccount();
+    const result = returnAccount.update(data, index);
     setAccounts([...result]);
   }
 
@@ -599,23 +623,27 @@ function App() {
           loadAccount={loadAccount}
         />
       </aside>
-      <div id="content" className="flex-grow">
-        <Nav
-          topLinks={topLinks}
-          nav={nav}
-          updatePage={updatePage}
-          account={accounts[index]}
-          page={page}
-          message={alertMsg}
-        />
-        <Main
-          page={page}
-          account={accounts[index]}
-          data={as}
-          date={formattedDate}
-          time={formatTime}
-          transactions={transactions}
-        />
+      <div className="small-pad">
+        <div id="content" className="flex-grow border-parent gray-border">
+          <Nav
+            topLinks={topLinks}
+            nav={nav}
+            updatePage={updatePage}
+            account={accounts[index]}
+            page={page}
+            message={alertMsg}
+          />
+          <Main
+            page={page}
+            account={accounts[index]}
+            data={as}
+            date={formattedDate}
+            time={formatTime}
+            transactions={transactions}
+            updateAlert={updateAlert}
+            addComment={addComment}
+          />
+        </div>
       </div>
     </>
   );
