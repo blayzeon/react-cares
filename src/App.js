@@ -16,10 +16,10 @@ const formattedDate = date.toLocaleDateString({
   day: "2-digit",
 });
 
-const formatTime = () => {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
+const formatTime = (d = date) => {
+  let hours = d.getHours();
+  let minutes = d.getMinutes();
+  let seconds = d.getSeconds();
   let ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'

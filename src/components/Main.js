@@ -54,9 +54,10 @@ function Comments(props) {
         "red-text bold-text"
       );
     } else {
+      const date = new Date();
       const newComment = {
         date: props.date,
-        time: props.time(),
+        time: props.time(date),
         filter: select.value,
         comment: "new.trainee " + comment.value,
         color: "black",
@@ -147,6 +148,8 @@ function Comments(props) {
 }
 
 function Adjustments(props) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const controls = [
     {
       link: "#",
@@ -181,8 +184,23 @@ function Adjustments(props) {
       label: "Ret Check",
     },
   ];
+
+  /* 
+    todo
+    useState controls whether popup is visible. I need to write state to control the 
+    content variables depending on what adjustment link was last clicked
+  */
   return (
     <div className="no-border">
+      <Popup1
+        visible={isOpen}
+        content="things"
+        setIsOpen={setIsOpen}
+        top="stuff"
+        submit="Add Transaction"
+        // onSubmit={handleSubmit}
+        type="adjustment"
+      />
       <span id="adjustment-controls" className="no-link" key={uuid()}>
         <Linklist
           links={controls}
