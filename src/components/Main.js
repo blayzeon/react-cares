@@ -203,6 +203,14 @@ function Adjustments(props) {
   };
 
   const handleClick = (contentIndex) => {
+    if (props.account === "") {
+      alert(
+        "Please enter a valid account number and click on /'Lookup/' before attempting this action."
+      );
+
+      return;
+    }
+
     setContent(contentIndex);
     setIsOpen(true);
   };
@@ -245,7 +253,7 @@ function Adjustments(props) {
               <input
                 type="text"
                 id="as-adjustment-amount"
-                data-adjustment-isDeposit="true"
+                data-adjustment-deposit="true"
                 onChange={handleChange}
               ></input>
             </div>

@@ -340,10 +340,10 @@ function App() {
   }
 
   const createAccount = () => {
-    const accountsCopy = accounts;
-    accountsCopy[index].created = true;
-    // todo, make it update create
-    setAlert(returnLoadAlert(accountsCopy[index].account));
+    const created = returnAccount.update({ created: true }, index);
+    setAccounts(created);
+
+    setAlert(returnLoadAlert(accounts[index].account));
   };
 
   const updateAlert = (alertMsg, classColor = "blue-text bold-text") => {
@@ -365,10 +365,10 @@ function App() {
     ),
   };
 
-  const returnLoadAlert = (number) => {
+  const returnLoadAlert = (number, state = "loaded") => {
     return {
       style: "green-blue-bg pad-left blue-text bold-text",
-      msg: `The Advance Pay account ${number} loaded successfully.`,
+      msg: `The Advance Pay account ${number} ${state} successfully.`,
     };
   };
 
@@ -582,6 +582,8 @@ function App() {
   ];
 
   function handleSave() {
+    const msg = returnLoadAlert(accounts[index].account, "updated");
+    setAlert(msg);
     const data = returnSavedAccount();
     const result = returnAccount.update(data, index);
     setAccounts([...result]);
