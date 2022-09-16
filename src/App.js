@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import facilities from "./data/facilities.json";
 import "./style/app.css";
 import accountData from "./data/accounts.json";
-import transactions from "./data/transactions.json";
+import transactionData from "./data/transactions.json";
 
 const date = new Date();
 
@@ -268,6 +268,7 @@ function App() {
     comments: [],
   };
 
+  const [transactions, setTransactions] = useState(transactionData);
   const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
   const [index, setIndex] = useState(0); // current account that the user is on
   const [page, setPage] = useState(""); // current page that the user is on
@@ -277,6 +278,16 @@ function App() {
   });
 
   /* data management */
+  const returnTransaction = {
+    add: function (transaction) {
+      const current = transactions;
+      const result = [...current, transaction];
+
+      setTransactions(result);
+      return result;
+    },
+  };
+
   const returnAccount = {
     update: function (data, accountIndex = index) {
       const result = accounts;
@@ -642,6 +653,7 @@ function App() {
             transactions={transactions}
             updateAlert={updateAlert}
             addComment={addComment}
+            addTransaction={returnTransaction.add}
           />
         </div>
       </div>

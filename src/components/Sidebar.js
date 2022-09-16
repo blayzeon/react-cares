@@ -17,7 +17,7 @@ export default function Sidebar(props) {
       // prevent letters
       let newVal = [...value];
       newVal.pop();
-      newVal.toString();
+      newVal = newVal.join("");
       e.target.value = newVal;
 
       return;

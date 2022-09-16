@@ -98,16 +98,21 @@ function Comments(props) {
     </div>
   );
 
+  const contentObj = {
+    top: top,
+    content: content,
+    submit: "Add Comment",
+    onSubmit: handleSubmit,
+    type: "comment",
+  };
+
   return (
     <>
       <Popup1
         visible={isOpen}
         content={content}
         setIsOpen={setIsOpen}
-        top={top}
-        submit="Add Comment"
-        onSubmit={handleSubmit}
-        type="comment"
+        contentObj={contentObj}
       />
       <div className="green-blue-bg flex space-between w1080">
         <span>
@@ -149,6 +154,58 @@ function Comments(props) {
 
 function Adjustments(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [content, setContent] = useState(0);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const value = e.target.value;
+
+    if (isNaN(value)) {
+      // prevent letters
+      let newVal = [...value];
+      newVal.pop();
+      newVal = newVal.join("");
+      e.target.value = newVal;
+
+      return;
+    }
+  };
+
+  const handleDeposit = () => {
+    const amount = document.querySelector("#as-adjustment-amount").value;
+    const date = new Date();
+    const time = props.time(date);
+    const type = document.querySelector("[data-adjustment-type]");
+
+    const deposit = {
+      account: props.account,
+      system: "deposit",
+      date: [props.date, time],
+      cc: "false",
+      exp: "false",
+      status: "APPROVED",
+      amount: amount,
+      code: ["709002200200CG20220605151519501", "005165"],
+      order: ["", "D1067342319"],
+      reject: ["ACCEPT", "00"],
+      vendor: ["ReD", "PaymenTech"],
+      transaction: ["Post-Auth", "Payment"],
+      tax: "0.00",
+      type: "Deposit",
+      added: "InContactMainAdvancePayIVR",
+      comment: "",
+      refunded: "false",
+      refundable: "true",
+    };
+
+    const result = props.addTransaction(deposit);
+    console.log(result);
+  };
+
+  const handleClick = (contentIndex) => {
+    setContent(contentIndex);
+    setIsOpen(true);
+  };
 
   const controls = [
     {
@@ -158,10 +215,85 @@ function Adjustments(props) {
     {
       link: "#",
       label: "Other Deposit |",
+      click: function () {
+        handleClick(1);
+      },
+      popup: {
+        style: "adjustment",
+        top: <label>Deposit </label>,
+        content: (
+          <>
+            <div data-adjustment-type="deposit">
+              <select className="margin-left">
+                <option>Money Gram</option>
+                <option>Kiosk</option>
+                <option>Lockbox</option>
+                <option>Money Order</option>
+                <option>Personal Check</option>
+                <option>Tele-Check</option>
+                <option>Western Union</option>
+              </select>
+            </div>
+            <div className="margin-left">
+              <span>
+                <input type="checkbox" />
+                <small>Apply Service Fee</small>
+              </span>
+            </div>
+            <div>
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                data-adjustment-isDeposit="true"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea data-adjustment-comment="comment"></textarea>
+            </div>
+          </>
+        ),
+        other: (
+          <div className="margin-left">
+            <button onClick={handleDeposit}>Add Transaction</button>{" "}
+            <button>View Service Fee</button>
+          </div>
+        ),
+      },
     },
     {
       link: "#",
       label: "Withdrawal |",
+      click: function () {
+        handleClick(2);
+      },
+      popup: {
+        style: "adjustment bg-blue",
+        top: <label>Withdrawal </label>,
+        content: (
+          <>
+            <div>
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea></textarea>
+            </div>
+          </>
+        ),
+        other: (
+          <div className="margin-left">
+            <button onClick={handleDeposit}>Add Transaction</button>{" "}
+          </div>
+        ),
+      },
     },
     {
       link: "#",
@@ -194,12 +326,8 @@ function Adjustments(props) {
     <div className="no-border">
       <Popup1
         visible={isOpen}
-        content="things"
         setIsOpen={setIsOpen}
-        top="stuff"
-        submit="Add Transaction"
-        // onSubmit={handleSubmit}
-        type="adjustment"
+        contentObj={controls[content].popup}
       />
       <span id="adjustment-controls" className="no-link" key={uuid()}>
         <Linklist
@@ -251,7 +379,12 @@ export default function Main(props) {
   if (props.page === "Account Summary") {
     return (
       <>
-        <Adjustments />
+        <Adjustments
+          addTransaction={props.addTransaction}
+          account={props.account.account}
+          time={props.time}
+          date={props.date}
+        />
         <div className="flex-groups">
           <div key={props.account.index + uuid()}>
             {returnSelect({

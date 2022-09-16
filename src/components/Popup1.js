@@ -1,8 +1,18 @@
 import React from "react";
 
 export default function Popup1(props) {
-  const containerClass = props.style
-    ? props.class + "popup wide"
+  const elm = props.contentObj
+    ? { ...props.contentObj }
+    : {
+        top: "top",
+        content: "content",
+        type: "popup",
+        submit: false,
+        other: false,
+      };
+
+  const containerClass = elm.style
+    ? elm.style + " " + "popup wide"
     : "popup wide";
 
   const handleClose = () => {
@@ -10,7 +20,7 @@ export default function Popup1(props) {
   };
 
   const handleSubmit = () => {
-    const result = props.onSubmit();
+    const result = elm.onSubmit();
     if (result === true) {
       props.setIsOpen(false);
     } else {
@@ -19,17 +29,20 @@ export default function Popup1(props) {
   };
 
   return props.visible ? (
-    <div className={containerClass} data-popup={props.type}>
+    <div className={containerClass} data-popup={elm.type}>
       <div className="space-between">
-        {props.top}
+        {elm.top}
         <button className="close-btn" onClick={handleClose}>
           x
         </button>
       </div>
-      <div>{props.content}</div>
-      <button className="flex-end" onClick={handleSubmit}>
-        {props.submit}
-      </button>
+      <div className="content">{elm.content}</div>
+      {elm.submit ? (
+        <button className="flex-end" onClick={handleSubmit}>
+          {elm.submit}
+        </button>
+      ) : null}
+      {elm.other ? elm.other : null}
     </div>
   ) : null;
 }

@@ -290,15 +290,52 @@ td label {
   padding: 0.1rem 0.3rem;
 }
 
+.bg-blue {
+  background-color: blue;
+}
+
+.bg-purple {
+  background-color: purple;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+.bg-maroon {
+  background-color: maroon;
+}
+
+.bg-red {
+  background-color: red;
+}
+
+.bg-orange {
+  background-color: orange;
+}
+
+.adjustment .content {
+  width: 45%;
+}
+
+.popup .content input[type="text"] {
+  width: 250px;
+}
+
+.adjustment .content > div {
+  display: flex;
+  justify-content: space-between;
+}
+
 .popup.wide {
   display: flex;
   flex-direction: column;
 }
 
 .popup textarea {
-  width: 100%;
+  width: 250px;
   margin-left: 22px;
-  height: 93px;
+  height: 70px;
   resize: none;
 }
 
@@ -307,9 +344,34 @@ td label {
 }
 
 .close-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 2px solid gray;
   color: #454545;
   aspect-ratio: 1/1;
   border-radius: 0;
   cursor: pointer;
+  text-align: center;
+}
+
+.adjustment {
+  top: 400px;
+  height: 220px;
+  left: 250px;
+  width: 783px;
+  z-index: 2;
+}
+
+.justify-start {
+  display: flex;
+  justify-content: flex-start !important;
+}
+
+.adjustment button:first-child {
+  margin-top: 1rem;
+}
+
+.margin-left {
+  margin-left: 5.6rem;
 }
