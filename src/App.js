@@ -330,10 +330,7 @@ function App() {
 
       return result;
     },
-    comment: function (
-      comment,
-      accountIndex = accounts[accounts.length - 1].index + 1
-    ) {
+    comment: function (comment, accountIndex = index) {
       const result = accounts;
       const account = accounts[accountIndex];
       account.comments.push(comment);
@@ -426,10 +423,13 @@ function App() {
     const result = accounts.find((account) => account.account === number);
     const match = result ? result : false;
 
+    console.log("loadAccount", match);
+
     if (match) {
       // Match found
       if (match.index === index) {
         // @todo - add prompt to override unsaved changes
+        console.log("loadAccount", "same account");
         return;
       }
 
@@ -692,8 +692,8 @@ function App() {
 
   /* sets account summary default page */
   useEffect(() => {
-    console.log("useEffect", accounts);
-    setIndex(index);
+    console.log("useEffect", accounts[index]);
+    //setIndex(index);
     updatePageCss(page);
   }, [index]);
 
@@ -725,7 +725,6 @@ function App() {
           <Main
             page={page}
             account={accounts[index]}
-            accounts={accounts}
             index={index}
             data={as}
             date={formattedDate}

@@ -194,7 +194,7 @@ function Adjustments(props) {
       }
 
       const deposit2 = {
-        account: props.account,
+        account: acc,
         system: "adjustment",
         date: [props.date, time],
         amount: amount,
