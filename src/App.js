@@ -369,6 +369,7 @@ function App() {
   }
 
   const createAccount = () => {
+    console.log(accounts);
     const created = returnAccount.update({ created: true }, index);
     setAccounts(created);
 
@@ -428,6 +429,8 @@ function App() {
       setAccounts([...accounts, newAccount]);
       setIndex(newAccount.index);
     }
+
+    console.log(index);
   };
 
   /* data management */

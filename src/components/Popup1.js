@@ -37,12 +37,13 @@ export default function Popup1(props) {
         </button>
       </div>
       <div className="content">{elm.content}</div>
-      {elm.submit ? (
-        <button className="flex-end" onClick={handleSubmit}>
-          {elm.submit}
-        </button>
-      ) : null}
-      {elm.other ? elm.other : null}
+      {elm.extra ? elm.extra : null}
+      <span className="buttons">
+        {elm.submit ? (
+          <button onClick={handleSubmit}>{elm.submit}</button>
+        ) : null}{" "}
+        {elm.other ? elm.other : null}
+      </span>
     </div>
   ) : null;
 }

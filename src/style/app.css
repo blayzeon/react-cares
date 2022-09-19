@@ -280,13 +280,12 @@ td label {
   z-index: 1;
   background-color: #006699;
   color: white;
-  height: 160px;
   width: 576px;
   border-style: ridge;
   top: 270px;
   left: 300px;
   gap: 0.3rem;
-  padding: 0.1rem 0.3rem;
+  padding: 0.8rem 0.3rem;
 }
 
 .bg-blue {
@@ -356,10 +355,19 @@ td label {
 
 .adjustment {
   top: 400px;
-  height: 220px;
+
   left: 250px;
   width: 783px;
   z-index: 2;
+}
+
+.comments span.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.adjustment span.buttons {
+  margin-left: 5.6rem;
 }
 
 .justify-start {

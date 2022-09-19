@@ -104,6 +104,7 @@ function Comments(props) {
     submit: "Add Comment",
     onSubmit: handleSubmit,
     type: "comment",
+    style: "comments",
   };
 
   return (
@@ -173,34 +174,59 @@ function Adjustments(props) {
 
   const handleDeposit = () => {
     const amount = document.querySelector("#as-adjustment-amount").value;
+    const comment = document.querySelector("#as-adjustment-comment").value;
+
+    const type = document
+      .querySelector("[data-adjustment-type]")
+      .getAttribute("data-adjustment-type")
+      .split(",");
+
+    if (type[1] === "FundsTransfer") {
+      const acc = document.querySelector("#as-adjustment-account").value;
+      const accType = document.querySelector(
+        "#as-adjustment-accountType"
+      ).value;
+
+      if (!acc || !accType) {
+        alert("Please enter a valid account to transfer the fund to.");
+        return false;
+      }
+
+      const deposit2 = {
+        account: acc,
+        system: "adjustment",
+        date: [props.date, time],
+        amount: amount,
+        type: "AdjustmentIncrease",
+        added: "new.trainee",
+        comment: comment,
+        refunded: "false",
+        refundable: "false",
+        increase: "1",
+      };
+
+      props.addTransaction(deposit2);
+    }
+
     const date = new Date();
     const time = props.time(date);
-    const type = document.querySelector("[data-adjustment-type]");
+    const isRefundable = type[0] === "Deposit" ? "true" : "false";
 
     const deposit = {
       account: props.account,
-      system: "deposit",
+      system: "adjustment",
       date: [props.date, time],
-      cc: "false",
-      exp: "false",
-      status: "APPROVED",
       amount: amount,
-      code: ["709002200200CG20220605151519501", "005165"],
-      order: ["", "D1067342319"],
-      reject: ["ACCEPT", "00"],
-      vendor: ["ReD", "PaymenTech"],
-      transaction: ["Post-Auth", "Payment"],
-      tax: "0.00",
-      type: "Deposit",
-      added: "InContactMainAdvancePayIVR",
-      comment: "",
+      type: type[0],
+      added: "new.trainee",
+      comment: comment,
       refunded: "false",
-      refundable: "true",
-      increase: "1",
+      refundable: isRefundable,
+      increase: type[1],
     };
 
     const result = props.addTransaction(deposit);
-    console.log(result);
+    return true;
   };
 
   const handleClick = (contentIndex) => {
@@ -232,7 +258,7 @@ function Adjustments(props) {
         top: <label>Deposit </label>,
         content: (
           <>
-            <div data-adjustment-type="deposit">
+            <div data-adjustment-type="Deposit,1">
               <select className="margin-left">
                 <option>Money Gram</option>
                 <option>Kiosk</option>
@@ -260,16 +286,13 @@ function Adjustments(props) {
             </div>
             <div>
               <label>Comment </label>
-              <textarea data-adjustment-comment="comment"></textarea>
+              <textarea id="as-adjustment-comment"></textarea>
             </div>
           </>
         ),
-        other: (
-          <div className="margin-left">
-            <button onClick={handleDeposit}>Add Transaction</button>{" "}
-            <button>View Service Fee</button>
-          </div>
-        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
+        other: <button>View Service Fee</button>,
       },
     },
     {
@@ -283,7 +306,7 @@ function Adjustments(props) {
         top: <label>Withdrawal </label>,
         content: (
           <>
-            <div>
+            <div data-adjustment-type="Withdrawal,-1">
               <label>Amount </label>
               <input
                 type="text"
@@ -293,36 +316,179 @@ function Adjustments(props) {
             </div>
             <div>
               <label>Comment </label>
-              <textarea></textarea>
+              <textarea id="as-adjustment-comment"></textarea>
             </div>
           </>
         ),
-        other: (
-          <div className="margin-left">
-            <button onClick={handleDeposit}>Add Transaction</button>{" "}
-          </div>
-        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
       },
     },
     {
       link: "#",
       label: "Funds Transfer |",
+      click: function () {
+        handleClick(3);
+      },
+      popup: {
+        style: "adjustment bg-purple",
+        top: <label>Funds Transfer </label>,
+        content: (
+          <>
+            <div data-adjustment-type="FundsTransfer,1">
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea id="as-adjustment-comment"></textarea>
+            </div>
+          </>
+        ),
+        extra: (
+          <fieldset>
+            <legend>Transfer Fund To</legend>
+            <div>
+              <label>Account Number </label>
+              <input
+                type="text"
+                id="as-adjustment-account"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <label>Account Type </label>
+            <select id="as-adjustment-accountType">
+              <option></option>
+              <option>Advance Pay</option>
+              <option>Direct Bill</option>
+              <option>Friends and Family</option>
+              <option>APOC</option>
+            </select>
+          </fieldset>
+        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
+      },
     },
     {
       link: "#",
       label: "Adj Increase |",
+      click: function () {
+        handleClick(4);
+      },
+      popup: {
+        style: "adjustment bg-green",
+        top: <label>Adjustment Increase </label>,
+        content: (
+          <>
+            <div data-adjustment-type="AdjustmentIncrease,1">
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea id="as-adjustment-comment"></textarea>
+            </div>
+          </>
+        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
+      },
     },
     {
       link: "#",
       label: "Adj Decrease |",
+      click: function () {
+        handleClick(5);
+      },
+      popup: {
+        style: "adjustment bg-maroon",
+        top: <label>Adjustment Decrease </label>,
+        content: (
+          <>
+            <div data-adjustment-type="AdjustmentDecrease,-1">
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea id="as-adjustment-comment"></textarea>
+            </div>
+          </>
+        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
+      },
     },
     {
       link: "#",
       label: "Chargeback |",
+      click: function () {
+        handleClick(6);
+      },
+      popup: {
+        style: "adjustment bg-red",
+        top: <label>Chargeback </label>,
+        content: (
+          <>
+            <div data-adjustment-type="Chargeback,-1">
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea id="as-adjustment-comment"></textarea>
+            </div>
+          </>
+        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
+      },
     },
     {
       link: "#",
       label: "Ret Check",
+      click: function () {
+        handleClick(7);
+      },
+      popup: {
+        style: "adjustment bg-orange",
+        top: <label>Returned Check </label>,
+        content: (
+          <>
+            <div data-adjustment-type="ReturnedCheck,-1">
+              <label>Amount </label>
+              <input
+                type="text"
+                id="as-adjustment-amount"
+                onChange={handleChange}
+              ></input>
+            </div>
+            <div>
+              <label>Comment </label>
+              <textarea id="as-adjustment-comment"></textarea>
+            </div>
+          </>
+        ),
+        onSubmit: handleDeposit,
+        submit: "Add Transaction",
+      },
     },
   ];
 
@@ -360,7 +526,6 @@ export default function Main(props) {
 
     // update balance
     sum = amount + sum;
-    console.log(transVal);
 
     // create comments for transaction page
     if (props.account.account === transaction.account) {
@@ -387,16 +552,6 @@ export default function Main(props) {
   });
   balance = sum.toFixed(2);
 
-  /*
-    .reduce((sum, transaction) =>
-        transaction.type === "Deposit"
-          ? parseFloat(transaction.amount) + sum
-          : sum,
-      0
-    )
-    .toFixed(2);
-  */
-
   const formattedComments = props.account.comments.length > 0 ? [] : false;
 
   props.account.comments.forEach((comment) => {
@@ -420,8 +575,6 @@ export default function Main(props) {
     thead: [["Date", "Type", "Added By", "Amount", "Balance", "Comment"]],
     tbody: formattedDeposits,
   };
-
-  console.log(transactions);
 
   if (props.page === "Account Summary") {
     return (
