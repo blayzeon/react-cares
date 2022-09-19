@@ -182,7 +182,7 @@ function Adjustments(props) {
       .getAttribute("data-adjustment-type")
       .split(",");
 
-    if (type[1] === "FundsTransfer") {
+    if (type[0] === "FundsTransfer") {
       const acc = document.querySelector("#as-adjustment-account").value;
       const accType = document.querySelector(
         "#as-adjustment-accountType"
@@ -336,7 +336,7 @@ function Adjustments(props) {
         top: <label>Funds Transfer </label>,
         content: (
           <>
-            <div data-adjustment-type="FundsTransfer,1">
+            <div data-adjustment-type="FundsTransfer,-1">
               <label>Amount </label>
               <input
                 type="text"

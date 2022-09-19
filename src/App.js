@@ -325,6 +325,8 @@ function App() {
     },
     new: function (number) {
       const result = defaultAccount;
+      result.type = "1";
+      result.phone.one = number;
       result.index = accounts.length;
       result.account = number;
 
@@ -423,8 +425,6 @@ function App() {
     const result = accounts.find((account) => account.account === number);
     const match = result ? result : false;
 
-    console.log("loadAccount", match);
-
     if (match) {
       // Match found
       if (match.index === index) {
@@ -443,11 +443,9 @@ function App() {
     // New account
     setAlert(createAccountAlert);
 
-    // no existing account, we will create a new account
+    // no existing account, we will load a blank account
     if (!match) {
-      const newAccount = returnAccount.new(number);
-      setAccounts([...accounts, newAccount]);
-      setIndex(newAccount.index);
+      setIndex(0);
     }
   };
 
