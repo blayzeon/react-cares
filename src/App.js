@@ -330,7 +330,10 @@ function App() {
 
       return result;
     },
-    comment: function (comment, accountIndex = index) {
+    comment: function (
+      comment,
+      accountIndex = accounts[accounts.length - 1].index + 1
+    ) {
       const result = accounts;
       const account = accounts[accountIndex];
       account.comments.push(comment);
@@ -368,13 +371,27 @@ function App() {
     return result;
   }
 
-  const createAccount = () => {
-    console.log(accounts);
-    const created = returnAccount.update({ created: true }, index);
-    setAccounts(created);
+  function createAccount() {
+    console.log("createAccount", accounts);
+    const isCreated = document.querySelector("#as-account-type-select").value;
+    const number = document.querySelector("#lookup-number").value;
 
-    setAlert(returnLoadAlert(accounts[index].account));
-  };
+    if (isCreated === "") {
+      // determine account type popup
+      alert(
+        "Select an account type before clicking the 'Create Account' button."
+      );
+      return;
+    }
+
+    const accountsCopy = accounts;
+    const newAccount = returnAccount.new(number);
+    newAccount.created = "true";
+    setIndex(newAccount.index);
+    setAccounts([...accountsCopy, newAccount]);
+
+    setAlert(returnLoadAlert(newAccount.account));
+  }
 
   const updateAlert = (alertMsg, classColor = "blue-text bold-text") => {
     const newAlert = {
@@ -390,7 +407,9 @@ function App() {
     msg: (
       <span>
         Account not found. Would you like to create one?{" "}
-        <button onClick={createAccount}>Create Account</button>
+        <button type="button" onClick={createAccount}>
+          Create Account
+        </button>
       </span>
     ),
   };
@@ -411,6 +430,7 @@ function App() {
       // Match found
       if (match.index === index) {
         // @todo - add prompt to override unsaved changes
+        return;
       }
 
       setIndex(match.index);
@@ -429,16 +449,24 @@ function App() {
       setAccounts([...accounts, newAccount]);
       setIndex(newAccount.index);
     }
-
-    console.log(index);
   };
 
   /* data management */
 
   function updatePage(target) {
+    console.log("updatePage", accounts);
+    if (accounts[index].account === "") {
+      document.querySelector(".nav").classList.add("active");
+      alert(
+        "Please enter a valid account number and click on 'Lookup' before attempting this action."
+      );
+      return;
+    }
+
     const active = target ? target : document.querySelector(".nav");
 
     setPage(active.innerText);
+    updatePageCss(active.innerText);
 
     if (accounts[index].account) {
       if (active.innerText === "Account Summary") {
@@ -449,15 +477,17 @@ function App() {
         setAlert(false);
       }
     }
+  }
 
-    // update the css
+  const updatePageCss = (link) => {
     const links = document.querySelectorAll(".nav");
     links.forEach((link) => {
+      link.classList.remove("active");
       if (link.innerText === page) {
         link.classList.add("active");
       }
     });
-  }
+  };
 
   const addComment = (commentObj) => {
     const currentTime = formatTime();
@@ -467,150 +497,158 @@ function App() {
   };
 
   /* data */
-  const formItems1 = [
-    {
-      label: "First Name: ",
-      id: "as-first-name",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].name.first,
-      data: "name.first",
-    },
-    {
-      label: "Last Name: ",
-      id: "as-last-name",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].name.last,
-      data: "name.last",
-    },
-    {
-      label: "Address 1: ",
-      id: "as-address-1",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].address.one,
-      data: "address.one",
-    },
-    {
-      label: "Address 2: ",
-      id: "as-address-2",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].address.two,
-      data: "address.two",
-    },
-    {
-      label: "Zip Code: ",
-      id: "as-zip-code",
-      placeholder: false,
-      style: { width: 80 + "px" },
-      type: "text",
-      value: accounts[index].address.zip,
-      data: "address.zip",
-    },
-    {
-      label: "City, State: ",
-      id: "as-city-state",
-      placeholder: false,
-      style: "form-city-state",
-      type: 2,
-      value: [accounts[index].address.city, accounts[index].address.state],
-      data: ["address.city", "address.state"],
-    },
-    {
-      label: "Phone Number: ",
-      id: "as-phone-number",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].phone.one,
-      data: "phone.one",
-    },
-    {
-      label: "Alt Number: ",
-      id: "as-alt-number",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].phone.two,
-      data: "phone.two",
-    },
-    {
-      label: "Email: ",
-      id: "as-email",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].email,
-      data: "email",
-    },
-    {
-      label: "Federal Tax ID: ",
-      id: "as-fed-tax",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].tax,
-      data: "tax",
-    },
-    {
-      label: "IVR Passcode: ",
-      id: "as-passcode",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].ivrPc,
-      data: "ivrPc",
-    },
-  ];
+  const formItems1 = () => {
+    const valueData = accounts[index]
+      ? accounts[index]
+      : accounts[accounts.length - 1];
+    return [
+      {
+        label: "First Name: ",
+        id: "as-first-name",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.name.first,
+        data: "name.first",
+      },
+      {
+        label: "Last Name: ",
+        id: "as-last-name",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.name.last,
+        data: "name.last",
+      },
+      {
+        label: "Address 1: ",
+        id: "as-address-1",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.address.one,
+        data: "address.one",
+      },
+      {
+        label: "Address 2: ",
+        id: "as-address-2",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.address.two,
+        data: "address.two",
+      },
+      {
+        label: "Zip Code: ",
+        id: "as-zip-code",
+        placeholder: false,
+        style: { width: 80 + "px" },
+        type: "text",
+        value: valueData.address.zip,
+        data: "address.zip",
+      },
+      {
+        label: "City, State: ",
+        id: "as-city-state",
+        placeholder: false,
+        style: "form-city-state",
+        type: 2,
+        value: [valueData.address.city, valueData.address.state],
+        data: ["address.city", "address.state"],
+      },
+      {
+        label: "Phone Number: ",
+        id: "as-phone-number",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.phone.one,
+        data: "phone.one",
+      },
+      {
+        label: "Alt Number: ",
+        id: "as-alt-number",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.phone.two,
+        data: "phone.two",
+      },
+      {
+        label: "Email: ",
+        id: "as-email",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.email,
+        data: "email",
+      },
+      {
+        label: "Federal Tax ID: ",
+        id: "as-fed-tax",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.tax,
+        data: "tax",
+      },
+      {
+        label: "IVR Passcode: ",
+        id: "as-passcode",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.ivrPc,
+        data: "ivrPc",
+      },
+    ];
+  };
 
-  const formItems2 = [
-    {
-      label: "Tax Exempt: ",
-      id: "as-tax-exempt",
-      placeholder: false,
-      style: false,
-      type: "checkbox",
-      value: accounts[index].exempt,
-    },
-    {
-      label: "Notes: ",
-      id: "as-notes",
-      placeholder: false,
-      style: false,
-      type: "textarea",
-      value: accounts[index].notes,
-    },
-    {
-      label: "Authorized User: ",
-      id: "as-authorized-user",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].au,
-    },
-    {
-      label: "Original LEC: ",
-      id: "as-original-lec",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: accounts[index].lec,
-    },
-    {
-      label: "Last Facility Called: ",
-      id: "as-last-fac",
-      placeholder: false,
-      style: false,
-      type: "text",
-      value: facilities[accounts[index].facility].public,
-    },
-  ];
+  const formItems2 = () => {
+    const valueData = accounts[index] ? accounts[index] : accounts[0];
+    return [
+      {
+        label: "Tax Exempt: ",
+        id: "as-tax-exempt",
+        placeholder: false,
+        style: false,
+        type: "checkbox",
+        value: valueData.exempt,
+      },
+      {
+        label: "Notes: ",
+        id: "as-notes",
+        placeholder: false,
+        style: false,
+        type: "textarea",
+        value: valueData.notes,
+      },
+      {
+        label: "Authorized User: ",
+        id: "as-authorized-user",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.au,
+      },
+      {
+        label: "Original LEC: ",
+        id: "as-original-lec",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: valueData.lec,
+      },
+      {
+        label: "Last Facility Called: ",
+        id: "as-last-fac",
+        placeholder: false,
+        style: false,
+        type: "text",
+        value: facilities[valueData.facility].public,
+      },
+    ];
+  };
 
   function handleSave() {
     const msg = returnLoadAlert(accounts[index].account, "updated");
@@ -620,7 +658,8 @@ function App() {
     setAccounts([...result]);
   }
 
-  const asLeft = tableArray(formItems1);
+  const formItems = { left: formItems1(), right: formItems2() };
+  const asLeft = tableArray(formItems.left);
   asLeft.push([
     <button type="button" onClick={handleSave}>
       Save Changes
@@ -628,7 +667,7 @@ function App() {
     <button type="button">BNA This Number</button>,
   ]);
 
-  const asRight = tableArray(formItems2);
+  const asRight = tableArray(formItems.right);
   asRight.push([
     <label key="as-select-label" htmlFor="as-select">
       Originating Facilities:
@@ -653,8 +692,14 @@ function App() {
 
   /* sets account summary default page */
   useEffect(() => {
-    updatePage();
-  }, []);
+    console.log("useEffect", accounts);
+    setIndex(index);
+    updatePageCss(page);
+  }, [index]);
+
+  useEffect(() => {
+    updatePageCss(page);
+  }, [page]);
 
   return (
     <>
@@ -680,6 +725,8 @@ function App() {
           <Main
             page={page}
             account={accounts[index]}
+            accounts={accounts}
+            index={index}
             data={as}
             date={formattedDate}
             time={formatTime}

@@ -12,6 +12,7 @@ function returnSelect(selectObj) {
       <select
         disabled={selectObj.disabled}
         defaultValue={selectObj.options[selectObj.value]}
+        id={selectObj.id ? selectObj.id : uuid()}
       >
         {selectObj.options.map((option) => {
           return <option key={uuid()}>{option}</option>;
@@ -193,7 +194,7 @@ function Adjustments(props) {
       }
 
       const deposit2 = {
-        account: acc,
+        account: props.account,
         system: "adjustment",
         date: [props.date, time],
         amount: amount,
@@ -221,7 +222,7 @@ function Adjustments(props) {
       added: "new.trainee",
       comment: comment,
       refunded: "false",
-      refundable: isRefundable,
+      refundable: "true",
       increase: type[1],
     };
 
@@ -593,6 +594,7 @@ export default function Main(props) {
             })}
             {returnSelect({
               label: "Account Type: ",
+              id: "as-account-type-select",
               value: props.account.type,
               options: [
                 "",
