@@ -196,6 +196,7 @@ function Adjustments(props) {
       comment: "",
       refunded: "false",
       refundable: "true",
+      increase: "1",
     };
 
     const result = props.addTransaction(deposit);
@@ -325,11 +326,6 @@ function Adjustments(props) {
     },
   ];
 
-  /* 
-    todo
-    useState controls whether popup is visible. I need to write state to control the 
-    content variables depending on what adjustment link was last clicked
-  */
   return (
     <div className="no-border">
       <Popup1
@@ -355,15 +351,51 @@ export default function Main(props) {
     (transaction) => transaction.account === props.account.account
   );
 
-  const balance = transactions
-    .reduce(
-      (sum, transaction) =>
+  const formattedDeposits = [];
+  let sum = 0; // track balance
+  let balance = transactions.forEach((transaction) => {
+    if (transaction.increase === "0") return;
+    const transVal = parseFloat(transaction.amount);
+    const amount = transVal * parseInt(transaction.increase);
+
+    // update balance
+    sum = amount + sum;
+    console.log(transVal);
+
+    // create comments for transaction page
+    if (props.account.account === transaction.account) {
+      formattedDeposits.unshift([
+        <span>
+          {transaction.date} {transaction.time}
+        </span>,
+        <span>{transaction.type}</span>,
+        <span>{transaction.added}</span>,
+        <span>${transVal.toFixed(2)}</span>,
+        // format balance so that it has parenthesis when negative and does not show a minus sign
+        <span>
+          {sum > 0 ? "$" + sum.toFixed(2) : "($" + sum.toFixed(2) * -1 + ")"}
+        </span>,
+        <span
+          className={
+            transaction.fontColor ? transaction.fontColor : "black-text"
+          }
+        >
+          {transaction.comment}
+        </span>,
+      ]);
+    }
+  });
+  balance = sum.toFixed(2);
+
+  /*
+    .reduce((sum, transaction) =>
         transaction.type === "Deposit"
           ? parseFloat(transaction.amount) + sum
           : sum,
       0
     )
     .toFixed(2);
+  */
 
   const formattedComments = props.account.comments.length > 0 ? [] : false;
 
@@ -383,6 +415,13 @@ export default function Main(props) {
     thead: [["Date", "Comment"]],
     tbody: formattedComments,
   };
+
+  const accountTransactions = {
+    thead: [["Date", "Type", "Added By", "Amount", "Balance", "Comment"]],
+    tbody: formattedDeposits,
+  };
+
+  console.log(transactions);
 
   if (props.page === "Account Summary") {
     return (
@@ -503,8 +542,13 @@ export default function Main(props) {
   } else if (props.page === "Transactions") {
     return (
       <>
-        <Adjustments />
-        <div>{props.page}</div>
+        <Adjustments
+          addTransaction={props.addTransaction}
+          account={props.account.account}
+          time={props.time}
+          date={props.date}
+        />
+        <Table data={accountTransactions} page="as-comments" />
       </>
     );
   }

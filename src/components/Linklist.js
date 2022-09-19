@@ -8,6 +8,7 @@ export default function Linklist(props) {
       {props.links.map((item) => {
         const key = uuid();
         const handleClick = (e) => {
+          console.log(item);
           if (item.click) {
             item.click(e.target);
           }

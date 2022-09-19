@@ -8,224 +8,253 @@ import "./style/app.css";
 import accountData from "./data/accounts.json";
 import transactionData from "./data/transactions.json";
 
-const date = new Date();
+function App() {
+  const date = new Date();
 
-const formattedDate = date.toLocaleDateString({
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
+  const formattedDate = date.toLocaleDateString({
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
-const formatTime = (d = date) => {
-  let hours = d.getHours();
-  let minutes = d.getMinutes();
-  let seconds = d.getSeconds();
-  let ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-  const strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
-  return strTime;
-};
+  const formatTime = (d = date) => {
+    let hours = d.getHours();
+    let minutes = d.getMinutes();
+    let seconds = d.getSeconds();
+    let ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    const strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
+    return strTime;
+  };
 
-function generateData() {
-  function returnCall(age, connected = true, facility = false) {
-    return {};
-  }
-}
-
-const sidebarLinks = [
-  [
-    {
-      link: "#",
-      label: "Advanced Search",
-    },
-    {
-      link: "#",
-      label: "LEC Credit",
-    },
-  ],
-  [
-    {
-      link: "#",
-      label: "Master Facility List",
-    },
-    {
-      link: "#",
-      label: "Refund Form",
-    },
-    {
-      link: "#",
-      label: "Research Page",
-    },
-    {
-      link: "#",
-      label: "Connect Network",
-    },
-    {
-      link: "#",
-      label: "CN Site Info",
-    },
-    {
-      link: "#",
-      label: "Facility Services",
-    },
-    {
-      link: "#",
-      label: "CC Deposit",
-    },
-    {
-      link: "#",
-      label: "Create Account",
-    },
-  ],
-];
-
-const topLinks = [
-  {
-    link: "#",
-    label: "Home",
-  },
-  {
-    link: "#",
-    label: "Billing",
-  },
-  {
-    link: "#",
-    label: "Enterprise Tools",
-  },
-  {
-    link: "#",
-    label: "Technical Support",
-  },
-  {
-    link: "#",
-    label: "Technology Group",
-  },
-  {
-    link: "#",
-    label: "External Links",
-  },
-  {
-    link: "#",
-    label: "Site Configuration",
-  },
-];
-
-const nav = [
-  {
-    link: "#",
-    label: "Account Summary",
-    id: "page-account-summary",
-  },
-  {
-    link: "#",
-    label: "Transactions",
-    id: "page-transactions",
-  },
-  {
-    link: "#",
-    label: "Refund",
-    id: "page-refund",
-  },
-  {
-    link: "#",
-    label: "Transaction Summary",
-    id: "page-transaction-summary",
-  },
-  {
-    link: "#",
-    label: "CC Auths",
-    id: "page-cc-auths",
-  },
-  {
-    link: "#",
-    label: "Call Records",
-    id: "page-call-records",
-  },
-  {
-    link: "#",
-    label: "TAG Comments",
-    id: "page-tag-comments",
-  },
-  {
-    link: "#",
-    label: "Statements",
-    id: "page-statements",
-  },
-  {
-    link: "#",
-    label: "Auto Reload",
-    id: "page-auto-reload",
-  },
-  {
-    link: "#",
-    label: "Alerts",
-    id: "page-alerts",
-  },
-];
-
-function tableGroup(labelObj) {
-  const result = [];
-  const type = isNaN(labelObj.type) ? labelObj.type : false;
-
-  result.push(
-    <label key={uuid()} htmlFor={labelObj.id}>
-      {labelObj.label}
-    </label>
-  );
-
-  if (type) {
-    const toPush =
-      type === "textarea" ? (
-        <textarea
-          key={uuid()}
-          defaultValue={labelObj.value}
-          data={labelObj.data}
-        ></textarea>
-      ) : (
-        <input
-          style={labelObj.style ? labelObj.style : { display: "block" }}
-          key={uuid()}
-          id={labelObj.id}
-          type={labelObj.type}
-          defaultValue={labelObj.value}
-          defaultChecked={labelObj.value}
-          data-form={labelObj.data}
-        />
-      );
-    result.push(toPush);
-  } else {
-    for (let i = 0; i < labelObj.type; i += 1) {
-      const tempId = i === 0 ? labelObj.id : `${labelObj.id}-${i}`;
-      const tempStyle = i === 0 ? { display: "block" } : { width: 40 + "px" };
-      result.push(
-        <input
-          key={uuid()}
-          id={tempId}
-          type="text"
-          style={tempStyle}
-          defaultValue={labelObj.value[i]}
-          data-form={labelObj.data[i]}
-        />
-      );
+  function generateData() {
+    function returnCall(age, connected = true, facility = false) {
+      return {};
     }
   }
 
-  return result;
-}
+  const sidebarLinks = [
+    [
+      {
+        link: "#",
+        label: "Advanced Search",
+      },
+      {
+        link: "#",
+        label: "LEC Credit",
+      },
+    ],
+    [
+      {
+        link: "#",
+        label: "Master Facility List",
+      },
+      {
+        link: "#",
+        label: "Refund Form",
+      },
+      {
+        link: "#",
+        label: "Research Page",
+      },
+      {
+        link: "#",
+        label: "Connect Network",
+      },
+      {
+        link: "#",
+        label: "CN Site Info",
+      },
+      {
+        link: "#",
+        label: "Facility Services",
+      },
+      {
+        link: "#",
+        label: "CC Deposit",
+      },
+      {
+        link: "#",
+        label: "Create Account",
+      },
+    ],
+  ];
 
-function tableArray(array) {
-  const result = [];
-  for (let i = 0; i < array.length; i += 1) {
-    result.push(tableGroup(array[i]));
+  const topLinks = [
+    {
+      link: "#",
+      label: "Home",
+    },
+    {
+      link: "#",
+      label: "Billing",
+    },
+    {
+      link: "#",
+      label: "Enterprise Tools",
+    },
+    {
+      link: "#",
+      label: "Technical Support",
+    },
+    {
+      link: "#",
+      label: "Technology Group",
+    },
+    {
+      link: "#",
+      label: "External Links",
+    },
+    {
+      link: "#",
+      label: "Site Configuration",
+    },
+  ];
+
+  const nav = [
+    {
+      link: "#",
+      label: "Account Summary",
+      id: "page-account-summary",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "Transactions",
+      id: "page-transactions",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "Refund",
+      id: "page-refund",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "Transaction Summary",
+      id: "page-transaction-summary",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "CC Auths",
+      id: "page-cc-auths",
+      click: function (e) {
+        console.log("todo... cc auths");
+      },
+    },
+    {
+      link: "#",
+      label: "Call Records",
+      id: "page-call-records",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "TAG Comments",
+      id: "page-tag-comments",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "Statements",
+      id: "page-statements",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "Auto Reload",
+      id: "page-auto-reload",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+    {
+      link: "#",
+      label: "Alerts",
+      id: "page-alerts",
+      click: function (e) {
+        updatePage(e);
+      },
+    },
+  ];
+
+  function tableGroup(labelObj) {
+    const result = [];
+    const type = isNaN(labelObj.type) ? labelObj.type : false;
+
+    result.push(
+      <label key={uuid()} htmlFor={labelObj.id}>
+        {labelObj.label}
+      </label>
+    );
+
+    if (type) {
+      const toPush =
+        type === "textarea" ? (
+          <textarea
+            key={uuid()}
+            defaultValue={labelObj.value}
+            data={labelObj.data}
+          ></textarea>
+        ) : (
+          <input
+            style={labelObj.style ? labelObj.style : { display: "block" }}
+            key={uuid()}
+            id={labelObj.id}
+            type={labelObj.type}
+            defaultValue={labelObj.value}
+            defaultChecked={labelObj.value}
+            data-form={labelObj.data}
+          />
+        );
+      result.push(toPush);
+    } else {
+      for (let i = 0; i < labelObj.type; i += 1) {
+        const tempId = i === 0 ? labelObj.id : `${labelObj.id}-${i}`;
+        const tempStyle = i === 0 ? { display: "block" } : { width: 40 + "px" };
+        result.push(
+          <input
+            key={uuid()}
+            id={tempId}
+            type="text"
+            style={tempStyle}
+            defaultValue={labelObj.value[i]}
+            data-form={labelObj.data[i]}
+          />
+        );
+      }
+    }
+
+    return result;
   }
 
-  return result;
-}
+  function tableArray(array) {
+    const result = [];
+    for (let i = 0; i < array.length; i += 1) {
+      result.push(tableGroup(array[i]));
+    }
 
-function App() {
+    return result;
+  }
   const defaultAccount = {
     index: 0,
     account: "",
@@ -271,7 +300,7 @@ function App() {
   const [transactions, setTransactions] = useState(transactionData);
   const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
   const [index, setIndex] = useState(0); // current account that the user is on
-  const [page, setPage] = useState(""); // current page that the user is on
+  const [page, setPage] = useState("Account Summary"); // current page that the user is on
   const [alertMsg, setAlert] = useState({
     style: "green-blue-bg pad-left blue-text bold-text",
     msg: <span>&nbsp;</span>,
@@ -403,8 +432,9 @@ function App() {
 
   /* data management */
 
-  const updatePage = (target) => {
+  function updatePage(target) {
     const active = target ? target : document.querySelector(".nav");
+
     setPage(active.innerText);
 
     if (accounts[index].account) {
@@ -422,11 +452,9 @@ function App() {
     links.forEach((link) => {
       if (link.innerText === page) {
         link.classList.add("active");
-      } else {
-        link.classList.remove("active");
       }
     });
-  };
+  }
 
   const addComment = (commentObj) => {
     const currentTime = formatTime();
