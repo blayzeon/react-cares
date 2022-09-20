@@ -659,6 +659,7 @@ export default function Main(props) {
               disabled: true,
             })}
             <select
+              id="as-facility-rates"
               defaultValue={
                 facilities[props.account.facility ? props.account.facility : 0]
                   .public
@@ -674,8 +675,15 @@ export default function Main(props) {
             </select>
             <button
               type="button"
-              onClick={function (e) {
-                console.log(e.target.closest("div select"));
+              onClick={function () {
+                const rates = document.querySelector("#as-facility-rates");
+                const options = rates.querySelectorAll("[data-link]");
+                options.forEach((option) => {
+                  if (option.value === rates.value) {
+                    const hyperlink = option.getAttribute(["data-link"]);
+                    window.open(hyperlink, "_blank", "resizable=yes");
+                  }
+                });
               }}
             >
               View Rates
