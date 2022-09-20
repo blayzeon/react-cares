@@ -174,8 +174,12 @@ function Adjustments(props) {
   };
 
   const handleDeposit = () => {
+    const date = new Date();
+    const time = props.time(date);
     const amount = document.querySelector("#as-adjustment-amount").value;
     const comment = document.querySelector("#as-adjustment-comment").value;
+
+    const deposits = [];
 
     const type = document
       .querySelector("[data-adjustment-type]")
@@ -183,18 +187,20 @@ function Adjustments(props) {
       .split(",");
 
     if (type[0] === "FundsTransfer") {
+      console.log(type[0]);
       const acc = document.querySelector("#as-adjustment-account").value;
+      console.log(acc);
       const accType = document.querySelector(
         "#as-adjustment-accountType"
       ).value;
 
-      if (!acc || !accType) {
+      if (acc === "" || !accType) {
         alert("Please enter a valid account to transfer the fund to.");
         return false;
       }
 
-      const deposit2 = {
-        account: acc,
+      deposits.push({
+        account: "8004838314",
         system: "adjustment",
         date: [props.date, time],
         amount: amount,
@@ -204,16 +210,12 @@ function Adjustments(props) {
         refunded: "false",
         refundable: "false",
         increase: "1",
-      };
-
-      props.addTransaction(deposit2);
+      });
     }
 
-    const date = new Date();
-    const time = props.time(date);
     const isRefundable = type[0] === "Deposit" ? "true" : "false";
 
-    const deposit = {
+    deposits.push({
       account: props.account,
       system: "adjustment",
       date: [props.date, time],
@@ -224,9 +226,10 @@ function Adjustments(props) {
       refunded: "false",
       refundable: "true",
       increase: type[1],
-    };
+    });
 
-    const result = props.addTransaction(deposit);
+    const result = props.addTransaction(deposits);
+    console.log("main", result);
     return true;
   };
 
@@ -539,7 +542,7 @@ export default function Main(props) {
         <span>${transVal.toFixed(2)}</span>,
         // format balance so that it has parenthesis when negative and does not show a minus sign
         <span>
-          {sum > 0 ? "$" + sum.toFixed(2) : "($" + sum.toFixed(2) * -1 + ")"}
+          {sum >= 0 ? "$" + sum.toFixed(2) : "($" + sum.toFixed(2) * -1 + ")"}
         </span>,
         <span
           className={

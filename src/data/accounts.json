@@ -102,5 +102,54 @@
         "color": "black"
       }
     ]
+  },
+  {
+    "index": 2,
+    "account": "8889884768",
+    "name": {
+      "first": "DO NOT SET UP",
+      "last": "GTL TRUST IVR"
+    },
+    "address": {
+      "one": "",
+      "two": "",
+      "zip": "",
+      "city": "",
+      "state": ""
+    },
+    "phone": {
+      "one": "",
+      "two": ""
+    },
+    "email": "",
+    "tax": "",
+    "ivrPc": "",
+    "exempt": false,
+    "notes": "",
+    "au": "",
+    "lec": "",
+    "facility": 0,
+    "facilities": [],
+    "policies": {
+      "cell": false,
+      "fees": false,
+      "exp90": false,
+      "exp180": false
+    },
+    "status": 2,
+    "block": true,
+    "ccBlock": true,
+    "type": 1,
+    "created": true,
+    "indicator": 1,
+    "comments": [
+      {
+        "date": "9/20/2022",
+        "time": "10:15:33 AM",
+        "filter": "general",
+        "comment": "CARES User kristine.carter accessed account.",
+        "color": "black"
+      }
+    ]
   }
 ]

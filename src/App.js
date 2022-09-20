@@ -308,12 +308,11 @@ function App() {
 
   /* data management */
   const returnTransaction = {
-    add: function (transaction) {
-      const current = transactions;
-      const result = [...current, transaction];
+    add: function (depositArray, old) {
+      const current = old ? old : transactions;
 
-      setTransactions(result);
-      return result;
+      setTransactions([...current, ...depositArray]);
+      return transactions;
     },
   };
 
@@ -371,7 +370,6 @@ function App() {
   }
 
   function createAccount() {
-    console.log("createAccount", accounts);
     const isCreated = document.querySelector("#as-account-type-select").value;
     const number = document.querySelector("#lookup-number").value;
 
@@ -425,11 +423,13 @@ function App() {
     const result = accounts.find((account) => account.account === number);
     const match = result ? result : false;
 
+    // set the page
+    setPage("Account Summary");
+
     if (match) {
       // Match found
       if (match.index === index) {
         // @todo - add prompt to override unsaved changes
-        console.log("loadAccount", "same account");
         return;
       }
 
@@ -452,7 +452,6 @@ function App() {
   /* data management */
 
   function updatePage(target) {
-    console.log("updatePage", accounts);
     if (accounts[index].account === "") {
       document.querySelector(".nav").classList.add("active");
       alert(
@@ -690,7 +689,6 @@ function App() {
 
   /* sets account summary default page */
   useEffect(() => {
-    console.log("useEffect", accounts[index]);
     //setIndex(index);
     updatePageCss(page);
   }, [index]);
