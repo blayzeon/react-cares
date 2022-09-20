@@ -3,6 +3,7 @@ import Table from "./Table";
 import facilities from "../data/facilities.json";
 import Linklist from "./Linklist";
 import Popup1 from "./Popup1";
+import PopupPayment from "./PopupPayment";
 import { v4 as uuid } from "uuid";
 
 function returnSelect(selectObj) {
@@ -155,6 +156,7 @@ function Comments(props) {
 }
 
 function Adjustments(props) {
+  const [isOpenPayment, setOpenPayment] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(0);
 
@@ -187,9 +189,7 @@ function Adjustments(props) {
       .split(",");
 
     if (type[0] === "FundsTransfer") {
-      console.log(type[0]);
       const acc = document.querySelector("#as-adjustment-account").value;
-      console.log(acc);
       const accType = document.querySelector(
         "#as-adjustment-accountType"
       ).value;
@@ -229,7 +229,6 @@ function Adjustments(props) {
     });
 
     const result = props.addTransaction(deposits);
-    console.log("main", result);
     return true;
   };
 
@@ -242,14 +241,22 @@ function Adjustments(props) {
       return;
     }
 
-    setContent(contentIndex);
-    setIsOpen(true);
+    if (contentIndex === 0) {
+      setOpenPayment(true);
+      return;
+    } else {
+      setContent(contentIndex);
+      setIsOpen(true);
+    }
   };
 
   const controls = [
     {
       link: "#",
       label: "CC Deposit |",
+      click: function () {
+        handleClick(0);
+      },
     },
     {
       link: "#",
@@ -498,6 +505,15 @@ function Adjustments(props) {
 
   return (
     <div className="no-border">
+      <PopupPayment
+        account={props.accountInfo}
+        visible={isOpenPayment}
+        setIsOpen={setOpenPayment}
+        fee={props.fee}
+        addTransaction={props.addTransaction}
+        date={props.date}
+        time={props.time}
+      />
       <Popup1
         visible={isOpen}
         setIsOpen={setIsOpen}
@@ -535,7 +551,7 @@ export default function Main(props) {
     if (props.account.account === transaction.account) {
       formattedDeposits.unshift([
         <span>
-          {transaction.date} {transaction.time}
+          {transaction.date[0]} {transaction.date[1]}
         </span>,
         <span>{transaction.type}</span>,
         <span>{transaction.added}</span>,
@@ -586,8 +602,10 @@ export default function Main(props) {
         <Adjustments
           addTransaction={props.addTransaction}
           account={props.account.account}
+          accountInfo={props.account}
           time={props.time}
           date={props.date}
+          fee={props.fee}
         />
         <div className="flex-groups">
           <div key={props.account.index + uuid()}>
@@ -711,8 +729,10 @@ export default function Main(props) {
         <Adjustments
           addTransaction={props.addTransaction}
           account={props.account.account}
+          accountInfo={props.account}
           time={props.time}
           date={props.date}
+          fee={props.fee}
         />
         <Table data={accountTransactions} page="as-comments" />
       </>

@@ -4,6 +4,17 @@ import Linklist from "./Linklist";
 export default function Sidebar(props) {
   const [account, setAccount] = useState(props.account.account);
 
+  const info = () => {
+    const msg = `Created by Kristine Carter for ConnectNetwork training purposes. \n
+    Current features include: \n
+    * Create accounts \n
+    * Load accounts \n
+    * Save accounts \n
+    * Add comments \n
+    * Adjust balance on accounts`;
+    alert(msg);
+  };
+
   const formSubmit = (e) => {
     e.preventDefault();
     return false;
@@ -35,7 +46,7 @@ export default function Sidebar(props) {
 
   return (
     <div id="sidebar">
-      <img src={props.logo} alt={props.brand} />
+      <img src={props.logo} alt={props.brand} onClick={info} />
       <form className="input-group" onSubmit={formSubmit}>
         <label htmlFor="lookup-number">Phone Number:</label>
         <input type="text" id="lookup-number" onChange={handleChange} />

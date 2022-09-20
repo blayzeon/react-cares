@@ -14,13 +14,15 @@ export default function Linklist(props) {
         };
         return (
           <li key={key} id={item.id ? item.id : key}>
-            <a
-              className={props.childClass}
-              href={item.link}
-              onClick={handleClick}
-            >
-              {item.label}
-            </a>
+            {
+              <a
+                className={props.childClass}
+                href={item.link}
+                onClick={handleClick}
+              >
+                {item.label}
+              </a>
+            }
             {props.between ? <span>{props.between}</span> : null}
           </li>
         );

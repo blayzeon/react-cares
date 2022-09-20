@@ -5,7 +5,7 @@
     "platform": "",
     "system": "",
     "rates": [0.0, 0.0],
-    "fees": [],
+    "fees": [5.95, 3.0, 5.95],
     "names": [],
     "subs": [],
     "ids": [],

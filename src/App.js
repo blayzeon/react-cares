@@ -721,6 +721,7 @@ function App() {
           <Main
             page={page}
             account={accounts[index]}
+            fee={facilities[accounts[index].facility].fees[0]}
             index={index}
             data={as}
             date={formattedDate}
