@@ -200,7 +200,7 @@ function Adjustments(props) {
       }
 
       deposits.push({
-        account: "8004838314",
+        account: acc,
         system: "adjustment",
         date: [props.date, time],
         amount: amount,
@@ -736,6 +736,42 @@ export default function Main(props) {
         />
         <Table data={accountTransactions} page="as-comments" />
       </>
+    );
+  } else if (props.page === "Transaction Summary") {
+    const result = {
+      deposit: { count: 0, total: 0, matches: ["Deposit"] },
+      call: { count: 0, total: 0, matches: ["Call"] },
+      tax: { count: 0, total: 0, matches: ["Tax"] },
+      fee: {
+        count: 0,
+        total: 0,
+        matches: ["DepositTransactionFee", "3rdPartyFinancialTransactionFee"],
+      },
+      transfer: { count: 0, total: 0, matches: [""] },
+      increase: { count: 0, total: 0, matches: [] },
+      decrease: { count: 0, total: 0, matches: [] },
+      withdrawal: { count: 0, total: 0, matches: [] },
+      check: { count: 0, total: 0, matches: [] },
+      refund: { count: 0, total: 0, matches: [] },
+      expiration: { count: 0, total: 0, matches: [] },
+      chargeback: { count: 0, total: 0, matches: [] },
+    };
+    props.transactions.forEach((transaction) => {
+      if (transaction.account === props.account.account) {
+      }
+    });
+    console.log(props.transactions);
+    return (
+      <div>
+        <div>
+          <strong>Account Transaction Summary</strong>
+        </div>
+        <table>
+          <tr>
+            <td>hi</td>
+          </tr>
+        </table>
+      </div>
     );
   }
   {
