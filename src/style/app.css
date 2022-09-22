@@ -124,6 +124,18 @@ ul {
   background-color: var(--greenBlue);
 }
 
+.basic-table {
+  border-collapse: collapse;
+}
+
+.basic-table * {
+  border: 1px solid black;
+}
+
+.basic-table td {
+  text-align: center;
+}
+
 table {
   font-family: "Segoe UI", Arial, Helvetica, sans-serif;
   font-size: 12px;
@@ -148,6 +160,34 @@ td label {
   min-height: 100%;
   height: auto !important;
   height: 100%;
+}
+
+.cc-auths-container {
+  border: 1px solid gray;
+  padding: 0.2rem;
+}
+.cc-auths {
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.cc-auths thead {
+  color: #16387c;
+  background-color: #d1dbe0;
+  font-weight: bold;
+}
+
+.cc-auths tbody > tr:nth-child(odd) {
+  background-color: #f1f5f6;
+}
+
+.cc-auths tbody > tr:nth-child(even) {
+  background-color: #9ab2ca;
+}
+
+.cc-auths * {
+  border: 1px solid black;
+  padding: 0.1rem 0.5rem;
 }
 
 .AccountSummary > tbody > tr > td:nth-child(1) {
@@ -294,6 +334,74 @@ td label {
   padding: 0.8rem 0.3rem;
 }
 
+.popup-cc {
+  position: absolute;
+  z-index: 1;
+  height: max(1080px, 100%);
+  width: max(1920px, 100%);
+  background-color: white;
+}
+
+.popup-cc > header {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  height: 3.5rem;
+  align-items: center;
+}
+
+.blue-gradient-bg {
+  color: white;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 36, 255, 1) 100%
+  );
+}
+
+.popup-cc li {
+  padding-right: 1rem;
+}
+
+.popup-cc .close-bar {
+  display: flex;
+  padding: 0 0.2rem;
+  background-color: rgb(200, 200, 200);
+  outline: 3px solid gray;
+  margin-bottom: 0.1rem;
+  border-bottom: 3px solid white;
+  justify-content: space-between;
+}
+
+.cc-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.1rem 0.3rem;
+  cursor: pointer;
+}
+
+.cc-tab > svg {
+  height: 1rem;
+  opacity: 0.6;
+}
+
+.cc-tab button {
+  all: unset;
+  font-family: monospace;
+  color: gray;
+}
+
+.popup-cc img {
+  height: 2rem;
+  padding: 0.75rem 6rem;
+  background-color: #fff;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
 .bg-blue {
   background-color: blue;
 }
@@ -347,6 +455,16 @@ td label {
   justify-content: flex-end;
   align-self: flex-end;
   justify-self: flex-end;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.center-text {
+  text-align: center;
 }
 
 .close-btn {

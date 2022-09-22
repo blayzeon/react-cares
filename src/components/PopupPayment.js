@@ -53,6 +53,7 @@ export default function PopupPayment(props) {
         refunded: "false",
         refundable: "true",
         increase: "1",
+        summary: "Deposit",
       };
 
       if (props.fee > 0) {
@@ -68,6 +69,7 @@ export default function PopupPayment(props) {
           refunded: "false",
           refundable: "false",
           increase: "-1",
+          summary: "Fees",
         };
 
         const fee2 = {
@@ -82,6 +84,7 @@ export default function PopupPayment(props) {
           refunded: "false",
           refundable: "false",
           increase: "-1",
+          summary: "Fees",
         };
 
         deposits.push(fee1);

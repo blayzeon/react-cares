@@ -210,11 +210,19 @@ function Adjustments(props) {
         refunded: "false",
         refundable: "false",
         increase: "1",
+        summary: "Adj Increase",
       });
     }
 
     const isRefundable = type[0] === "Deposit" ? "true" : "false";
-
+    const summary =
+      type[0] === "AdjustmentIncrease"
+        ? "Adj Increase"
+        : type[0] === "AdjustmentDecrease"
+        ? "Adj Decrease"
+        : type[0] === "ReturnedCheck"
+        ? "Ret Check"
+        : type[0];
     deposits.push({
       account: props.account,
       system: "adjustment",
@@ -224,8 +232,9 @@ function Adjustments(props) {
       added: "new.trainee",
       comment: comment,
       refunded: "false",
-      refundable: "true",
+      refundable: isRefundable,
       increase: type[1],
+      summary: summary,
     });
 
     const result = props.addTransaction(deposits);
@@ -591,6 +600,8 @@ export default function Main(props) {
     tbody: formattedComments,
   };
 
+  console.log("deposits", formattedComments);
+
   const accountTransactions = {
     thead: [["Date", "Type", "Added By", "Amount", "Balance", "Comment"]],
     tbody: formattedDeposits,
@@ -738,39 +749,62 @@ export default function Main(props) {
       </>
     );
   } else if (props.page === "Transaction Summary") {
-    const result = {
-      deposit: { count: 0, total: 0, matches: ["Deposit"] },
-      call: { count: 0, total: 0, matches: ["Call"] },
-      tax: { count: 0, total: 0, matches: ["Tax"] },
-      fee: {
-        count: 0,
-        total: 0,
-        matches: ["DepositTransactionFee", "3rdPartyFinancialTransactionFee"],
-      },
-      transfer: { count: 0, total: 0, matches: [""] },
-      increase: { count: 0, total: 0, matches: [] },
-      decrease: { count: 0, total: 0, matches: [] },
-      withdrawal: { count: 0, total: 0, matches: [] },
-      check: { count: 0, total: 0, matches: [] },
-      refund: { count: 0, total: 0, matches: [] },
-      expiration: { count: 0, total: 0, matches: [] },
-      chargeback: { count: 0, total: 0, matches: [] },
-    };
-    props.transactions.forEach((transaction) => {
-      if (transaction.account === props.account.account) {
+    const result = props.transactions.reduce((obj, item) => {
+      if (item.account !== props.account.account);
+      if (!item.summary) return obj;
+
+      if (!obj[item.summary]) {
+        obj[item.summary] = { count: 0, value: 0 };
       }
-    });
-    console.log(props.transactions);
+
+      obj[item.summary].count++;
+      obj[item.summary].value += parseFloat(item.amount);
+
+      return obj;
+    }, {});
     return (
       <div>
         <div>
           <strong>Account Transaction Summary</strong>
+          <table className="basic-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Deposit</th>
+                <th>Call Usage</th>
+                <th>Taxes</th>
+                <th>Fees</th>
+                <th>Funds Xfer</th>
+                <th>Adj Increase</th>
+                <th>Adj Decrease</th>
+                <th>Withdrawal</th>
+                <th>Ret Check</th>
+                <th>Close Acct</th>
+                <th>Exp Funds</th>
+                <th>Chargeback</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Amount: </th>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result.Deposit.value.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <th>Count: </th>
+                <td>{result.Deposit.count}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table>
-          <tr>
-            <td>hi</td>
-          </tr>
-        </table>
       </div>
     );
   }

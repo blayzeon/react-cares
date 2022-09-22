@@ -7,10 +7,10 @@ import facilities from "./data/facilities.json";
 import "./style/app.css";
 import accountData from "./data/accounts.json";
 import transactionData from "./data/transactions.json";
+import CcAuths from "./components/CcAuths";
 
 function App() {
   const date = new Date();
-
   const formattedDate = date.toLocaleDateString({
     year: "numeric",
     month: "2-digit",
@@ -151,8 +151,8 @@ function App() {
       link: "#",
       label: "CC Auths",
       id: "page-cc-auths",
-      click: function (e) {
-        console.log("todo... cc auths");
+      click: function () {
+        setCcOpen(true);
       },
     },
     {
@@ -297,6 +297,7 @@ function App() {
     comments: [],
   };
 
+  const [isCcOpen, setCcOpen] = useState(false);
   const [transactions, setTransactions] = useState(transactionData);
   const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
   const [index, setIndex] = useState(0); // current account that the user is on
@@ -699,6 +700,15 @@ function App() {
 
   return (
     <>
+      <CcAuths
+        visible={isCcOpen}
+        logo="../images/simulator-logo.png"
+        brand="CARES Simulator"
+        setIsOpen={setCcOpen}
+        transactions={transactions}
+        accounts={accounts}
+        index={index}
+      />
       <aside>
         <Sidebar
           logo="../images/simulator-logo.png"
