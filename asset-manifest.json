@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-cares/static/css/main.d09d39ca.css",
+    "main.js": "/react-cares/static/js/main.9dcb595b.js",
+    "index.html": "/react-cares/index.html",
+    "main.d09d39ca.css.map": "/react-cares/static/css/main.d09d39ca.css.map",
+    "main.9dcb595b.js.map": "/react-cares/static/js/main.9dcb595b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d09d39ca.css",
+    "static/js/main.9dcb595b.js"
+  ]
+}
