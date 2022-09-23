@@ -159,6 +159,7 @@ export default function Refund(props) {
           <a href="#">Refund</a>
         </div>
       );
+      const refundImage = `${process.env.PUBLIC_URL}/images/info_italic.png`;
       row.push(<div onClick={handleClick}>{trans[i].date}</div>);
       row.push(<div onClick={handleClick}>{trans[i].added}</div>);
       row.push(<div onClick={handleClick}>${trans[i].amount}</div>);
@@ -166,7 +167,7 @@ export default function Refund(props) {
         <div className="flex center">
           <img
             className="hover-pointer"
-            src="../images/info_italic.png"
+            src={refundImage}
             onClick={handleCcClick}
           />
         </div>
