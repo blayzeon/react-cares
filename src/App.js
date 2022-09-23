@@ -8,6 +8,7 @@ import "./style/app.css";
 import accountData from "./data/accounts.json";
 import transactionData from "./data/transactions.json";
 import CcAuths from "./components/CcAuths";
+import Popup2 from "./components/Popup2";
 
 function App() {
   const date = new Date();
@@ -302,10 +303,12 @@ function App() {
   };
 
   const [isCcOpen, setCcOpen] = useState(false);
+  const [isPolOpen, setPolOpen] = useState(false);
   const [transactions, setTransactions] = useState(transactionData);
   const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
   const [index, setIndex] = useState(0); // current account that the user is on
   const [page, setPage] = useState("Account Summary"); // current page that the user is on
+  const [polBtnClass, setPolBtnClass] = useState("");
   const [alertMsg, setAlert] = useState({
     style: "green-blue-bg pad-left blue-text bold-text",
     msg: <span>&nbsp;</span>,
@@ -555,11 +558,11 @@ function App() {
     // set the page
     setPage("Account Summary");
 
+    // @todo - add prompt to override unsaved changes
     if (match) {
       // Match found
       if (match.index === index) {
-        // @todo - add prompt to override unsaved changes
-        return;
+        // same account
       }
 
       setIndex(match.index);
@@ -606,6 +609,17 @@ function App() {
   }
 
   const updatePageCss = (link) => {
+    if (page === "Account Summary") {
+      const isTrue = (value) => value === true;
+      let setActive = Object.values(accounts[index].policies).every(isTrue);
+
+      if (setActive === true) {
+        setPolBtnClass("active");
+      } else {
+        setPolBtnClass("");
+      }
+    }
+
     const links = document.querySelectorAll(".nav");
     links.forEach((link) => {
       link.classList.remove("active");
@@ -777,6 +791,9 @@ function App() {
   };
 
   function handleSave() {
+    if (index === 0) {
+      return;
+    }
     const msg = returnLoadAlert(accounts[index].account, "updated");
     setAlert(msg);
     const data = returnSavedAccount();
@@ -792,6 +809,76 @@ function App() {
     </button>,
     <button type="button">BNA This Number</button>,
   ]);
+
+  const openPol = () => {
+    setPolOpen(true);
+  };
+
+  const onPolSubmit = (polObj) => {
+    if (index === 0) {
+      return false;
+    } else {
+      const pols = [
+        {
+          label: "cell",
+          value: polObj.cell,
+          isChanged: accounts[index].policies.cell !== polObj.cell,
+          msg: "PCCellPhone",
+        },
+        {
+          label: "fees",
+          value: polObj.fees,
+          isChanged: accounts[index].policies.fees !== polObj.fees,
+          msg: "PCServiceFees",
+        },
+        {
+          label: "exp90",
+          value: polObj.exp90,
+          isChanged: accounts[index].policies.exp90 !== polObj.exp90,
+          msg: "PC90DaysAccountExpiration",
+        },
+        {
+          label: "exp180",
+          value: polObj.exp180,
+          isChanged: accounts[index].policies.exp180 !== polObj.exp180,
+          msg: "PC180DaysAccountExpiration",
+        },
+      ];
+
+      // add comments
+      const result = accounts;
+      const account = result[index];
+      for (let i = 0; i < pols.length; i += 1) {
+        if (pols[i].isChanged) {
+          // add comment
+          const commentObj = {
+            date: formattedDate,
+            time: formatTime(date),
+            filter: "General",
+            comment: `new.trainee updated the account attribute for ${pols[i].msg} to ${pols[i].value}.`,
+            color: "black",
+          };
+
+          account.comments.push(commentObj);
+
+          // update policies
+          account.policies[pols[i].label] = pols[i].value;
+        }
+      }
+
+      // update obj
+      setAccounts(result);
+
+      // set as alert
+      setAlert(
+        returnLoadAlert(
+          accounts[index].account,
+          "policy check list(s) were updated"
+        )
+      );
+    }
+    return true;
+  };
 
   const asRight = tableArray(formItems.right);
   asRight.push([
@@ -809,7 +896,16 @@ function App() {
       ))}
     </select>,
   ]);
-  asRight.push([<button type="button">Policy Check List</button>]);
+  asRight.push([
+    <button
+      type="button"
+      id="as-pol-button"
+      className={polBtnClass}
+      onClick={openPol}
+    >
+      Policy Check List
+    </button>,
+  ]);
 
   const as = {
     thead: false,
@@ -820,12 +916,58 @@ function App() {
   useEffect(() => {
     //setIndex(index);
     updatePageCss(page);
-  }, [index]);
+  }, [index, page, accounts]);
 
-  useEffect(() => {
-    updatePageCss(page);
-  }, [page]);
-
+  const polContentObj = {
+    top: "Policy Check List",
+    content: (
+      <div>
+        <div>
+          <input
+            type="checkbox"
+            id="as-pol-check-cell"
+            defaultChecked={accounts[index].policies.cell}
+          />
+          <label>Cell phone/VOIP at own risk</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="as-pol-check-fees"
+            defaultChecked={accounts[index].policies.fees}
+          />
+          <label>Service Fees</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="as-pol-check-exp90"
+            defaultChecked={accounts[index].policies.exp90}
+          />
+          <label>90 Days Account Expiration</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="as-pol-check-exp180"
+            defaultChecked={accounts[index].policies.exp180}
+          />
+          <label>180 Days Account Expiration</label>
+        </div>
+      </div>
+    ),
+    submit: "Save",
+    close: "Close",
+    grabData: function () {
+      return {
+        cell: document.getElementById("as-pol-check-cell").checked,
+        fees: document.getElementById("as-pol-check-fees").checked,
+        exp90: document.getElementById("as-pol-check-exp90").checked,
+        exp180: document.getElementById("as-pol-check-exp180").checked,
+      };
+    },
+    onSubmit: onPolSubmit,
+  };
   return (
     <>
       <CcAuths
@@ -838,6 +980,11 @@ function App() {
         accounts={accounts}
         index={index}
         date={formattedDate}
+      />
+      <Popup2
+        visible={isPolOpen}
+        setIsOpen={setPolOpen}
+        contentObj={polContentObj}
       />
       <aside>
         <Sidebar

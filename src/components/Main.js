@@ -547,6 +547,10 @@ export default function Main(props) {
   );
 
   const onCxBlock = (e) => {
+    if (props.index === 0) {
+      e.preventDefault();
+      return;
+    }
     const checked = e.target;
     const msg = checked.checked
       ? `Advise the customer that blocking their phone number will not allow them to receive any calls from any facility serviced by GTL. Make sure they wish to continue before activating the block.`
@@ -562,6 +566,10 @@ export default function Main(props) {
   };
 
   const onCcBlock = (e) => {
+    if (props.index === 0) {
+      e.preventDefault();
+      return;
+    }
     const checked = e.target;
     const msg = checked.checked
       ? `Are you sure you want to unblock credit card payment for the current account?`

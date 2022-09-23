@@ -20,7 +20,7 @@ export default function Popup1(props) {
   };
 
   const handleSubmit = () => {
-    const result = elm.onSubmit();
+    const result = props.onSubmit();
     if (result === true) {
       props.setIsOpen(false);
     } else {
