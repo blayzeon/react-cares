@@ -543,6 +543,8 @@ function Adjustments(props) {
 }
 
 export default function Main(props) {
+  const imgItalic = `${process.env.PUBLIC_URL}/images/info_italic.png`;
+
   const transactions = props.transactions.filter(
     (transaction) => transaction.account === props.account.account
   );
@@ -673,7 +675,7 @@ export default function Main(props) {
                 "APOC",
               ],
             })}
-            <img className="icon" src="../images/info_italic.png"></img>
+            <img className="icon" src={imgItalic}></img>
             <button type="button">Show Contract Exceptions</button>
           </div>
           <div key={props.account.index + uuid()}>
@@ -688,7 +690,7 @@ export default function Main(props) {
                 "Block",
               ],
             })}
-            <img className="icon" src="../images/info_italic.png"></img>
+            <img className="icon" src={imgItalic}></img>
             {returnSelect({
               label: "Validation Surcharge: ",
               options: ["Not Indicated", "Yes", "No"],

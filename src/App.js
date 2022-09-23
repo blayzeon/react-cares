@@ -999,11 +999,13 @@ function App() {
     },
     onSubmit: onPolSubmit,
   };
+
+  const logo = `${process.env.PUBLIC_URL}/images/simulator-logo.png`;
   return (
     <>
       <CcAuths
         visible={isCcOpen}
-        logo="../images/simulator-logo.png"
+        logo={logo}
         brand="CARES Simulator"
         setIsOpen={setCcOpen}
         transactions={transactions}
@@ -1019,7 +1021,7 @@ function App() {
       />
       <aside>
         <Sidebar
-          logo="../images/simulator-logo.png"
+          logo={logo}
           brand="CARES Simulator"
           links={sidebarLinks}
           account={accounts[index]}
