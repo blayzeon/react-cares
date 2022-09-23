@@ -794,13 +794,18 @@ export default function Main(props) {
     );
   } else if (props.page === "Transaction Summary") {
     const result = props.transactions.reduce((obj, item) => {
-      if (item.account !== props.account.account);
+      // if the item doesn't match the account, skip it
+      if (item.account !== props.account.account) return obj;
+
+      // if the item isn't meant for the account summary page, skip it
       if (!item.summary) return obj;
 
+      // if the item doesn't exist in the summary, add it
       if (!obj[item.summary]) {
         obj[item.summary] = { count: 0, value: 0 };
       }
 
+      // update the values
       obj[item.summary].count++;
       obj[item.summary].value += parseFloat(item.amount);
 
