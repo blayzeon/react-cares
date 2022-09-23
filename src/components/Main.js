@@ -799,6 +799,7 @@ export default function Main(props) {
         balance={balance}
         refundable={props.returnRefundable()}
         account={props.account}
+        refund={props.refund}
       />
     );
   } else if (props.page === "Transaction Summary") {

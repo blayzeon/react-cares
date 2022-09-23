@@ -452,6 +452,31 @@ function App() {
       );
       return result;
     },
+    refund: function (transArray, refund = true) {
+      // todo account closure support
+      const current = transactions;
+      const refunds = [];
+
+      transArray.forEach((tran) => {
+        if (refund) {
+          const refund = {
+            refundable: false,
+            increase: -1,
+            type: "Refund",
+            summary: "Refund",
+          };
+
+          refunds.push({ ...tran, ...refund });
+          tran.refunded = true;
+        } else {
+          tran.refundable = true;
+        }
+      });
+
+      if (refund) {
+        const result = setTransactions([...current, ...refunds]);
+      }
+    },
   };
 
   const returnAccount = {
@@ -1025,6 +1050,7 @@ function App() {
             updateAccount={returnAccount.update}
             addTransaction={returnTransaction.add}
             returnRefundable={returnTransaction.filterRefundable}
+            refund={returnTransaction.refund}
           />
         </div>
       </div>

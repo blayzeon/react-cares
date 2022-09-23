@@ -64,6 +64,7 @@ export default function Refund(props) {
       };
 
       // todo: refund amount can be updated
+      // todo: refund checkbox populates email
       const refundContentObj = {
         content: (
           <form className="no-margin-parent">
@@ -99,6 +100,14 @@ export default function Refund(props) {
               label: "Refund Amount",
               value: "$" + trans[i].amount,
             })}
+            <div className="flex gap-tiny">
+              <label className="popup-label">Reason for Refund: </label>
+              <select className="w248">
+                <option>
+                  {isAccountClosure ? "Account Closure" : "Refund"}
+                </option>
+              </select>
+            </div>
             <div className="flex">
               <label className="popup-label">E-mail Receipt: </label>
               <input type="checkbox" />
@@ -117,14 +126,11 @@ export default function Refund(props) {
         submit: "Submit",
         close: "Close",
         grabData: function () {
-          return {
-            cell: document.getElementById("as-pol-check-cell").checked,
-            fees: document.getElementById("as-pol-check-fees").checked,
-            exp90: document.getElementById("as-pol-check-exp90").checked,
-            exp180: document.getElementById("as-pol-check-exp180").checked,
-          };
+          return [trans[i]];
         },
-        onSubmit: false,
+        onSubmit: function (data) {
+          props.refund(data);
+        },
       };
 
       const handleCcClick = () => {

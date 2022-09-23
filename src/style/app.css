@@ -339,6 +339,9 @@ td label {
 }
 
 .popup2 {
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
   position: absolute;
   z-index: 2;
   background-color: #f1eded;
@@ -653,7 +656,7 @@ td label {
 .popup-payment-pair label,
 .popup-label {
   display: block;
-  width: 8.5em;
+  width: 9.5em;
   text-align: right;
 }
 
