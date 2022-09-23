@@ -869,6 +869,7 @@ function App() {
             transactions={transactions}
             updateAlert={updateAlert}
             addComment={addComment}
+            updateAccount={returnAccount.update}
             addTransaction={returnTransaction.add}
           />
         </div>

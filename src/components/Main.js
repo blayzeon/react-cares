@@ -546,6 +546,36 @@ export default function Main(props) {
     (transaction) => transaction.account === props.account.account
   );
 
+  const onCxBlock = (e) => {
+    const checked = e.target;
+    const msg = checked.checked
+      ? `Advise the customer that blocking their phone number will not allow them to receive any calls from any facility serviced by GTL. Make sure they wish to continue before activating the block.`
+      : `Advise the customer that unblocking their phone number will allow them to receive any calls from any facility serviced by GTL. Make sure they wish to continue before deactivating the block.`;
+
+    const a = window.confirm(msg);
+
+    if (a) {
+      props.updateAccount({ block: checked.checked });
+    } else {
+      checked.checked = !checked.checked;
+    }
+  };
+
+  const onCcBlock = (e) => {
+    const checked = e.target;
+    const msg = checked.checked
+      ? `Are you sure you want to unblock credit card payment for the current account?`
+      : `Are you sure you want to block credit card payment for the current account?`;
+
+    const a = window.confirm(msg);
+
+    if (a) {
+      props.updateAccount({ ccBlock: checked.checked });
+    } else {
+      checked.checked = !checked.checked;
+    }
+  };
+
   const formattedDeposits = [];
   let sum = 0; // track balance
   let balance = transactions.forEach((transaction) => {
@@ -662,7 +692,11 @@ export default function Main(props) {
           </div>
           <span key={props.account.index + 2}>
             <label>Customer Block Requested: </label>{" "}
-            <input type="checkbox" defaultChecked={props.account.block} />
+            <input
+              type="checkbox"
+              defaultChecked={props.account.block}
+              onClick={onCxBlock}
+            />
           </span>
           <div key={props.account.index + 3}>
             <p>
@@ -718,7 +752,11 @@ export default function Main(props) {
           </div>
           <span key={props.account.index + 4}>
             <label>Credit Card Block: </label>{" "}
-            <input type="checkbox" defaultChecked={props.account.ccBlock} />
+            <input
+              type="checkbox"
+              defaultChecked={props.account.ccBlock}
+              onClick={onCcBlock}
+            />
           </span>
         </div>
         <Table data={props.data} page={props.page} />
