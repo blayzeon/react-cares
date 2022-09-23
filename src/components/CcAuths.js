@@ -12,7 +12,22 @@ export default function CcAuths(props) {
 
   const handleSubmit = () => {
     const searchQuery = document.querySelector("#cc-auths-search-value");
-    setSearch(searchQuery.value);
+    const searchType = document.querySelector("#cc-auths-search-type");
+
+    if (searchType.value === "Destination") {
+      setSearch(searchQuery.value);
+    } else {
+      if (searchQuery.value.length > 4) {
+        const inputArray = searchQuery.value.split("");
+        inputArray.length === 10
+          ? inputArray.splice(6, 0, "*")
+          : inputArray.splice(4, 0, "*");
+        const ccArray = inputArray.join("").split("*");
+        setSearch(ccArray);
+      } else {
+        setSearch([false, searchQuery.value]);
+      }
+    }
   };
 
   return props.visible ? (
@@ -67,16 +82,17 @@ export default function CcAuths(props) {
                 <input
                   type="text"
                   id="cc-auths-search-value"
+                  maxLength={10}
                   defaultValue={defaultAccount}
                 />
               </div>
               <div>
                 <label>Start Date: </label>
-                <input type="date" />
+                <input type="date" defaultValue="2020-01-01" />
               </div>
               <div>
                 <label>End Date: </label>
-                <input type="date" />
+                <input type="date" defaultValue="2030-01-01" />
               </div>
             </div>
             <div className="flex gap-small margin-bottom">

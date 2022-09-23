@@ -152,6 +152,10 @@ function App() {
       label: "CC Auths",
       id: "page-cc-auths",
       click: function () {
+        if (index === 0) {
+          alert("please enter a phone number");
+          return;
+        }
         setCcOpen(true);
       },
     },
@@ -435,8 +439,8 @@ function App() {
         }
       });
       return {
-        thead: [items.labels],
-        tbody: result,
+        thead: result.length > 0 ? [items.labels] : false,
+        tbody: result.length > 0 ? result : false,
       };
     },
   };
@@ -833,6 +837,7 @@ function App() {
         searchTrans={returnTransaction}
         accounts={accounts}
         index={index}
+        date={formattedDate}
       />
       <aside>
         <Sidebar
