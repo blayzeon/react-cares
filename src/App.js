@@ -446,6 +446,12 @@ function App() {
         tbody: result.length > 0 ? result : false,
       };
     },
+    filterRefundable: function (number = accounts[index].account) {
+      const result = transactions.filter(
+        (trans) => trans.account == number && trans.refundable === "true"
+      );
+      return result;
+    },
   };
 
   const returnAccount = {
@@ -1018,6 +1024,7 @@ function App() {
             addComment={addComment}
             updateAccount={returnAccount.update}
             addTransaction={returnTransaction.add}
+            returnRefundable={returnTransaction.filterRefundable}
           />
         </div>
       </div>

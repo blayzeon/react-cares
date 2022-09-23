@@ -11,6 +11,7 @@ function paymentInput(inputObj) {
         <textarea></textarea>
       ) : (
         <input
+          className="dotted"
           id={inputObj.id ? inputObj.id : uuid()}
           type={inputObj.type ? inputObj.type : "text"}
           defaultValue={inputObj.value}

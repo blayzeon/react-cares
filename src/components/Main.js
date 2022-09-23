@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import facilities from "../data/facilities.json";
 import Linklist from "./Linklist";
+import Refund from "./Refund";
 import Popup1 from "./Popup1";
 import PopupPayment from "./PopupPayment";
 import { v4 as uuid } from "uuid";
@@ -791,6 +792,14 @@ export default function Main(props) {
         />
         <Table data={accountTransactions} page="as-comments" />
       </>
+    );
+  } else if (props.page === "Refund") {
+    return (
+      <Refund
+        balance={balance}
+        refundable={props.returnRefundable()}
+        account={props.account}
+      />
     );
   } else if (props.page === "Transaction Summary") {
     const result = props.transactions.reduce((obj, item) => {

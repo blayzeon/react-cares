@@ -226,6 +226,7 @@ td label {
 .as-comments {
   width: 1080px;
   overflow: hidden;
+  margin-bottom: 2rem;
 }
 
 .as-comments > tbody {
@@ -270,6 +271,10 @@ td label {
 
 .pad-left {
   padding-left: 5rem;
+}
+
+.pad-small {
+  padding: 0.2rem;
 }
 
 .bold-text {
@@ -566,6 +571,20 @@ td label {
   margin-left: 5.6rem;
 }
 
+.no-margin-parent > * {
+  margin: 0 !important;
+}
+
+.w248 {
+  width: 248px;
+}
+
+.popup-refund {
+  width: 890px;
+  left: 40px;
+  top: 40px;
+}
+
 .popup-payment {
   position: absolute;
   z-index: 1;
@@ -617,6 +636,7 @@ td label {
 
 .popup-payment-pair {
   display: flex;
+  align-items: center;
   gap: 0.3rem;
   margin-bottom: 0.5rem;
 }
@@ -625,14 +645,15 @@ td label {
   resize: none;
 }
 
-.popup-payment-pair input {
+.popup-payment-pair .dotted {
   all: unset;
   border-bottom: 1px dotted black;
 }
 
-.popup-payment-pair label {
+.popup-payment-pair label,
+.popup-label {
   display: block;
-  width: 7em;
+  width: 8.5em;
   text-align: right;
 }
 
