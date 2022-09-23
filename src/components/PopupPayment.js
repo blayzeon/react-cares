@@ -30,79 +30,102 @@ export default function PopupPayment(props) {
 
   const submitDeposit = () => {
     const amount = document.querySelector("#as-cc-deposit-amount");
+    const cc = document.querySelector("#as-cc-deposit-no");
+    const expMonth = document.querySelector("#as-cc-deposit-exp-month");
+    const expYear = document.querySelector("#as-cc-deposit-exp-year");
+    const exp =
+      expMonth.value !== "" && expYear.value !== ""
+        ? [expMonth.value, `${expYear.value[2]}${expYear.value[3]}`]
+        : false;
+
     const deposits = [];
 
-    if (amount.valueAsNumber > 0) {
-      const deposit = {
-        account: props.account.account,
-        system: "CARES",
-        date: [props.date, props.time()],
-        cc: ["******", "****"],
-        exp: ["**", "**"],
-        status: "APPROVED",
-        amount: amount.valueAsNumber,
-        code: [uuid(), "123456"],
-        order: ["", "D1234567890"],
-        reject: ["ACCEPT", "00"],
-        vendor: ["ReD", "PaymenTech"],
-        transaction: ["Post-Auth", "Payment"],
-        tax: "",
-        type: "Deposit",
-        added: "CARES",
-        comment: `GTL\\new.trainee: Name ${props.account.name.first} ${props.account.name.last} CCNum: ****************:`,
-        refunded: "false",
-        refundable: "true",
-        increase: "1",
-        summary: "Deposit",
-      };
-
-      if (props.fee > 0) {
-        const fee1 = {
-          account: props.account.account,
-          system: "DepositTransactionFee",
-          date: [props.date, props.time()],
-          status: "APPROVED",
-          amount: props.fee,
-          type: "DepositTransactionFee",
-          added: "CARES",
-          comment: "",
-          refunded: "false",
-          refundable: "false",
-          increase: "-1",
-          summary: "Fees",
-        };
-
-        const fee2 = {
-          account: props.account.account,
-          system: "3rdPartyFinancialTransactionFee",
-          date: [props.date, props.time()],
-          status: "APPROVED",
-          amount: amount.valueAsNumber * FEE_PERCENTAGE,
-          type: "3rdPartyFinancialTransactionFee",
-          added: "CARES",
-          comment: "",
-          refunded: "false",
-          refundable: "false",
-          increase: "-1",
-          summary: "Fees",
-        };
-
-        deposits.push(fee1);
-        deposits.push(fee2);
-      }
-
-      deposits.push(deposit);
-      document.querySelector("#as-payment-form").reset();
-      updateSystemMsg(
-        "The payment went through successfully. Please wait a few minutes for it to appear on the account."
-      );
-      props.addTransaction(deposits);
-
-      return false;
-    } else {
+    console.log(exp);
+    if (amount.valueAsNumber < 1 || isNaN(amount.valueAsNumber)) {
       updateSystemMsg("Please enter a valid payment amount.");
       return false;
+    } else if (cc.value.length !== 16 || cc.value === "") {
+      updateSystemMsg("Invalid Credit card number.");
+      return false;
+    } else if (!exp) {
+      updateSystemMsg("Credit Card expiration is a required field.");
+      return false;
     }
+
+    const ccArray = cc.value.split("");
+    const formattedCc = [
+      ccArray.slice(0, 6).join(""),
+      ccArray.slice(12).join(""),
+    ];
+    console.log(formattedCc);
+
+    const generatedCode = uuid().toUpperCase().replace(/-/g, "");
+    const deposit = {
+      account: props.account.account,
+      system: "CARES",
+      date: [props.date, props.time()],
+      cc: formattedCc,
+      exp: [exp[0], exp[1]],
+      status: "APPROVED",
+      amount: amount.valueAsNumber.toFixed(2),
+      code: [generatedCode, "123456"],
+      order: ["", "D1234567890"],
+      reject: ["ACCEPT", "00"],
+      vendor: ["ReD", "PaymenTech"],
+      transaction: ["Post-Auth", "Payment"],
+      tax: "",
+      type: "Deposit",
+      added: "CARES",
+      comment: `GTL\\new.trainee: Name ${props.account.name.first} ${props.account.name.last} CCNum: ${formattedCc[0]}******${formattedCc[1]}:`,
+      refunded: "false",
+      refundable: "true",
+      increase: "1",
+      summary: "Deposit",
+    };
+
+    if (props.fee > 0) {
+      const fee1 = {
+        account: props.account.account,
+        system: "DepositTransactionFee",
+        date: [props.date, props.time()],
+        status: "APPROVED",
+        amount: props.fee,
+        type: "DepositTransactionFee",
+        added: "CARES",
+        comment: "",
+        refunded: "false",
+        refundable: "false",
+        increase: "-1",
+        summary: "Fees",
+      };
+
+      const fee2 = {
+        account: props.account.account,
+        system: "3rdPartyFinancialTransactionFee",
+        date: [props.date, props.time()],
+        status: "APPROVED",
+        amount: amount.valueAsNumber * FEE_PERCENTAGE,
+        type: "3rdPartyFinancialTransactionFee",
+        added: "CARES",
+        comment: "",
+        refunded: "false",
+        refundable: "false",
+        increase: "-1",
+        summary: "Fees",
+      };
+
+      deposits.push(fee1);
+      deposits.push(fee2);
+    }
+
+    deposits.push(deposit);
+    document.querySelector("#as-payment-form").reset();
+    updateSystemMsg(
+      "The payment went through successfully. Please wait a few minutes for it to appear on the account."
+    );
+    props.addTransaction(deposits);
+
+    return false;
   };
 
   const handleClose = () => {
@@ -178,7 +201,7 @@ export default function PopupPayment(props) {
       options.push(<option key={uuid()}>{i > 9 ? i : "0" + i}</option>);
     }
 
-    return <select>{options}</select>;
+    return <select id="as-cc-deposit-exp-month">{options}</select>;
   })();
 
   const years = (function () {
@@ -190,7 +213,7 @@ export default function PopupPayment(props) {
       options.push(<option key={uuid()}>{date.getFullYear()}</option>);
     }
 
-    return <select>{options}</select>;
+    return <select id="as-cc-deposit-exp-year">{options}</select>;
   })();
 
   const items = [
@@ -215,6 +238,12 @@ export default function PopupPayment(props) {
     { label: "State", value: props.account.address.state, required: true },
     { label: "Zip Code", value: props.account.address.zip, required: true },
     { label: "Card Type", type: "select", select: cardType, required: true },
+    {
+      label: "Credit Card No",
+      value: "",
+      id: "as-cc-deposit-no",
+      required: true,
+    },
     {
       label: "Card Exp Date",
       type: "select",
