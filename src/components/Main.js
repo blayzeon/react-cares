@@ -600,8 +600,6 @@ export default function Main(props) {
     tbody: formattedComments,
   };
 
-  console.log("deposits", formattedComments);
-
   const accountTransactions = {
     thead: [["Date", "Type", "Added By", "Amount", "Balance", "Comment"]],
     tbody: formattedDeposits,

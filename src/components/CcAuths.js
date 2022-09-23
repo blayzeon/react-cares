@@ -2,77 +2,8 @@ import React, { useState } from "react";
 import Table from "./Table";
 
 export default function CcAuths(props) {
-  const allTrans = props.transactions;
   const defaultAccount = props.accounts[props.index].account;
-
-  const searchTrans = {
-    destination: function (number = defaultAccount) {
-      const items = {
-        labels: [
-          "Calling System",
-          "Date",
-          "CC Num",
-          "Status",
-          "Amount",
-          "Code",
-          "Order ID",
-          "Reject Code",
-          "Vendor",
-          "Transaction Type",
-        ],
-        values: [
-          "system",
-          "date",
-          "cc",
-          "status",
-          "amount",
-          "code",
-          "order",
-          "reject",
-          "vendor",
-          "transaction",
-        ],
-      };
-
-      const result = [];
-      allTrans.forEach((trans) => {
-        if (trans.account == number) {
-          if (trans.cc) {
-            const row = [];
-            const row2 = [];
-            items.values.forEach((item) => {
-              if (
-                !Array.isArray(trans[item]) ||
-                item === "exp" ||
-                item === "cc" ||
-                item === "date"
-              ) {
-                const value =
-                  item === "amount"
-                    ? `$${trans[item]}`
-                    : item === "date"
-                    ? `${trans[item][0]} ${trans[item][1]}`
-                    : trans[item];
-                row.push(value);
-                row2.push(value);
-              } else {
-                row.push(trans[item][0]);
-                row2.push(trans[item][1]);
-              }
-            });
-
-            result.push(row);
-            result.push(row2);
-          }
-        }
-      });
-      return {
-        thead: [items.labels],
-        tbody: result,
-      };
-    },
-  };
-
+  const searchTrans = props.searchTrans;
   const [search, setSearch] = useState(props.accounts.account);
 
   const handleClose = () => {
@@ -154,7 +85,7 @@ export default function CcAuths(props) {
             </div>
           </fieldset>
           <div className="cc-auths-container">
-            <Table data={searchTrans.destination(search)} page={"cc-auths"} />
+            <Table data={searchTrans.ccTable(search)} page={"cc-auths"} />
           </div>
         </div>
       </div>

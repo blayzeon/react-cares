@@ -315,6 +315,130 @@ function App() {
       setTransactions([...current, ...depositArray]);
       return transactions;
     },
+    ccTable: function (number = accounts[index].account) {
+      // provide a number for a destination search and an array for cc search
+      const destinationSearch = !Array.isArray(number) ? true : false;
+
+      // labels change depending on how we're searching
+      const items = destinationSearch
+        ? {
+            labels: [
+              "Calling System",
+              "Date",
+              "CC Num",
+              "Status",
+              "Amount",
+              "Code",
+              "Order ID",
+              "Reject Code",
+              "Vendor",
+              "Transaction Type",
+            ],
+            values: [
+              "system",
+              "date",
+              "cc",
+              "status",
+              "amount",
+              "code",
+              "order",
+              "reject",
+              "vendor",
+              "transaction",
+            ],
+          }
+        : {
+            labels: [
+              "Calling System",
+              "Status",
+              "Destination",
+              "CC Number",
+              "Exp",
+              "Amount",
+              "Auth Code",
+              "Order ID",
+              "Add Date",
+              "Vendor",
+              "Transaction Type",
+            ],
+            values: [
+              "system",
+              "status",
+              "account",
+              "cc",
+              "exp",
+              "amount",
+              "code",
+              "order",
+              "date",
+              "vendor",
+              "transaction",
+            ],
+          };
+
+      const result = [];
+      transactions.forEach((trans) => {
+        if (trans.cc) {
+          let match = true;
+
+          // check to make sure the transaction is a match
+          if (destinationSearch) {
+            if (trans.account !== number) {
+              match = false;
+            }
+          } else {
+            // compare last 4
+            if (number[1] !== trans.cc[1]) {
+              match = false;
+            } else {
+              if (number[0]) {
+                const input = number[0].toString().split("");
+                const data = trans.cc[0].toString().split("");
+                for (let i = 0; i < input.length; i += 1) {
+                  if (input[i] !== data[i]) {
+                    match = false;
+                  }
+                }
+              }
+            }
+          }
+
+          if (match === true) {
+            const row = [];
+            const row2 = [];
+            items.values.forEach((item) => {
+              if (
+                !Array.isArray(trans[item]) ||
+                item === "exp" ||
+                item === "cc" ||
+                item === "date"
+              ) {
+                const value =
+                  item === "amount"
+                    ? `$${trans[item]}`
+                    : item === "date"
+                    ? `${trans[item][0]} ${trans[item][1]}`
+                    : item === "cc"
+                    ? `${trans[item][0]}******${trans[item][1]}`
+                    : trans[item];
+                row.push(value);
+                row2.push(value);
+              } else {
+                row.push(trans[item][0]);
+                row2.push(trans[item][1]);
+              }
+            });
+
+            result.push(row);
+            result.push(row2);
+          }
+        }
+      });
+      return {
+        thead: [items.labels],
+        tbody: result,
+      };
+    },
   };
 
   const returnAccount = {
@@ -706,6 +830,7 @@ function App() {
         brand="CARES Simulator"
         setIsOpen={setCcOpen}
         transactions={transactions}
+        searchTrans={returnTransaction}
         accounts={accounts}
         index={index}
       />
