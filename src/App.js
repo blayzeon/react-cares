@@ -40,37 +40,37 @@ function App() {
   const sidebarLinks = [
     [
       {
-        link: "#",
+        link: "http://hcares/CARES/AdvancedSearch/Default.aspx",
         label: "Advanced Search",
       },
       {
-        link: "#",
+        link: "http://hcares/CARES/LECCredit/Default.aspx",
         label: "LEC Credit",
       },
     ],
     [
       {
-        link: "#",
+        link: "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/_layouts/15/Doc.aspx?sourcedoc=%7B07EA5B1D-02F4-4D6F-B70C-EF925797EF42%7D&file=Master%20Facility%20Blocking%20List.xls&action=default&mobileredirect=true",
         label: "Master Facility List",
       },
       {
-        link: "#",
+        link: "https://gtlcorp.sharepoint.com/BillingCustomerService/Shared%20Documents/Forms/AllItems.aspx?viewpath=%2FBillingCustomerService%2FShared%20Documents%2FForms%2FAllItems.aspx",
         label: "Refund Form",
       },
       {
-        link: "#",
+        link: "http://hcares/csguide/default.aspx",
         label: "Research Page",
       },
       {
-        link: "#",
+        link: "http://hcares/OCBOT/Default.aspx",
         label: "Connect Network",
       },
       {
-        link: "#",
+        link: "https://web.connectnetwork.com/",
         label: "CN Site Info",
       },
       {
-        link: "#",
+        link: "https://gtlcorp.sharepoint.com/BillingCustomerService/Shared%20Documents/Facility%20Services.xlsx",
         label: "Facility Services",
       },
       {
@@ -78,7 +78,7 @@ function App() {
         label: "CC Deposit",
       },
       {
-        link: "#",
+        link: "http://hcares/CARES/Account/Default.aspx",
         label: "Create Account",
       },
     ],
