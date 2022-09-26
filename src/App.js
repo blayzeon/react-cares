@@ -317,12 +317,14 @@ function App() {
   /* data management */
   const returnTransaction = {
     reset: function () {
-      transactions.forEach((tran) => {
+      const newTrans = transactions;
+      newTrans.forEach((tran) => {
         if (tran.forClosure) {
           if (tran.refunded === "false") {
             tran.forClosure = false;
           }
         }
+        setTransactions([...newTrans]);
       });
     },
     add: function (depositArray, old) {

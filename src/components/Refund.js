@@ -252,7 +252,9 @@ export default function Refund(props) {
             <button type="button" onClick={props.refund}>
               Save
             </button>
-            <button type="button">Cancel</button>
+            <button type="button" onClick={props.resetClosure}>
+              Cancel
+            </button>
           </>
         ) : null}
       </div>
