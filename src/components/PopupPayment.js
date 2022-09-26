@@ -41,7 +41,6 @@ export default function PopupPayment(props) {
 
     const deposits = [];
 
-    console.log(exp);
     if (amount.valueAsNumber < 1 || isNaN(amount.valueAsNumber)) {
       updateSystemMsg("Please enter a valid payment amount.");
       return false;
@@ -58,7 +57,6 @@ export default function PopupPayment(props) {
       ccArray.slice(0, 6).join(""),
       ccArray.slice(12).join(""),
     ];
-    console.log(formattedCc);
 
     const generatedCode = uuid().toUpperCase().replace(/-/g, "");
     const deposit = {
@@ -167,6 +165,7 @@ export default function PopupPayment(props) {
         <p>${msg}</p>
       </div>`;
   };
+  // todo need a checkbox before this
   const serviceFee = (
     <a href="#" onClick={updateSystemMsg}>
       Check Service Fee
