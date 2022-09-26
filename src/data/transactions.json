@@ -19,8 +19,7 @@
     "refunded": "false",
     "refundable": "true",
     "increase": "1",
-    "summary": "Deposit",
-    "forClosure": "true"
+    "summary": "Deposit"
   },
   {
     "account": "8004838314",

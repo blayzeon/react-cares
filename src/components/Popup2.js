@@ -15,6 +15,10 @@ export default function Popup1(props) {
   const containerClass = props.style ? props.style + " " + "popup2" : "popup2";
 
   const handleClose = () => {
+    if (props.closeEvent) {
+      props.closeEvent();
+    }
+
     props.setIsOpen(false);
   };
 

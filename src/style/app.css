@@ -330,8 +330,10 @@ td label {
 }
 
 .popup2-bg {
-  position: fixed;
+  position: absolute;
   overflow: hidden;
+  left: 0;
+  top: 0;
   height: 100%;
   width: 100%;
   z-index: 1;
@@ -348,8 +350,8 @@ td label {
   color: black;
   width: 450px;
   border-radius: 0.5rem;
-  top: 270px;
-  left: 300px;
+  top: 370px;
+  left: 200px;
   gap: 0.3rem;
   padding: 0.8rem 0.3rem;
 }
@@ -584,8 +586,8 @@ td label {
 
 .popup-refund {
   width: 890px;
-  left: 40px;
-  top: 40px;
+  left: 150px;
+  top: 140px;
 }
 
 .popup-payment {

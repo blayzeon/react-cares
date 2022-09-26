@@ -12,16 +12,23 @@ export default function Refund(props) {
   */
   const [isAccountClosure, setIsAccountClosure] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [popupSubmit, setPopupSubmit] = useState();
   const [popupContentObj, setPopupContentObj] = useState();
+  const [remainingBalance, setRemainingBalance] = useState(props.balance);
+
+  const onClose = () => {
+    // close the popup
+  };
 
   const handleChange = (e) => {
     if (e.target.value === "Account Closure") {
       setIsAccountClosure(true);
-    } else if (e.target.value === "Refund") {
-      setIsAccountClosure(false);
     } else {
-      setIsAccountClosure(null);
+      props.resetClosure();
+      if (e.target.value === "Refund") {
+        setIsAccountClosure(false);
+      } else {
+        setIsAccountClosure(null);
+      }
     }
   };
 
@@ -65,6 +72,7 @@ export default function Refund(props) {
 
       // todo: refund amount can be updated
       // todo: refund checkbox populates email
+      // todo: fix bug where remaining balance pops back up if you revisit account closure page
       const refundContentObj = {
         content: (
           <form className="no-margin-parent">
@@ -125,11 +133,22 @@ export default function Refund(props) {
         legend: "Account Closure Request",
         submit: "Submit",
         close: "Close",
+        refunded: trans[i].refunded,
+        forClosure: trans[i].forClosure,
         grabData: function () {
           return [trans[i]];
         },
         onSubmit: function (data) {
-          props.refund(data);
+          // on submit
+          if (isAccountClosure) {
+            const difference = remainingBalance - parseFloat(trans[i].amount);
+            const newBal = difference < 0 ? 0 : difference;
+            setRemainingBalance(newBal.toFixed(2));
+            console.log(remainingBalance, trans[i].amount);
+          }
+
+          props.refund(data, isAccountClosure);
+          return true;
         },
       };
 
@@ -138,8 +157,16 @@ export default function Refund(props) {
       };
 
       const handleClick = () => {
-        setPopupContentObj(refundContentObj);
-        setShowPopup(true);
+        const unClickable =
+          refundContentObj.forClosure || refundContentObj.refunded;
+
+        // when the table row is clicked
+        if (unClickable === true) {
+          return false;
+        } else {
+          setPopupContentObj(refundContentObj);
+          setShowPopup(true);
+        }
       };
 
       const row = [];
@@ -148,7 +175,11 @@ export default function Refund(props) {
           <div className="flex center" onClick={handleClick}>
             <input
               type="checkbox"
-              checked={trans[i].forClosure == true ? true : false}
+              checked={
+                trans[i].forClosure === "true" || trans[i].forClosure === true
+                  ? true
+                  : false
+              }
               readOnly={true}
             />
           </div>
@@ -156,7 +187,7 @@ export default function Refund(props) {
       }
       row.push(
         <div className="flex center" onClick={handleClick}>
-          <a href="#">Refund</a>
+          <a href="#">{trans[i].forClosure ? "Pending" : "Refund"}</a>
         </div>
       );
       const refundImage = `${process.env.PUBLIC_URL}/images/info_italic.png`;
@@ -185,12 +216,15 @@ export default function Refund(props) {
     return result;
   }
 
+  // todo no cc refund
+  // "debora.stanton submitted non-credit card check refund for $12.54. Refund reason Account Closure. New available balance $0.00. Account status set to Blocked."
   return (
     <div>
       <Popup2
         visible={showPopup}
         setIsOpen={setShowPopup}
         contentObj={popupContentObj}
+        closeEvent={onClose}
         style="popup-refund"
       />
       <fieldset>
@@ -201,6 +235,9 @@ export default function Refund(props) {
           <option>Refund</option>
           <option>Account Closure</option>
         </select>
+        {isAccountClosure ? (
+          <div>Remaining Balance to Close Account: ${remainingBalance}.</div>
+        ) : null}
       </fieldset>
       <div className="border-parent pad-small">
         {isAccountClosure === null ? null : (
@@ -212,7 +249,9 @@ export default function Refund(props) {
         {isAccountClosure ? (
           <>
             <button type="button">Check Refund</button>
-            <button type="button">Save</button>
+            <button type="button" onClick={props.refund}>
+              Save
+            </button>
             <button type="button">Cancel</button>
           </>
         ) : null}

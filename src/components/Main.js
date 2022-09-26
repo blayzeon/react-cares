@@ -802,6 +802,7 @@ export default function Main(props) {
         refundable={props.returnRefundable()}
         account={props.account}
         refund={props.refund}
+        resetClosure={props.resetClosure}
       />
     );
   } else if (props.page === "Transaction Summary") {

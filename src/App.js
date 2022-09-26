@@ -316,6 +316,15 @@ function App() {
 
   /* data management */
   const returnTransaction = {
+    reset: function () {
+      transactions.forEach((tran) => {
+        if (tran.forClosure) {
+          if (tran.refunded === "false") {
+            tran.forClosure = false;
+          }
+        }
+      });
+    },
     add: function (depositArray, old) {
       const current = old ? old : transactions;
 
@@ -452,28 +461,54 @@ function App() {
       );
       return result;
     },
-    refund: function (transArray, refund = true) {
+    refund: function (transArray, closure) {
       // todo account closure support
       const current = transactions;
       const refunds = [];
+      let sum = 0;
 
-      transArray.forEach((tran) => {
-        if (refund) {
-          const refund = {
-            refundable: false,
-            increase: -1,
-            type: "Refund",
-            summary: "Refund",
-          };
+      if (transArray.target) {
+        transactions.forEach((tran) => {
+          if (tran.forClosure) {
+            if (tran.refunded === false || tran.refunded === "false") {
+              console.log(sum);
+              sum = sum += parseFloat(tran.amount);
+              tran.refunded = true;
+            }
+          }
+        });
 
-          refunds.push({ ...tran, ...refund });
-          tran.refunded = true;
-        } else {
-          tran.refundable = true;
-        }
-      });
+        accounts[index].block = true;
+        const commentObj = {
+          date: formattedDate,
+          time: formatTime(date),
+          filter: "General",
+          comment: `new.trainee added Account Closure request for amount $${sum.toFixed(
+            2
+          )} Transaction date: ${formattedDate} ${formatTime()}.`,
+          color: "black",
+        };
+        returnAccount.comment(commentObj);
+      } else {
+        transArray.forEach((tran) => {
+          if (closure) {
+            tran.forClosure = true;
+          } else {
+            const refund = {
+              refundable: false,
+              increase: -1,
+              type: "Refund",
+              summary: "Refund",
+            };
 
-      if (refund) {
+            refunds.push({ ...tran, ...refund });
+            tran.refunded = true;
+          }
+        });
+      }
+      if (closure) {
+        return current;
+      } else {
         const result = setTransactions([...current, ...refunds]);
       }
     },
@@ -1053,6 +1088,7 @@ function App() {
             addTransaction={returnTransaction.add}
             returnRefundable={returnTransaction.filterRefundable}
             refund={returnTransaction.refund}
+            resetClosure={returnTransaction.reset}
           />
         </div>
       </div>
