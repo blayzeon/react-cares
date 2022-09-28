@@ -2,7 +2,7 @@
   {
     "account": "8004838314",
     "system": "ADVANCEPAY-IVR",
-    "date": ["06/05/2022", "2:15:19 PM"],
+    "date": ["6/05/2022", "2:15:19 PM"],
     "cc": ["426938", "8246"],
     "exp": ["04", "25"],
     "status": "APPROVED",
@@ -24,7 +24,7 @@
   {
     "account": "8004838314",
     "system": "DepositTransactionFee",
-    "date": ["06/05/2022", "2:15:20 PM"],
+    "date": ["6/05/2022", "2:15:20 PM"],
     "amount": "0.8125",
     "type": "3rdPartyFinancialTransactionFee",
     "added": "InContactMainAdvancePayIVR",
@@ -37,7 +37,7 @@
   {
     "account": "8004838314",
     "system": "DepositTransactionFee",
-    "date": ["06/05/2022", "2:15:20 PM"],
+    "date": ["6/05/2022", "2:15:20 PM"],
     "amount": "3.00",
     "type": "DepositTransactionFee",
     "added": "InContactMainAdvancePayIVR",
@@ -50,7 +50,7 @@
   {
     "account": "8004838314",
     "system": "ADVANCEPAY-WEB",
-    "date": ["08/02/2022", "8:02:11 AM"],
+    "date": ["8/02/2022", "8:02:11 AM"],
     "cc": ["440393", "1234"],
     "exp": ["09", "27"],
     "status": "APPROVED",
@@ -72,7 +72,7 @@
   {
     "account": "8004838314",
     "system": "DepositTransactionFee",
-    "date": ["08/02/2022", "8:02:13 AM"],
+    "date": ["8/02/2022", "8:02:13 AM"],
     "amount": "0.1625",
     "type": "3rdPartyFinancialTransactionFee",
     "added": "ConnectNetwork",
@@ -85,7 +85,7 @@
   {
     "account": "8004838314",
     "system": "DepositTransactionFee",
-    "date": ["08/02/2022", "8:02:13 AM"],
+    "date": ["8/02/2022", "8:02:13 AM"],
     "amount": "3.00",
     "tax": "0.00",
     "type": "DepositTransactionFee",
@@ -99,7 +99,7 @@
   {
     "account": "8889884768",
     "system": "DSI-TRUSTDEPOSIT-WEB",
-    "date": ["08/01/2022", "7:30:34 AM"],
+    "date": ["8/01/2022", "7:30:34 AM"],
     "cc": ["453506", "1234"],
     "exp": ["07", "26"],
     "status": "APPROVED",
