@@ -152,7 +152,9 @@ export default function PopupPayment(props) {
 
     if (msg === false) {
       if (amount.valueAsNumber > 0) {
-        msg = `<p>Total service charge will be: $${fee.toFixed(2)}.</p>`;
+        msg = `<p>Total service charge will be: $${
+          props.fee > 0 ? fee.toFixed(2) : "0.00"
+        }.</p>`;
       } else {
         msg =
           "<p>A valid non-zero amount is required to check the service fee.</p>";
