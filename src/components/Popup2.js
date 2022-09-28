@@ -71,7 +71,7 @@ export default function Popup1(props) {
             mainContent
           )}
         </div>
-        {elm.legend ? null : <div className="popup2-spacer"></div>}
+        {elm.noSpacer ? null : <div className="popup2-spacer"></div>}
       </div>
     </div>
   ) : null;

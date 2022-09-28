@@ -8,15 +8,18 @@ import PopupPayment from "./PopupPayment";
 import { v4 as uuid } from "uuid";
 
 function returnSelect(selectObj) {
+  let index = -1;
   return (
     <span>
       {selectObj.label ? <label>{selectObj.label}</label> : null}
       <select
+        data-form={selectObj.data ? selectObj.data : ""}
         disabled={selectObj.disabled}
         defaultValue={selectObj.options[selectObj.value]}
         id={selectObj.id ? selectObj.id : uuid()}
       >
         {selectObj.options.map((option) => {
+          index += 1;
           return <option key={uuid()}>{option}</option>;
         })}
       </select>
@@ -660,12 +663,14 @@ export default function Main(props) {
         <div className="flex-groups">
           <div key={props.account.index + uuid()}>
             {returnSelect({
+              data: "status",
               value: props.account.status,
               options: ["Active", "Return Mail", "LEC/Inactive", "Blocked"],
             })}
             {returnSelect({
               label: "Account Type: ",
               id: "as-account-type-select",
+              data: "type",
               value: props.account.type,
               options: [
                 "",
@@ -681,6 +686,7 @@ export default function Main(props) {
           <div key={props.account.index + uuid()}>
             {returnSelect({
               label: "Phone Indicator: ",
+              data: "indicator",
               value: props.account.indicator,
               options: [
                 "Cell Phone",
@@ -704,6 +710,7 @@ export default function Main(props) {
           <span key={props.account.index + 2}>
             <label>Customer Block Requested: </label>{" "}
             <input
+              data-form="block"
               type="checkbox"
               defaultChecked={props.account.block}
               onClick={onCxBlock}
@@ -765,6 +772,7 @@ export default function Main(props) {
             <label>Credit Card Block: </label>{" "}
             <input
               type="checkbox"
+              data-form="ccBlock"
               defaultChecked={props.account.ccBlock}
               onClick={onCcBlock}
             />

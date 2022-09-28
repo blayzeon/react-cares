@@ -3,6 +3,28 @@ import Table from "./Table";
 import Popup2 from "./Popup2";
 
 export default function Refund(props) {
+  const returnInput = (obj) => {
+    return (
+      <div className="popup-payment-pair">
+        <label>{obj.label}: </label>
+        {obj.value ? (
+          <input
+            type={obj.type ? obj.type : "text"}
+            className="w248"
+            value={obj.value}
+            readOnly={true}
+          />
+        ) : (
+          <input
+            type={obj.type ? obj.type : "text"}
+            className="w248"
+            defaultValue={obj.defaultValue}
+          />
+        )}
+      </div>
+    );
+  };
+
   const refundable = props.refundable;
 
   /* 
@@ -48,31 +70,9 @@ export default function Refund(props) {
     const body = [];
 
     for (let i = 0; i < trans.length; i += 1) {
-      const returnInput = (obj) => {
-        return (
-          <div className="popup-payment-pair">
-            <label>{obj.label}: </label>
-            {obj.defaultValue ? (
-              <input
-                type={obj.type ? obj.type : "text"}
-                className="w248"
-                defaultValue={obj.defaultValue}
-              />
-            ) : (
-              <input
-                type={obj.type ? obj.type : "text"}
-                className="w248"
-                value={obj.value}
-                readOnly={true}
-              />
-            )}
-          </div>
-        );
-      };
-
       // todo: refund amount can be updated
       // todo: refund checkbox populates email
-      // todo: fix bug where remaining balance pops back up if you revisit account closure page
+      // todo: fix bug where remaining balance pops back up if you revisit account closure page or click cancel button
       const refundContentObj = {
         content: (
           <form className="no-margin-parent">
@@ -130,6 +130,7 @@ export default function Refund(props) {
             </div>
           </form>
         ),
+        noSpacer: true,
         legend: "Account Closure Request",
         submit: "Submit",
         close: "Close",
@@ -216,6 +217,78 @@ export default function Refund(props) {
     return result;
   }
 
+  const handleNoCc = () => {
+    const a = window.confirm(
+      "Are you sure the refund cannot be processed through credit card transactions? Click Ok to continue to Cancel to cancel."
+    );
+    if (a) {
+      const obj = {
+        content: (
+          <form className="no-margin-parent">
+            <p>
+              Please confirm that the contact information is correct before
+              submitting a check refund request. If it is not correct, click on
+              'Cancel' and update the contact information.
+            </p>
+            <div className="flex gap-tiny">
+              <label className="popup-label">Reason for Refund: </label>
+              <select className="w248">
+                <option></option>
+                <option>Refund</option>
+                <option>Account Closure</option>
+                <option>Fraud</option>
+                <option>Dispute</option>
+              </select>
+            </div>
+            {returnInput({
+              label: "Available Balance",
+              value: props.balance,
+            })}
+            {returnInput({
+              label: "Refund Amount",
+              value: props.balance,
+            })}
+
+            <div className="flex">
+              <label className="popup-label">E-mail Receipt: </label>
+              <input type="checkbox" />
+            </div>
+            {returnInput({
+              label: "E-mail Address",
+              value: props.account.email,
+            })}
+            <div className="popup-payment-pair">
+              <label>Comment: </label>
+              <textarea className="w248"></textarea>
+            </div>
+          </form>
+        ),
+        top: " ",
+        legend: "Contact Information",
+        submit: "Submit",
+        close: "Close",
+        grabData: function () {
+          return ["noCC", remainingBalance];
+        },
+        onSubmit: function (data) {
+          // on submit
+          if (data[0] !== "noCC") {
+            if (isAccountClosure) {
+              const difference = remainingBalance - parseFloat(1);
+              const newBal = difference < 0 ? 0 : difference;
+              setRemainingBalance(newBal.toFixed(2));
+            }
+          }
+
+          props.refund(data, isAccountClosure);
+          return true;
+        },
+      };
+      setShowPopup(true);
+      setPopupContentObj(obj);
+    }
+  };
+
   // todo no cc refund
   // "debora.stanton submitted non-credit card check refund for $12.54. Refund reason Account Closure. New available balance $0.00. Account status set to Blocked."
   return (
@@ -245,7 +318,9 @@ export default function Refund(props) {
         )}
       </div>
       <div className="flex gap-small">
-        <button type="button">No CC Refund</button>
+        <button type="button" onClick={handleNoCc}>
+          No CC Refund
+        </button>
         {isAccountClosure ? (
           <>
             <button type="button">Check Refund</button>

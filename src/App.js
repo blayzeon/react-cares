@@ -469,6 +469,35 @@ function App() {
       const refunds = [];
       let sum = 0;
 
+      if (transArray[0] === "noCC") {
+        const balance = transArray[1];
+        transArray = [
+          {
+            account: accounts[index].account,
+            system: "CARES",
+            date: [formattedDate, formatTime()],
+            amount: balance,
+            type: "Refund",
+            added: "CARES",
+            comment: "",
+            refunded: "false",
+            refundable: false,
+            increase: -1,
+            summary: "Refund",
+          },
+        ];
+        accounts[index].status = 3;
+        const commentObj = {
+          date: formattedDate,
+          time: formatTime(date),
+          filter: "General",
+          comment: `new.trainee submitted non-credit card check refund for $${balance}. New available balance $0.00. Account status set to Blocked."`,
+          color: "black",
+        };
+        returnAccount.comment(commentObj);
+        closure = false;
+      }
+
       if (transArray.target) {
         transactions.forEach((tran) => {
           if (tran.forClosure) {
@@ -480,7 +509,7 @@ function App() {
           }
         });
 
-        accounts[index].block = true;
+        accounts[index].status = 3;
         const commentObj = {
           date: formattedDate,
           time: formatTime(date),
@@ -555,14 +584,18 @@ function App() {
       // nested items
       const split = dataValue.includes(".") ? dataValue.split(".") : false;
 
-      if (split) {
-        if (split[0] in result) {
-          result[split[0]][split[1]] = elm.value;
-        } else {
-          result[split[0]] = { [split[1]]: elm.value };
-        }
+      if (elm.selectedIndex) {
+        result[dataValue] = elm.selectedIndex;
       } else {
-        result[dataValue] = elm.value;
+        if (split) {
+          if (split[0] in result) {
+            result[split[0]][split[1]] = elm.value;
+          } else {
+            result[split[0]] = { [split[1]]: elm.value };
+          }
+        } else {
+          result[dataValue] = elm.value;
+        }
       }
     });
 
