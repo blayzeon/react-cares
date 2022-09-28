@@ -114,26 +114,6 @@
     "increase": "0"
   },
   {
-    "account": "",
-    "system": "",
-    "date": [],
-    "cc": [],
-    "exp": [],
-    "status": "APPROVED",
-    "amount": "",
-    "code": ["", ""],
-    "order": ["", ""],
-    "reject": ["ACCEPT", "00"],
-    "vendor": ["ReD", "PaymenTech"],
-    "transaction": ["Post-Auth", "Payment"],
-    "type": "",
-    "added": "",
-    "comment": "",
-    "refunded": "false",
-    "refundable": "true",
-    "increase": "0"
-  },
-  {
     "account": "8185550001",
     "system": "CARES",
     "date": ["9/27/22", "11:20:32 PM"],
@@ -145,7 +125,7 @@
     "refunded": "true",
     "refundable": "false",
     "increase": "1",
-    "summary": "NewAccount"
+    "summary": false
   },
   {
     "account": "8185550001",
@@ -182,6 +162,26 @@
     "refunded": "true",
     "refundable": "false",
     "increase": "-1",
-    "summary": "Deposit"
+    "summary": "Call Usage"
+  },
+  {
+    "account": "",
+    "system": "",
+    "date": [],
+    "cc": [],
+    "exp": [],
+    "status": "APPROVED",
+    "amount": "",
+    "code": ["", ""],
+    "order": ["", ""],
+    "reject": ["ACCEPT", "00"],
+    "vendor": ["ReD", "PaymenTech"],
+    "transaction": ["Post-Auth", "Payment"],
+    "type": "",
+    "added": "",
+    "comment": "",
+    "refunded": "false",
+    "refundable": "true",
+    "increase": "0"
   }
 ]

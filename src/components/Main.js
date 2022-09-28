@@ -224,6 +224,8 @@ function Adjustments(props) {
         ? "Adj Increase"
         : type[0] === "AdjustmentDecrease"
         ? "Adj Decrease"
+        : type[0] === "FundsTransfer"
+        ? "Funds Xfer"
         : type[0] === "ReturnedCheck"
         ? "Ret Check"
         : type[0];
@@ -814,24 +816,41 @@ export default function Main(props) {
       />
     );
   } else if (props.page === "Transaction Summary") {
-    const result = props.transactions.reduce((obj, item) => {
-      // if the item doesn't match the account, skip it
-      if (item.account !== props.account.account) return obj;
+    const result = props.transactions.reduce(
+      (obj, item) => {
+        // if the item doesn't match the account, skip it
+        if (item.account !== props.account.account) return obj;
 
-      // if the item isn't meant for the account summary page, skip it
-      if (!item.summary) return obj;
+        // if the item isn't meant for the account summary page, skip it
+        if (!item.summary) return obj;
 
-      // if the item doesn't exist in the summary, add it
-      if (!obj[item.summary]) {
-        obj[item.summary] = { count: 0, value: 0 };
+        // if the item doesn't exist in the summary, add it
+        if (!obj[item.summary]) {
+          obj[item.summary] = { count: 0, value: 0 };
+        }
+
+        // update the values
+        obj[item.summary].count++;
+        obj[item.summary].value += parseFloat(item.amount);
+
+        return obj;
+      },
+      {
+        Deposit: { value: 0, count: 0 },
+        "Call Usage": { value: 0, count: 0 },
+        Taxes: { value: 0, count: 0 },
+        Fees: { value: 0, count: 0 },
+        "Funds Xfer": { value: 0, count: 0 },
+        "Adj Increase": { value: 0, count: 0 },
+        "Adj Decrease": { value: 0, count: 0 },
+        Withdrawal: { value: 0, count: 0 },
+        "Ret Check": { value: 0, count: 0 },
+        "Close Acct": { value: 0, count: 0 },
+        "Exp Funds": { value: 0, count: 0 },
+        Chargeback: { value: 0, count: 0 },
       }
-
-      // update the values
-      obj[item.summary].count++;
-      obj[item.summary].value += parseFloat(item.amount);
-
-      return obj;
-    }, {});
+    );
+    console.log(result);
     return (
       <div>
         <div>
@@ -858,19 +877,32 @@ export default function Main(props) {
               <tr>
                 <th>Amount: </th>
                 <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
-                <td>${result.Deposit.value.toFixed(2)}</td>
+                <td>${result["Call Usage"].value.toFixed(2)}</td>
+                <td>${result.Taxes.value.toFixed(2)}</td>
+                <td>${result.Fees.value.toFixed(2)}</td>
+                <td>${result["Funds Xfer"].value.toFixed(2)}</td>
+                <td>${result["Adj Increase"].value.toFixed(2)}</td>
+                <td>${result["Adj Decrease"].value.toFixed(2)}</td>
+                <td>${result.Withdrawal.value.toFixed(2)}</td>
+                <td>${result["Ret Check"].value.toFixed(2)}</td>
+                <td>${result["Close Acct"].value.toFixed(2)}</td>
+                <td>${result["Exp Funds"].value.toFixed(2)}</td>
+                <td>${result.Chargeback.value.toFixed(2)}</td>
               </tr>
               <tr>
                 <th>Count: </th>
                 <td>{result.Deposit.count}</td>
+                <td>{result["Call Usage"].count}</td>
+                <td>{result.Taxes.count}</td>
+                <td>{result.Fees.count}</td>
+                <td>{result["Funds Xfer"].count}</td>
+                <td>{result["Adj Increase"].count}</td>
+                <td>{result["Adj Decrease"].count}</td>
+                <td>{result.Withdrawal.count}</td>
+                <td>{result["Ret Check"].count}</td>
+                <td>{result["Close Acct"].count}</td>
+                <td>{result["Exp Funds"].count}</td>
+                <td>{result.Chargeback.count}</td>
               </tr>
             </tbody>
           </table>

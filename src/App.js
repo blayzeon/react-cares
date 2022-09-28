@@ -11,6 +11,7 @@ import CcAuths from "./components/CcAuths";
 import Popup2 from "./components/Popup2";
 
 function App() {
+  // todo - have cc refunds show in cc auths and not disappear
   const date = new Date();
   const formattedDate = date.toLocaleDateString({
     year: "numeric",
@@ -483,7 +484,7 @@ function App() {
             refunded: "false",
             refundable: false,
             increase: -1,
-            summary: "Refund",
+            summary: "Close Acct",
           },
         ];
         accounts[index].status = 3;
@@ -528,7 +529,7 @@ function App() {
               refundable: false,
               increase: -1,
               type: "Refund",
-              summary: "Refund",
+              summary: "Close Acct",
             };
 
             refunds.push({ ...tran, ...refund });
