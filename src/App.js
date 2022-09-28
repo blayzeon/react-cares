@@ -502,7 +502,6 @@ function App() {
         transactions.forEach((tran) => {
           if (tran.forClosure) {
             if (tran.refunded === false || tran.refunded === "false") {
-              console.log(sum);
               sum = sum += parseFloat(tran.amount);
               tran.refunded = true;
             }
@@ -585,7 +584,6 @@ function App() {
       const split = dataValue.includes(".") ? dataValue.split(".") : false;
 
       if (elm.selectedIndex) {
-        result[dataValue] = elm.selectedIndex;
       } else {
         if (split) {
           if (split[0] in result) {

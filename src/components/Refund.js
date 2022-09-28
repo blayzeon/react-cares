@@ -145,7 +145,6 @@ export default function Refund(props) {
             const difference = remainingBalance - parseFloat(trans[i].amount);
             const newBal = difference < 0 ? 0 : difference;
             setRemainingBalance(newBal.toFixed(2));
-            console.log(remainingBalance, trans[i].amount);
           }
 
           props.refund(data, isAccountClosure);
@@ -290,7 +289,6 @@ export default function Refund(props) {
   };
 
   // todo no cc refund
-  // "debora.stanton submitted non-credit card check refund for $12.54. Refund reason Account Closure. New available balance $0.00. Account status set to Blocked."
   return (
     <div>
       <Popup2
