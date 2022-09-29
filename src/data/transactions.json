@@ -152,6 +152,7 @@
   {
     "account": "8185550001",
     "system": "CallUsage",
+    "inmate": { "id": "021174", "name": ["Alex", "Jones"] },
     "date": ["9/27/22", "11:15:11 PM"],
     "status": "APPROVED",
     "facIndex": 3,
@@ -170,6 +171,7 @@
   {
     "account": "8185550001",
     "system": "CallUsage",
+    "inmate": { "id": "021174", "name": ["Alex", "Jones"] },
     "date": ["9/27/22", "11:42:11 PM"],
     "status": "APPROVED",
     "facIndex": 3,

@@ -4,6 +4,8 @@ import facilities from "../data/facilities.json";
 import Linklist from "./Linklist";
 import Refund from "./Refund";
 import Popup1 from "./Popup1";
+import Popup3 from "./Popup3";
+import Popup4 from "./Popup4";
 import PopupPayment from "./PopupPayment";
 import { v4 as uuid } from "uuid";
 
@@ -592,6 +594,10 @@ export default function Main(props) {
     }
   };
 
+  const [openPopup3, setPopup3] = useState(false);
+  const [openPopup4, setPopup4] = useState(false);
+  const [popup3Content, setPopup3Content] = useState();
+
   const formattedDeposits = [];
   const formattedCalls = [];
   let sum = 0; // track balance
@@ -602,33 +608,187 @@ export default function Main(props) {
 
     // create comments for transaction & call records pages
     if (props.account.account === transaction.account) {
+      // todo program in tax
+      const pin = transaction.inmate
+        ? transaction.inmate.id
+        : props.returnRandomInt(111111, 999999);
+      const inmateName = transaction.inmate
+        ? transaction.inmate.name
+        : ["unknown", "unknown"];
+      const facIndex = transaction.facIndex ? transaction.facIndex : 0;
+      const facility = props.facilities[facIndex];
+      const subId = facility.subs[facIndex];
+      const orig = facility.orig ? facility.orig[facIndex] : "8005551234";
+      const rateIndex = transaction.rate ? transaction.rate : 5;
+      const rateType = facility.rates[rateIndex];
+      const minutes =
+        parseFloat(transaction.amount) > 0.0
+          ? parseInt(transaction.amount / rateType)
+          : 0;
+      const seconds =
+        minutes === 0 || minutes === 15 || minutes === 60
+          ? 0
+          : props.returnRandomInt(1, 30);
+      const feeIcon = `${process.env.PUBLIC_URL}/images/info_italic.png`;
+      const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
+      const startCode = minutes > 0 ? "D0" : "D5";
+      const endCode = minutes > 0 ? "HU" : "";
+      const callType = transaction.increase ? "H" : "D";
+
+      const content = {
+        sub: (
+          <ul>
+            <li>
+              <strong>Full Name: </strong>
+              {facility.public}
+            </li>
+            <li>
+              <strong>Site ID: </strong>
+              {subId}
+            </li>
+            <li>
+              <strong>Cost Center: </strong>
+              {facility.centers[facIndex]}
+            </li>
+            <li>
+              <strong>Inmate System: </strong>
+              {facility.platform}
+            </li>
+            <li>
+              <strong>Phone System: </strong>
+              {facility.system}
+            </li>
+          </ul>
+        ),
+        pin: (
+          <ul>
+            <li>
+              <strong>First Name: </strong>
+              {inmateName[0]}
+            </li>
+            <li>
+              <strong>Last Name: </strong>
+              {inmateName[1]}
+            </li>
+          </ul>
+        ),
+        rate: (
+          <table>
+            <caption className="center">
+              <p>
+                <strong>RATES</strong>
+              </p>
+            </caption>
+            <thead>
+              <tr>
+                <th>Rate Type</th>
+                <th>SURCHG</th>
+                <th>Rate 1st Minute</th>
+                <th>INIT DUR</th>
+                <th>Rate ADD'L Minute</th>
+                <th>ADD'L DUR</th>
+                <th>Rate Period</th>
+                <th>Miles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>InterStateInterLata</td>
+                <td>0</td>
+                <td>{facility.rates[facIndex]}</td>
+                <td>60</td>
+                <td>{facility.rates[facIndex]}</td>
+                <td>60</td>
+                <td>1</td>
+                <td>0-99999</td>
+              </tr>
+            </tbody>
+          </table>
+        ),
+        fees: (
+          <table>
+            <caption className="center">
+              <p>
+                <strong>Other Fees</strong>
+              </p>
+            </caption>
+            <thead>
+              <tr>
+                <th>Fee Type</th>
+                <th>Amount</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Account Setup Fee</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Admin Fee</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Cell Phone Fee</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>FUSF Admin</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Late fee</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Single Bill Fee</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>State Reg Fee (SCCRF)</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Validation Surcharge</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Write Off</td>
+                <td>$0.00</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        ),
+        D0: <span>Call Accepted</span>,
+        D5: <span>Not Accepted</span>,
+        HU: <span>Inmate Hungup</span>,
+        CH: <span>Customer Hungup</span>,
+        H: <span>Prepaid</span>,
+        D: <span>Debit</span>,
+      };
       if (transaction.type === "CallUsage") {
-        // todo program in tax
-        const facility = props.facilities[transaction.facIndex];
-        const subId = transaction.subIndex
-          ? facility.subs[transaction.subIndex]
-          : facility.subs[0];
-        const orig = facility.orig
-          ? facility.orig
-          : props.returnRandomInt(1111111111, 9999999999);
-        const pin = facility.pin
-          ? facility.pin
-          : props.returnRandomInt(111111, 999999);
-        const rateIndex = transaction.rate ? transaction.rate : 5;
-        const rateType = facility.rates[rateIndex];
-        const minutes =
-          parseFloat(transaction.amount) > 0.0
-            ? parseInt(transaction.amount / rateType)
-            : 0;
-        const seconds =
-          minutes === 0 || minutes === 15 || minutes === 60
-            ? 0
-            : props.returnRandomInt(1, 30);
-        const feeIcon = `${process.env.PUBLIC_URL}/images/info_italic.png`;
-        const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
-        const startCode = minutes > 0 ? "D0" : "D5";
-        const endCode = minutes > 0 ? "HU" : "";
-        const callType = transaction.increase ? "H" : "D";
+        const handleOpenPopup3 = (e) => {
+          const key = e.target.getAttribute("data-info");
+          setPopup3Content(content[key]);
+
+          if (key === "rate" || key === "fees") {
+            setPopup3(false);
+            setPopup4(true);
+          } else {
+            setPopup3(e.target);
+            setPopup4(false);
+          }
+        };
+
         // todo clickable codes
         // todo phone type
         // todo listen to call icon & support
@@ -636,12 +796,16 @@ export default function Main(props) {
           <span>
             {transaction.date[0]} {transaction.date[1]}
           </span>,
-          <span>
-            <strong>{subId}</strong>
+          <span className="hover-pointer">
+            <strong onClick={handleOpenPopup3} data-info="sub">
+              {subId}
+            </strong>
           </span>,
           <span>{orig}</span>,
-          <span>
-            <strong>{pin}</strong>
+          <span className="hover-pointer">
+            <strong onClick={handleOpenPopup3} data-info="pin">
+              {pin}
+            </strong>
           </span>,
           <span>
             {minutes}m {seconds}s
@@ -649,21 +813,34 @@ export default function Main(props) {
           <span>${transaction.amount}</span>,
           <span>$0.00</span>,
           <span>${transaction.amount}</span>,
-          <img src={feeIcon} />,
-          <span>
-            <strong>{startCode}</strong>
+          <img
+            src={feeIcon}
+            className="hover-pointer"
+            onClick={handleOpenPopup3}
+            data-info="fees"
+          />,
+          <span className="hover-pointer">
+            <strong onClick={handleOpenPopup3} data-info={startCode}>
+              {startCode}
+            </strong>
           </span>,
-          <span>
-            <strong>{endCode}</strong>
+          <span className="hover-pointer">
+            <strong onClick={handleOpenPopup3} data-info={startCode}>
+              {endCode}
+            </strong>
           </span>,
-          <span>
-            <strong>{callType}</strong>
+          <span className="hover-pointer">
+            <strong onClick={handleOpenPopup3} data-info={callType}>
+              {callType}
+            </strong>
           </span>,
-          <span>
-            <strong>{rateIndex}</strong>
+          <span className="hover-pointer">
+            <strong onClick={handleOpenPopup3} data-info="rate">
+              {rateIndex}
+            </strong>
           </span>,
           <span>Feature Disabled</span>,
-          <img src={researchIcon} />,
+          <img className="hover-pointer" src={researchIcon} />,
           ,
         ]);
       }
@@ -744,7 +921,6 @@ export default function Main(props) {
     tbody: formattedCalls,
   };
 
-  console.log(callTransactions);
   if (props.page === "Account Summary") {
     return (
       <>
@@ -1010,6 +1186,16 @@ export default function Main(props) {
   } else if (props.page === "Call Records") {
     return (
       <>
+        <Popup3
+          visible={openPopup3}
+          content={popup3Content}
+          setIsOpen={setPopup3}
+        />
+        <Popup4
+          visible={openPopup4}
+          content={popup3Content}
+          setIsOpen={setPopup4}
+        />
         <p className="w1076">
           <strong>
             NOTE: Only billing administrators are allowed to listen to call

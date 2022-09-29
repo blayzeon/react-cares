@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Popup1(props) {
+export default function Popup2(props) {
   const elm = props.contentObj
     ? { ...props.contentObj }
     : {
