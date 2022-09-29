@@ -3,8 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import accountData from "./data/accounts.json";
 import transactionData from "./data/transactions.json";
+import facilities from "./data/facilities.json";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const accounts = accountData;
+
 function returnRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -32,17 +35,41 @@ const formatTime = (d = date) => {
   return strTime;
 };
 
-function generateData(index, account) {
-  const generateEmailAddress = () => {
+function generateData(index, account, type) {
+  const generateEmailAddress = (name = false) => {
     const adjectives = ["cute", "hottie", "cool", "army", "gamer", "mizz"];
-    const spacers = ["xxx", "_", ".", "2", ""];
+    const spacers = ["xxx", "_", ".", "2", "", "", "", ""];
     const nouns = ["princess", "af", "gurl", "god"];
     const number = returnRandomInt(0, 9999);
-    return `${adjectives[returnRandomInt(0, adjectives.length)]}${
+    const domain = [
+      "cox.net",
+      "comcast.net",
+      "mail.com",
+      "aol.com",
+      "hotmail.com",
+      "outlook.com",
+      "gmail.com",
+      "icloud.com",
+      "yahoo.com",
+      "protonmail.com",
+      "zoho.com",
+      "titan.email",
+      "gmx.com",
+      "hubspot.com",
+      "tutanota.com",
+    ];
+    let generatedEmail = `${adjectives[returnRandomInt(0, adjectives.length)]}${
       spacers[returnRandomInt(0, spacers.length)]
-    }${nouns[returnRandomInt(0, nouns.length)]}${
-      number > 10 ? number : null
-    }@customer.com`;
+    }${nouns[returnRandomInt(0, nouns.length)]}${number > 10 ? number : null}`;
+
+    if (name) {
+      generatedEmail =
+        returnRandomInt(0, 2) === 0
+          ? `${name[0]}${spacers[returnRandomInt(0, spacers.length)]}${name[1]}`
+          : generatedEmail;
+    }
+
+    return `${generatedEmail}@${domain[returnRandomInt(0, domain.length)]}`;
   };
 
   const firstNames = ["Robert", "Mary", "Sam"];
@@ -53,34 +80,44 @@ function generateData(index, account) {
     { state: "OR", city: "ONTARIO", zip: "97914" },
     { state: "ID", city: "FRUITLAND", zip: "83619" },
   ];
-
+  const lec = [
+    "",
+    "ASTRO TELECOMM LLC",
+    "123 NET INC.",
+    "SPRINT SPECTRUM L.P.",
+    "NEW CINGULAR WIRELESS",
+    "MCIMETRO ATS LLC",
+    "",
+  ];
+  const fNameIndex = returnRandomInt(0, firstNames.length);
+  const lNameIndex = returnRandomInt(0, lastNames.length);
   const addressIndex = returnRandomInt(0, address.length);
 
-  return {
+  let newAccount = {
     index: index,
     account: account,
     name: {
-      first: firstNames[returnRandomInt(0, firstNames.length)],
-      last: lastNames[returnRandomInt(0, lastNames.length)],
+      first: "",
+      last: "",
     },
     address: {
-      one: streets[returnRandomInt(0, streets.length)],
+      one: "",
       two: "",
-      zip: address[addressIndex].zip,
-      city: address[addressIndex].city,
-      state: address[addressIndex].state,
+      zip: "",
+      city: "",
+      state: "",
     },
     phone: {
-      one: account,
+      one: "",
       two: "",
     },
-    email: generateEmailAddress(),
+    email: "",
     tax: "",
-    ivrPc: returnRandomInt(1111, 9999),
+    ivrPc: "",
     exempt: false,
     notes: "",
     au: "",
-    lec: "",
+    lec: lec[returnRandomInt(0, lec.length)],
     facility: 0,
     facilities: [],
     policies: {
@@ -97,12 +134,103 @@ function generateData(index, account) {
     indicator: 3,
     comments: [],
   };
+
+  const partial = {
+    name: {
+      first: firstNames[fNameIndex],
+      last: lastNames[lNameIndex],
+    },
+    address: {
+      one: streets[returnRandomInt(0, streets.length)],
+      two: "",
+      zip: address[addressIndex].zip,
+      city: address[addressIndex].city,
+      state: address[addressIndex].state,
+    },
+    phone: {
+      one: account,
+      two: "",
+    },
+    email: generateEmailAddress([
+      firstNames[fNameIndex],
+      lastNames[lNameIndex],
+    ]),
+    created: true,
+    type: 1,
+  };
+
+  const established = {
+    ...partial,
+    ...{
+      ivrPc: returnRandomInt(1111, 9999),
+      policies: {
+        cell: true,
+        fees: true,
+        exp90: false,
+        exp180: true,
+      },
+      comments: [
+        {
+          date: "9/27/2022",
+          time: "11:20:32 PM",
+          filter: "general",
+          comment: "CARES User kristine.carter accessed account.",
+          color: "black",
+        },
+      ],
+    },
+  };
+
+  const broken = {
+    ...established,
+    ...{
+      status: 2,
+    },
+  };
+
+  const bna =
+    type === "established"
+      ? established
+      : type === "partial"
+      ? partial
+      : type === "broken"
+      ? broken
+      : newAccount;
+  const result = { ...newAccount, ...bna };
+  return result;
 }
 
+const returnAccounts = () => {
+  const prefix = 208555;
+  let section = 11;
+
+  for (let i = 0; section < 55; i += 1) {
+    const type =
+      section === 11
+        ? "blank"
+        : section === 22
+        ? "partial"
+        : section === 33
+        ? "broken"
+        : "established";
+    const index = i < 10 ? "0" + i : i;
+    const account = prefix.toString() + section.toString() + index.toString();
+    const newAccount = generateData(accounts.length, account, type);
+
+    accounts.push(newAccount);
+    if (i > 99) {
+      section += 11;
+      i = 0;
+    }
+  }
+};
+
+returnAccounts();
+console.log(accounts);
 root.render(
   <React.StrictMode>
     <App
-      accountData={accountData}
+      accountData={accounts}
       transactionData={transactionData}
       date={date}
       formattedDate={formattedDate}
