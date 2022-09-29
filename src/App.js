@@ -3,46 +3,15 @@ import Sidebar from "./components/Sidebar";
 import Nav from "./components/Nav";
 import Main from "./components/Main";
 import { v4 as uuid } from "uuid";
-import facilities from "./data/facilities.json";
 import "./style/app.css";
-import accountData from "./data/accounts.json";
-import transactionData from "./data/transactions.json";
 import CcAuths from "./components/CcAuths";
 import Popup2 from "./components/Popup2";
 import Popup4 from "./components/Popup4";
+import facilities from "./data/facilities.json";
 
-function App() {
-  function returnRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-  }
-  // todo - have cc refunds show in cc auths and not disappear
-  const date = new Date();
-  const formattedDate = date.toLocaleDateString({
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
-  const formatTime = (d = date) => {
-    let hours = d.getHours();
-    let minutes = d.getMinutes();
-    let seconds = d.getSeconds();
-    let ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-    const strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
-    return strTime;
-  };
-
-  function generateData() {
-    function returnCall(age, connected = true, facility = false) {
-      return {};
-    }
-  }
+function App(props) {
+  const date = props.date;
+  const formattedDate = props.formattedDate;
 
   const sidebarLinks = [
     [
@@ -312,8 +281,8 @@ function App() {
   const [isCcOpen, setCcOpen] = useState(false);
   const [isPolOpen, setPolOpen] = useState(false);
   const [isCreateOpen, setCreateOpen] = useState(false);
-  const [transactions, setTransactions] = useState(transactionData);
-  const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
+  const [transactions, setTransactions] = useState(props.transactionData);
+  const [accounts, setAccounts] = useState(props.accountData); // account data from accounts.json
   const [index, setIndex] = useState(0); // current account that the user is on
   const [page, setPage] = useState("Account Summary"); // current page that the user is on
   const [polBtnClass, setPolBtnClass] = useState("");
@@ -483,7 +452,7 @@ function App() {
           {
             account: accounts[index].account,
             system: "CARES",
-            date: [formattedDate, formatTime()],
+            date: [formattedDate, props.formatTime()],
             amount: balance,
             type: "Refund",
             added: "CARES",
@@ -497,7 +466,7 @@ function App() {
         accounts[index].status = 3;
         const commentObj = {
           date: formattedDate,
-          time: formatTime(date),
+          time: props.formatTime(date),
           filter: "General",
           comment: `new.trainee submitted non-credit card check refund for $${balance}. New available balance $0.00. Account status set to Blocked."`,
           color: "black",
@@ -519,11 +488,11 @@ function App() {
         accounts[index].status = 3;
         const commentObj = {
           date: formattedDate,
-          time: formatTime(date),
+          time: props.formatTime(date),
           filter: "General",
           comment: `new.trainee added Account Closure request for amount $${sum.toFixed(
             2
-          )} Transaction date: ${formattedDate} ${formatTime()}.`,
+          )} Transaction date: ${formattedDate} ${props.formatTime()}.`,
           color: "black",
         };
         returnAccount.comment(commentObj);
@@ -626,7 +595,7 @@ function App() {
       {
         account: number,
         system: "CARES",
-        date: [formattedDate, formatTime()],
+        date: [formattedDate, props.formatTime()],
         status: "APPROVED",
         amount: "0.00",
         type: "NewAccount",
@@ -750,7 +719,7 @@ function App() {
   };
 
   const addComment = (commentObj) => {
-    const currentTime = formatTime();
+    const currentTime = props.formatTime();
 
     const result = returnAccount.comment(commentObj);
     setAccounts([...result]);
@@ -973,7 +942,7 @@ function App() {
           // add comment
           const commentObj = {
             date: formattedDate,
-            time: formatTime(date),
+            time: props.formatTime(date),
             filter: "General",
             comment: `new.trainee updated the account attribute for ${pols[i].msg} to ${pols[i].value}.`,
             color: "black",
@@ -1136,7 +1105,7 @@ function App() {
             index={index}
             data={as}
             date={formattedDate}
-            time={formatTime}
+            time={props.formatTime}
             transactions={transactions}
             updateAlert={updateAlert}
             addComment={addComment}
@@ -1145,7 +1114,7 @@ function App() {
             returnRefundable={returnTransaction.filterRefundable}
             refund={returnTransaction.refund}
             resetClosure={returnTransaction.reset}
-            returnRandomInt={returnRandomInt}
+            returnRandomInt={props.returnRandomInt}
           />
         </div>
       </div>
