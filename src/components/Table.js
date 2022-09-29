@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import Row from "./Row";
 import { v4 as uuid } from "uuid";
 
 export default function Table(props) {
+  const [isVisible, setVisible] = useState(props.hidden ? "display-none" : "");
+  const handleClick = () => {
+    setVisible("");
+  };
   const data = props.data;
   const propClass = props.page ? props.page.replace(/\s/g, "") : "table";
+  const message = props.message
+    ? props.message
+    : "There are no records to display...";
 
-  return data.tbody ? (
+  return (
     <>
       {props.search ? (
-        <div className="flex gap-small pad-small">
+        <div className="flex gap-small pad-small no-border">
           <label>Date Range: </label>{" "}
           <div>
-            <label>Start Date: </label>
             <input type="date" defaultValue="2020-01-01" />
           </div>
           <div>
-            <label>End Date: </label>
             <input type="date" defaultValue="2030-01-01" />
           </div>
           {props.search === "all" ? (
@@ -24,24 +29,31 @@ export default function Table(props) {
               <input type="checkbox" /> <label>Show All</label>
             </>
           ) : null}
-          <button>Search</button>
+          <button onClick={handleClick}>Search</button>
           {props.search === "all" ? <button>Export All</button> : null}
         </div>
       ) : null}
-      <table key={uuid()} className={propClass}>
-        {data.thead ? (
-          <thead>
-            <Row data={data.thead} />
-          </thead>
-        ) : null}
-        {data.tbody ? (
-          <tbody>
-            <Row data={data.tbody} />
-          </tbody>
-        ) : null}
-      </table>
+      {data.tbody.length > 0 ? (
+        <table key={uuid()} className={propClass + " " + isVisible}>
+          {props.caption ? props.caption : null}
+          {data.thead ? (
+            <thead>
+              <Row data={data.thead} />
+            </thead>
+          ) : null}
+          {data.tbody ? (
+            <tbody>
+              <Row data={data.tbody} />
+            </tbody>
+          ) : null}
+        </table>
+      ) : (
+        message
+      )}
     </>
-  ) : (
-    <>{props.message ? props.message : "There are no records to display..."}</>
   );
 }
+
+/* 
+ 
+*/

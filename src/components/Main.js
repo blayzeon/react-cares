@@ -1196,7 +1196,7 @@ export default function Main(props) {
           content={popup3Content}
           setIsOpen={setPopup4}
         />
-        <p className="w1076">
+        <p className="w1076 no-border">
           <strong>
             NOTE: Only billing administrators are allowed to listen to call
             recording. For advanced call recording playback features please
@@ -1206,7 +1206,13 @@ export default function Main(props) {
             codec.
           </strong>
         </p>
-        <Table data={callTransactions} page="as-calls" search="true" />
+        <Table
+          data={callTransactions}
+          page="as-calls"
+          search="all"
+          message="No record(s) found."
+          hidden={true}
+        />
       </>
     );
   }

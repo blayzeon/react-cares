@@ -9,6 +9,7 @@ import accountData from "./data/accounts.json";
 import transactionData from "./data/transactions.json";
 import CcAuths from "./components/CcAuths";
 import Popup2 from "./components/Popup2";
+import Popup4 from "./components/Popup4";
 
 function App() {
   function returnRandomInt(min, max) {
@@ -310,6 +311,7 @@ function App() {
 
   const [isCcOpen, setCcOpen] = useState(false);
   const [isPolOpen, setPolOpen] = useState(false);
+  const [isCreateOpen, setCreateOpen] = useState(false);
   const [transactions, setTransactions] = useState(transactionData);
   const [accounts, setAccounts] = useState(accountData); // account data from accounts.json
   const [index, setIndex] = useState(0); // current account that the user is on
@@ -612,9 +614,7 @@ function App() {
 
     if (isCreated === "") {
       // determine account type popup
-      alert(
-        "Select an account type before clicking the 'Create Account' button."
-      );
+      setCreateOpen(true);
       return;
     }
 
@@ -1108,6 +1108,7 @@ function App() {
         setIsOpen={setPolOpen}
         contentObj={polContentObj}
       />
+      <Popup4 visible={isCreateOpen} setIsOpen={setCreateOpen} />
       <aside>
         <Sidebar
           logo={logo}

@@ -17,6 +17,10 @@ body {
   display: flex;
 }
 
+input[type="date"] {
+  font: 12px "segoe ui", arial, sans-serif;
+}
+
 .no-link * {
   color: black;
   text-decoration: none;
@@ -24,6 +28,10 @@ body {
 
 .bold {
   font-weight: bold;
+}
+
+.display-none {
+  display: none;
 }
 
 .flex {
@@ -227,6 +235,11 @@ td label {
   width: 1080px;
   overflow: hidden;
   margin-bottom: 2rem;
+  border: 1px solid gray;
+}
+
+.as-calls tr {
+  height: 25px;
 }
 
 .as-calls tr:hover {
@@ -358,6 +371,10 @@ td label {
   margin-bottom: 0.5rem;
 }
 
+.margin-bottom-large {
+  margin-bottom: 1rem;
+}
+
 .hover-pointer {
   cursor: pointer;
 }
@@ -409,6 +426,13 @@ td label {
 .popup4 td,
 .popup4 th {
   border: 1px solid #9baff1;
+}
+
+.popup4 .default > p {
+  background-color: #006699;
+  color: white;
+  text-align: center;
+  font-weight: bold;
 }
 
 .popup3 {
@@ -644,6 +668,11 @@ td label {
   justify-content: flex-end;
   align-self: flex-end;
   justify-self: flex-end;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0;
 }
 
 .center {
