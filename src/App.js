@@ -11,6 +11,11 @@ import CcAuths from "./components/CcAuths";
 import Popup2 from "./components/Popup2";
 
 function App() {
+  function returnRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+  }
   // todo - have cc refunds show in cc auths and not disappear
   const date = new Date();
   const formattedDate = date.toLocaleDateString({
@@ -617,8 +622,23 @@ function App() {
     const newAccount = returnAccount.new(number);
     newAccount.created = "true";
     setIndex(newAccount.index);
+    returnTransaction.add([
+      {
+        account: number,
+        system: "CARES",
+        date: [formattedDate, formatTime()],
+        status: "APPROVED",
+        amount: "0.00",
+        type: "NewAccount",
+        added: "new.trainee",
+        comment: "",
+        refunded: "true",
+        refundable: "false",
+        increase: "1",
+        summary: false,
+      },
+    ]);
     setAccounts([...accountsCopy, newAccount]);
-
     setAlert(returnLoadAlert(newAccount.account));
   }
 
@@ -1110,6 +1130,7 @@ function App() {
           <Main
             page={page}
             account={accounts[index]}
+            facilities={facilities}
             fee={facilities[accounts[index].facility].fees[0]}
             index={index}
             data={as}
@@ -1123,6 +1144,7 @@ function App() {
             returnRefundable={returnTransaction.filterRefundable}
             refund={returnTransaction.refund}
             resetClosure={returnTransaction.reset}
+            returnRandomInt={returnRandomInt}
           />
         </div>
       </div>

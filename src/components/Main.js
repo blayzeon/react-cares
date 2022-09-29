@@ -593,36 +593,106 @@ export default function Main(props) {
   };
 
   const formattedDeposits = [];
+  const formattedCalls = [];
   let sum = 0; // track balance
   let balance = transactions.forEach((transaction) => {
     if (transaction.increase === "0") return;
     const transVal = parseFloat(transaction.amount);
     const amount = transVal * parseInt(transaction.increase);
 
-    // update balance
-    sum = amount + sum;
-
-    // create comments for transaction page
+    // create comments for transaction & call records pages
     if (props.account.account === transaction.account) {
-      formattedDeposits.unshift([
-        <span>
-          {transaction.date[0]} {transaction.date[1]}
-        </span>,
-        <span>{transaction.type}</span>,
-        <span>{transaction.added}</span>,
-        <span>${transVal.toFixed(2)}</span>,
-        // format balance so that it has parenthesis when negative and does not show a minus sign
-        <span>
-          {sum >= 0 ? "$" + sum.toFixed(2) : "($" + sum.toFixed(2) * -1 + ")"}
-        </span>,
-        <span
-          className={
-            transaction.fontColor ? transaction.fontColor : "black-text"
-          }
-        >
-          {transaction.comment}
-        </span>,
-      ]);
+      if (transaction.type === "CallUsage") {
+        // todo program in tax
+        const facility = props.facilities[transaction.facIndex];
+        const subId = transaction.subIndex
+          ? facility.subs[transaction.subIndex]
+          : facility.subs[0];
+        const orig = facility.orig
+          ? facility.orig
+          : props.returnRandomInt(1111111111, 9999999999);
+        const pin = facility.pin
+          ? facility.pin
+          : props.returnRandomInt(111111, 999999);
+        const rateIndex = transaction.rate ? transaction.rate : 5;
+        const rateType = facility.rates[rateIndex];
+        const minutes =
+          parseFloat(transaction.amount) > 0.0
+            ? parseInt(transaction.amount / rateType)
+            : 0;
+        const seconds =
+          minutes === 0 || minutes === 15 || minutes === 60
+            ? 0
+            : props.returnRandomInt(1, 30);
+        const feeIcon = `${process.env.PUBLIC_URL}/images/info_italic.png`;
+        const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
+        const startCode = minutes > 0 ? "D0" : "D5";
+        const endCode = minutes > 0 ? "HU" : "";
+        const callType = transaction.increase ? "H" : "D";
+        // todo clickable codes
+        // todo phone type
+        // todo listen to call icon & support
+        formattedCalls.unshift([
+          <span>
+            {transaction.date[0]} {transaction.date[1]}
+          </span>,
+          <span>
+            <strong>{subId}</strong>
+          </span>,
+          <span>{orig}</span>,
+          <span>
+            <strong>{pin}</strong>
+          </span>,
+          <span>
+            {minutes}m {seconds}s
+          </span>,
+          <span>${transaction.amount}</span>,
+          <span>$0.00</span>,
+          <span>${transaction.amount}</span>,
+          <img src={feeIcon} />,
+          <span>
+            <strong>{startCode}</strong>
+          </span>,
+          <span>
+            <strong>{endCode}</strong>
+          </span>,
+          <span>
+            <strong>{callType}</strong>
+          </span>,
+          <span>
+            <strong>{rateIndex}</strong>
+          </span>,
+          <span>Feature Disabled</span>,
+          <img src={researchIcon} />,
+          ,
+        ]);
+      }
+
+      if (transaction.amount === "0.00" && transaction.type === "CallUsage") {
+        // skip zero charge transactions
+      } else {
+        // update balance
+        sum = amount + sum;
+        formattedDeposits.unshift([
+          <span>
+            {transaction.date[0]} {transaction.date[1]}
+          </span>,
+          <span>{transaction.type}</span>,
+          <span>{transaction.added}</span>,
+          <span>${transVal.toFixed(2)}</span>,
+          // format balance so that it has parenthesis when negative and does not show a minus sign
+          <span>
+            {sum >= 0 ? "$" + sum.toFixed(2) : "($" + sum.toFixed(2) * -1 + ")"}
+          </span>,
+          <span
+            className={
+              transaction.fontColor ? transaction.fontColor : "black-text"
+            }
+          >
+            {transaction.comment}
+          </span>,
+        ]);
+      }
     }
   });
   balance = sum.toFixed(2);
@@ -651,6 +721,30 @@ export default function Main(props) {
     tbody: formattedDeposits,
   };
 
+  const callTransactions = {
+    thead: [
+      [
+        "Call Date",
+        "Sub ID",
+        "Orig",
+        "PIN",
+        "Duration",
+        "Bill Amt",
+        "Tax",
+        "Total Amt",
+        "Fees",
+        "Start Code",
+        "End Code",
+        "Call Type",
+        "Rate Type",
+        "Phone Type",
+        "Add Req",
+      ],
+    ],
+    tbody: formattedCalls,
+  };
+
+  console.log(callTransactions);
   if (props.page === "Account Summary") {
     return (
       <>
@@ -802,7 +896,12 @@ export default function Main(props) {
           date={props.date}
           fee={props.fee}
         />
-        <Table data={accountTransactions} page="as-comments" />
+        <Table
+          data={accountTransactions}
+          page="as-calls"
+          search="true"
+          message="No record(s) found."
+        />
       </>
     );
   } else if (props.page === "Refund") {
@@ -850,7 +949,6 @@ export default function Main(props) {
         Chargeback: { value: 0, count: 0 },
       }
     );
-    console.log(result);
     return (
       <div>
         <div>
@@ -908,6 +1006,22 @@ export default function Main(props) {
           </table>
         </div>
       </div>
+    );
+  } else if (props.page === "Call Records") {
+    return (
+      <>
+        <p className="w1076">
+          <strong>
+            NOTE: Only billing administrators are allowed to listen to call
+            recording. For advanced call recording playback features please
+            select and download the recording(s) and use the stand-alone{" "}
+            <a href="#">ActiveLPlayer</a> to listen to the file. For ICM calls
+            please click <a href="#">here</a> to download and install the ICMV
+            codec.
+          </strong>
+        </p>
+        <Table data={callTransactions} page="as-calls" search="true" />
+      </>
     );
   }
   {

@@ -223,6 +223,34 @@ td label {
   margin-bottom: 0.5rem;
 }
 
+.as-calls {
+  width: 1080px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.as-calls > thead > tr > td {
+  background: linear-gradient(
+    0deg,
+    rgb(201, 201, 201) 0%,
+    rgb(232, 232, 232) 100%
+  );
+  font-weight: bold;
+  height: 2rem;
+}
+
+.as-calls td {
+  padding: 0 0.5rem;
+}
+
+.as-calls td:first-child {
+  background-color: hsla(0, 0%, 40%, 0.1);
+}
+
+.as-calls tr:nth-child(even) {
+  background-color: hsla(0, 0%, 40%, 0.1);
+}
+
 .as-comments {
   width: 1080px;
   overflow: hidden;
@@ -582,6 +610,10 @@ td label {
 
 .w248 {
   width: 248px;
+}
+
+.w1076 {
+  width: 1076px;
 }
 
 .popup-refund {
