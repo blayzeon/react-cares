@@ -634,7 +634,6 @@ export default function Main(props) {
       const startCode = minutes > 0 ? "D0" : "D5";
       const endCode = minutes > 0 ? "HU" : "";
       const callType = transaction.increase ? "H" : "D";
-
       const content = {
         sub: (
           <ul>
@@ -695,9 +694,9 @@ export default function Main(props) {
               <tr>
                 <td>InterStateInterLata</td>
                 <td>0</td>
-                <td>{facility.rates[facIndex]}</td>
+                <td>{facility.rates[rateIndex]}</td>
                 <td>60</td>
-                <td>{facility.rates[facIndex]}</td>
+                <td>{facility.rates[rateIndex]}</td>
                 <td>60</td>
                 <td>1</td>
                 <td>0-99999</td>
@@ -873,7 +872,6 @@ export default function Main(props) {
     }
   });
   balance = sum.toFixed(2);
-
   const formattedComments = props.account.comments.length > 0 ? [] : false;
 
   props.account.comments.forEach((comment) => {

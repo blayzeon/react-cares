@@ -142,7 +142,7 @@
     "transaction": ["Post-Auth", "Payment"],
     "type": "Deposit",
     "added": "kristine.carter",
-    "comment": "GTL\\kristine.carter: Name Hasan Piker CCNum: 666666******4444:",
+    "comment": "GTL\\kristine.carter: Name Hasan Piker CCNum: 466666******4444:",
     "refunded": "false",
     "refundable": "true",
     "increase": "1",
