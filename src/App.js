@@ -511,6 +511,14 @@ function App(props) {
             refunds.push({ ...tran, ...refund });
             tran.refunded = true;
           }
+          const commentObj = {
+            date: formattedDate,
+            time: props.formatTime(date),
+            filter: "General",
+            comment: `new.trainee added refund request amount for ${tran.amount}. Transaction date: ${tran.date[0]} ${tran.date[1]}.`,
+            color: "black",
+          };
+          returnAccount.comment(commentObj);
         });
       }
       if (closure) {
