@@ -1307,8 +1307,56 @@ export default function Main(props) {
         </table>
       </div>
     );
-  }
-  {
+  } else if (props.page === "Alerts") {
+    // todo: add functionality
+    return (
+      <div>
+        <fieldset>
+          <legend>Low Balance and No Account IVR Alert</legend>
+          <div>
+            <label>Status: </label>
+            <select>
+              <option>Opt In</option>
+              <option>Temporary Opt Out</option>
+              <option>Permanent Opt Out</option>
+            </select>
+          </div>
+          <div>
+            <label>Cancelled Date: </label>-
+          </div>
+          <div>
+            <label>Restart Date: </label>-
+          </div>
+          <div>
+            <label>Application Name: </label>
+            <div></div>
+          </div>
+          <div>
+            <label>Modified By: </label>
+            <div></div>
+          </div>
+          <div>
+            <label>Comment: </label>
+            <div></div>
+          </div>
+          <div></div>
+        </fieldset>
+        <fieldset>
+          <legend>Low Balance Text Alert</legend>
+          <div>
+            <label>Status: </label>
+            <input type="checkbox" disabled="true" />
+          </div>
+          <div>
+            <label>Create Date: </label>
+          </div>
+          <div>
+            <label>Cancelled Date: </label>-
+          </div>
+        </fieldset>
+      </div>
+    );
+  } else {
     return <div>{props.page}</div>;
   }
 }
