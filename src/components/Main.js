@@ -849,6 +849,8 @@ export default function Main(props) {
       } else {
         // update balance
         sum = amount + sum;
+        // prevent a negative sign showing up for 0 dollar amounts
+        sum = sum.toFixed(2) == 0.0 ? Math.abs(sum) : sum;
         formattedDeposits.unshift([
           <span>
             {transaction.date[0]} {transaction.date[1]}
@@ -858,7 +860,9 @@ export default function Main(props) {
           <span>${transVal.toFixed(2)}</span>,
           // format balance so that it has parenthesis when negative and does not show a minus sign
           <span>
-            {sum >= 0 ? "$" + sum.toFixed(2) : "($" + sum.toFixed(2) * -1 + ")"}
+            {sum.toFixed(2) >= 0.0
+              ? "$" + sum.toFixed(2)
+              : "($" + sum.toFixed(2) * -1 + ")"}
           </span>,
           <span
             className={

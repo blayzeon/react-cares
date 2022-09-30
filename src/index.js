@@ -501,7 +501,7 @@ function generateData(index, account, type) {
       system: "CallUsage",
       inmate: inmate,
       date: [
-        getPreviousDate(),
+        creationDate,
         `${returnRandomInt(6, 11)}:${returnRandomInt(10, 59)}:${returnRandomInt(
           10,
           59
