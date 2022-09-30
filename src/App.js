@@ -441,11 +441,11 @@ function App(props) {
       return result;
     },
     refund: function (transArray, closure) {
-      // todo account closure support
       const current = transactions;
       const refunds = [];
       let sum = 0;
 
+      let commentObj = false;
       if (transArray[0] === "noCC") {
         const balance = transArray[1];
         transArray = [
@@ -464,14 +464,15 @@ function App(props) {
           },
         ];
         accounts[index].status = 3;
-        const commentObj = {
+
+        // no cc
+        commentObj = {
           date: formattedDate,
           time: props.formatTime(date),
           filter: "General",
-          comment: `new.trainee submitted non-credit card check refund for $${balance}. New available balance $0.00. Account status set to Blocked."`,
+          comment: `new.trainee submitted non-credit card check refund for $${balance}. New available balance $0.00. Account status set to Blocked.`,
           color: "black",
         };
-        returnAccount.comment(commentObj);
         closure = false;
       }
 
@@ -486,16 +487,20 @@ function App(props) {
         });
 
         accounts[index].status = 3;
-        const commentObj = {
-          date: formattedDate,
-          time: props.formatTime(date),
-          filter: "General",
-          comment: `new.trainee added Account Closure request for amount $${sum.toFixed(
-            2
-          )} Transaction date: ${formattedDate} ${props.formatTime()}.`,
-          color: "black",
-        };
-        returnAccount.comment(commentObj);
+        // account closure
+        commentObj = commentObj
+          ? commentObj
+          : (commentObj = {
+              date: formattedDate,
+              time: props.formatTime(date),
+              filter: "General",
+              comment: `new.trainee added Account Closure request for amount $${sum.toFixed(
+                2
+              )} Transaction date: ${transArray[0].date[0]} ${
+                transArray[0].date[1]
+              }.`,
+              color: "black",
+            });
       } else {
         transArray.forEach((tran) => {
           if (closure) {
@@ -511,16 +516,21 @@ function App(props) {
             refunds.push({ ...tran, ...refund });
             tran.refunded = true;
           }
-          const commentObj = {
-            date: formattedDate,
-            time: props.formatTime(date),
-            filter: "General",
-            comment: `new.trainee added refund request amount for ${tran.amount}. Transaction date: ${tran.date[0]} ${tran.date[1]}.`,
-            color: "black",
-          };
-          returnAccount.comment(commentObj);
+
+          // refund
+          commentObj = commentObj
+            ? commentObj
+            : (commentObj = {
+                date: formattedDate,
+                time: props.formatTime(date),
+                filter: "General",
+                comment: `new.trainee added refund request amount for ${tran.amount}. Transaction date: ${tran.date[0]} ${tran.date[1]}.`,
+                color: "black",
+              });
         });
       }
+
+      returnAccount.comment(commentObj);
       if (closure) {
         return current;
       } else {
