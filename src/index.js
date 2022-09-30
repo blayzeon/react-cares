@@ -32,7 +32,7 @@ function getPreviousDate(daysBack = 1, date = new Date()) {
   const previous = new Date(date.getTime());
   previous.setDate(date.getDate() - daysBack);
 
-  return formatDate(previous);
+  return previous;
 }
 const formattedDate = formatDate(date);
 
@@ -129,7 +129,8 @@ function generateData(index, account, type) {
       : type === "established"
       ? returnRandomInt(2, 7)
       : returnRandomInt(1, 3);
-  const creationDate = getPreviousDate(daysBack);
+  const oldDate = getPreviousDate(daysBack);
+  const creationDate = formatDate(oldDate);
   const streets = streetNames;
   const lec = [
     "",
@@ -385,6 +386,7 @@ function generateData(index, account, type) {
 
     // add calls to the account
     let callMinute = returnRandomInt(1, 30);
+    let totalCallCost = 0;
     for (let i = 0; i < returnRandomInt(1, 10); i += 1) {
       const duration = returnRandomInt(1, 15);
       const amount = facilities[facIndex].rates[rate - 1] * duration;
@@ -411,10 +413,37 @@ function generateData(index, account, type) {
         summary: "Call Usage",
       });
 
+      totalCallCost -= amount;
+
       callMinute += duration;
       if (callMinute > 60) {
         i = 99;
       }
+    }
+    if (type === "broken") {
+      const expireTotal = depositTotal + totalCallCost;
+      const recentDate = new Date();
+      recentDate.setDate(date.getDate() + 180);
+      const expireFunds = {
+        account: account,
+        system: "adjustment",
+        date: [
+          formatDate(recentDate),
+          `${randomHour}:${randomMinute + 1}:${
+            randomSecond + returnRandomInt(1, 10)
+          } PM`,
+        ],
+        amount: expireTotal.toString(),
+        type: "ExpFunds",
+        added: "Breakage AMES AdvancePay",
+        comment: "",
+        refunded: "false",
+        refundable: "false",
+        increase: "-1",
+        summary: "Exp Funds",
+      };
+      transactions.push(expireFunds);
+      console.log(expireFunds, transactions);
     }
   } else if (type === "partial") {
     const system =
@@ -539,7 +568,7 @@ const returnAccounts = () => {
 };
 
 returnAccounts();
-console.log(accounts);
+
 root.render(
   <React.StrictMode>
     <App
