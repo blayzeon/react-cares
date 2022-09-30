@@ -522,7 +522,7 @@
     ]
   },
   {
-    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/LCxx_Los%20Angeles%20County.xlsx?d=w07c9da6204024b79a90d7fceff2879f0&csf=1&web=1&e=Cv94uF",
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/LCxx_Los%20Angeles%20County.xlsx?d=w07c9da6204024b79a90d7fceff2879f0&csf=1&web=1&e=FvBZCC",
     "public": "Los Angeles County CA",
     "services": ["AdvancePay", "Video Visitation", "Visitation Scheduling"],
     "platform": "ICMv",
@@ -807,7 +807,7 @@
     ]
   },
   {
-    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Virginia/4Dxx_PCS_Middle%20River%20VA-Regional%20Jail.xlsx?d=w66e2498d8d1d443c973d81cc7c1bdf5f&csf=1&web=1&e=a3fte2",
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Virginia/4Dxx_PCS_Middle%20River%20VA-Regional%20Jail.xlsx?d=w66e2498d8d1d443c973d81cc7c1bdf5f&csf=1&web=1&e=LFAkSh",
     "services": ["AdvancePay", "Trust", "Messaging", "Debit Link"],
     "platform": "ICMv",
     "system": "DSI-ITI",
@@ -818,5 +818,18 @@
     "subs": ["4D01"],
     "ids": ["6106"],
     "centers": ["8106"]
+  },
+  {
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Florida/JPxx_Santa%20Rosa%20Co%20Jail_FL.xlsx?d=w13b66104aeed4ddcb1fe12f119bd3686&csf=1&web=1&e=eu1e9p",
+    "services": ["AdvancePay"],
+    "platform": "ICMv",
+    "system": "GTL",
+    "rates": [0.0, 0.0, 0.21, 0.21, 0.21, 0.21, 0.21, 0.21, 0.21],
+    "fees": [5.95, 3.0, 6.95],
+    "names": ["SANTA ROSA COUNTY FL-JAIL"],
+    "public": "Santa Rosa County FL-Jail",
+    "subs": ["JP10"],
+    "ids": ["9217"],
+    "centers": ["8138"]
   }
 ]

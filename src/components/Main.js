@@ -617,8 +617,9 @@ export default function Main(props) {
         : ["unknown", "unknown"];
       const facIndex = transaction.facIndex ? transaction.facIndex : 0;
       const facility = props.facilities[facIndex];
-      const subId = facility.subs[facIndex];
-      const orig = facility.orig ? facility.orig[facIndex] : "8005551234";
+      const subIndex = transaction.subIndex ? transaction.subIndex : 0;
+      const subId = facility.subs[subIndex];
+      const orig = facility.orig ? facility.orig[subIndex] : "8005551234";
       const rateIndex = transaction.rate ? transaction.rate : 5;
       const rateType = facility.rates[rateIndex];
       const minutes =
@@ -633,7 +634,7 @@ export default function Main(props) {
       const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
       const startCode = minutes > 0 ? "D0" : "D5";
       const endCode = minutes > 0 ? "HU" : "";
-      const callType = transaction.increase ? "H" : "D";
+      const callType = transaction.callType ? transaction.callType : "H";
       const content = {
         sub: (
           <ul>
@@ -643,7 +644,7 @@ export default function Main(props) {
             </li>
             <li>
               <strong>Site ID: </strong>
-              {subId}
+              {facility.ids[subIndex]}
             </li>
             <li>
               <strong>Cost Center: </strong>
@@ -773,6 +774,9 @@ export default function Main(props) {
         CH: <span>Customer Hungup</span>,
         H: <span>Prepaid</span>,
         D: <span>Debit</span>,
+        X: <span>Advance Pay One Call</span>,
+        0: <span>Free, Operator Default, Misc</span>,
+        9: <span>Collect Station to Station</span>,
       };
       if (transaction.type === "CallUsage") {
         const handleOpenPopup3 = (e) => {
@@ -844,7 +848,10 @@ export default function Main(props) {
         ]);
       }
 
-      if (transaction.amount === "0.00" && transaction.type === "CallUsage") {
+      if (
+        (transaction.amount === "0.00" && transaction.type === "CallUsage") ||
+        transaction.callType === "X"
+      ) {
         // skip zero charge transactions
       } else {
         // update balance
