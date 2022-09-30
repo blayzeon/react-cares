@@ -884,6 +884,11 @@ function App(props) {
     if (index === 0) {
       return;
     }
+    console.log("--- NEW ACCOUNT ---");
+    const accTrans = transactions.filter(
+      (tran) => tran.account === accounts[index].account
+    );
+    console.log(accounts[index], accTrans);
     const msg = returnLoadAlert(accounts[index].account, "updated");
     setAlert(msg);
     const data = returnSavedAccount();

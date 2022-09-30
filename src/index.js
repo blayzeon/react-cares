@@ -443,7 +443,6 @@ function generateData(index, account, type) {
         summary: "Exp Funds",
       };
       transactions.push(expireFunds);
-      console.log(expireFunds, transactions);
     }
   } else if (type === "partial") {
     const system =

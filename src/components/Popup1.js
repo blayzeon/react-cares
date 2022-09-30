@@ -11,10 +11,13 @@ export default function Popup1(props) {
         other: false,
       };
 
-  const containerClass = elm.style
+  let containerClass = elm.style
     ? elm.style + " " + "popup wide"
     : "popup wide";
 
+  containerClass = props.visible
+    ? containerClass
+    : containerClass + " display-none";
   const handleClose = () => {
     props.setIsOpen(false);
   };
@@ -28,7 +31,7 @@ export default function Popup1(props) {
     }
   };
 
-  return props.visible ? (
+  return (
     <div className={containerClass} data-popup={elm.type}>
       <div className="space-between">
         {elm.top}
@@ -45,5 +48,5 @@ export default function Popup1(props) {
         {elm.other ? elm.other : null}
       </span>
     </div>
-  ) : null;
+  );
 }

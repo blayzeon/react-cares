@@ -5,6 +5,8 @@ export default function Popup3(props) {
     props.setIsOpen(false);
   };
 
+  const containerClass = props.visible ? "popup3" : "popup3 display-none";
+
   const rect = props.visible ? props.visible.getBoundingClientRect() : false;
   const style = rect
     ? {
@@ -12,10 +14,10 @@ export default function Popup3(props) {
         top: rect.y + "px",
       }
     : { visible: "hidden" };
-  return props.visible ? (
-    <div className="popup3" style={style}>
+  return (
+    <div className={containerClass} style={style}>
       <div onClick={handleClose}>x</div>
       <div className="popup3-content">{props.content}</div>
     </div>
-  ) : null;
+  );
 }

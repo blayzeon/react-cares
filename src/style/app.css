@@ -31,7 +31,7 @@ input[type="date"] {
 }
 
 .display-none {
-  display: none;
+  display: none !important;
 }
 
 .flex {

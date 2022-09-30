@@ -24,16 +24,16 @@ export default function Popup4(props) {
     </div>
   );
 
-  return props.visible ? (
-    props.content ? (
-      <div className="popup4">
-        {props.content}
-        <div>
-          <button onClick={handleClose}>Close</button>
-        </div>
+  const containerClass = props.visible ? "popup4" : "popup4 display-none";
+
+  return props.content ? (
+    <div className={containerClass}>
+      {props.content}
+      <div>
+        <button onClick={handleClose}>Close</button>
       </div>
-    ) : (
-      <div className="popup4">{createContent}</div>
-    )
-  ) : null;
+    </div>
+  ) : (
+    <div className={containerClass}>{createContent}</div>
+  );
 }
