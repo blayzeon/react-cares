@@ -4,11 +4,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Features
 
-- View accounts
+- Search/view accounts
 - Save accounts
 - Edit accounts
 - Adjust balance
 - Add deposits
 - Submit refunds
 - View account transactions
-- View credit card transactions
+- Search/view credit card transactions
+- View call records
+- Add comments
+- Edit policies
+- Block/unblock accounts
+- View facility rates
+- Generate account data (including transactions and calls)

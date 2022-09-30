@@ -6,12 +6,12 @@ export default function Sidebar(props) {
 
   const info = () => {
     const msg = `Created by Kristine Carter for ConnectNetwork training purposes. \n
-    Current features include: \n
-    * Create accounts \n
-    * Load accounts \n
-    * Save accounts \n
-    * Add comments \n
-    * Adjust balance on accounts`;
+    Pre-made accounts: \n
+    * 2085551100 - 2085554499 \n
+    * Last 4 of 1100-1199 are new accounts \n
+    * Last 4 of 2200-2299 are partial accounts n
+    * Last 4 of 3300-3399 are broken accounts  \n
+    * Last 4 of 4400-4499 are established accounts  `;
     alert(msg);
   };
 
