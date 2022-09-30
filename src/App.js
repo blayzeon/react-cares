@@ -700,7 +700,8 @@ function App(props) {
   const updatePageCss = (link) => {
     if (page === "Account Summary") {
       const isTrue = (value) => value === true;
-      let setActive = Object.values(accounts[index].policies).every(isTrue);
+      const policyCopy = { ...accounts[index].policies, exp90: true };
+      const setActive = Object.values(policyCopy).every(isTrue);
 
       if (setActive === true) {
         setPolBtnClass("active");
