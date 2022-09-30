@@ -146,7 +146,7 @@ function generateData(index, account, type) {
   const addressIndex = returnRandomInt(0, address.length);
   const passcode = returnRandomInt(1111, 9999);
   const depositAmt = returnRandomInt(15, 50);
-  const facIndex = returnRandomInt(0, facilities.length);
+  const facIndex = returnRandomInt(1, facilities.length);
   const rate = returnRandomInt(5, 7);
   const fee =
     facilities[facIndex].fees[0] === 0
