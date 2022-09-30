@@ -927,6 +927,22 @@ function App(props) {
     setPolOpen(true);
   };
 
+  const onReloadToggle = () => {
+    const newAccounts = accounts;
+    const newReload = {
+      enabled: false,
+      cancel: formattedDate,
+      credit: "0.00",
+    };
+
+    newAccounts[index].autoReload = {
+      ...newAccounts[index].autoReload,
+      ...newReload,
+    };
+
+    setAccounts([...accounts, ...newAccounts]);
+  };
+
   const onPolSubmit = (polObj) => {
     if (index === 0) {
       return false;
@@ -1139,6 +1155,7 @@ function App(props) {
             refund={returnTransaction.refund}
             resetClosure={returnTransaction.reset}
             returnRandomInt={props.returnRandomInt}
+            cancelAutoReload={onReloadToggle}
           />
         </div>
       </div>

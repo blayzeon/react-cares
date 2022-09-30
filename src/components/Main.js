@@ -1009,7 +1009,10 @@ export default function Main(props) {
               <a href="#">$0.00</a>
             </p>
             <p>
-              <strong>Liability Limit: </strong>$0.00
+              <strong>Liability Limit: </strong>$
+              {props.account.autoReload
+                ? props.account.autoReload.credit
+                : "0.00"}
             </p>
           </div>
           <div key={props.account.index + uuid()}>
@@ -1223,6 +1226,86 @@ export default function Main(props) {
           hidden={true}
         />
       </>
+    );
+  } else if (props.page === "TAG Comments") {
+    return (
+      <Table
+        data={{ tbody: false, thead: false }}
+        page="as-calls"
+        search="true"
+        message="No record(s) found."
+      />
+    );
+  } else if (props.page === "Statements") {
+    return (
+      <div>
+        <p>
+          <strong>Click on the invoice date to view customer invoice.</strong>
+        </p>
+        <p className="red-text">No invoice(s) found for this customer.</p>
+      </div>
+    );
+  } else if (props.page === "Auto Reload") {
+    const handleAutoReloadClick = (e) => {
+      // todo change to popup2?
+      const isChecked = e.target.checked;
+      const a = window.confirm(
+        "Are you sure you want to disable low balance auto reload?"
+      );
+      if (a) {
+        e.target.disabled = true;
+        props.cancelAutoReload();
+      } else {
+        e.target.checked = !isChecked;
+      }
+    };
+
+    return (
+      <div>
+        {props.account.autoReload ? null : (
+          <p className="blue-text">
+            The current destination does not have auto reload configured.
+          </p>
+        )}
+        <table className="table-auto-reload">
+          <thead>
+            <tr>
+              <th>Reload Type</th>
+              <th>Enabled</th>
+              <th>LB Amount</th>
+              <th>Active Date</th>
+              <th>Expiration Date</th>
+              <th>Cancelled Date</th>
+              <th>Amount</th>
+              <th>CC Number</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {props.account.autoReload ? (
+                <>
+                  <td>{props.account.autoReload.type}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={props.account.autoReload.enabled}
+                      onClick={handleAutoReloadClick}
+                    />
+                  </td>
+                  <td>${props.account.autoReload.lbAmount}</td>
+                  <td>{props.account.autoReload.active}</td>
+                  <td>{props.account.autoReload.expire}</td>
+                  <td>{props.account.autoReload.cancel}</td>
+                  <td>${props.account.autoReload.amount}</td>
+                  <td>{props.account.autoReload.cc}</td>
+                  <td>{props.account.autoReload.source}</td>
+                </>
+              ) : null}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     );
   }
   {

@@ -191,6 +191,18 @@
     "type": 1,
     "created": true,
     "indicator": 0,
+    "autoReload": {
+      "type": "AP Low Balance",
+      "enabled": true,
+      "lbAmount": "2.99",
+      "active": "9/30/2022",
+      "expire": "12/29/2049",
+      "cancel": "",
+      "amount": "30.00",
+      "cc": "4444",
+      "source": "ConnectNetwork",
+      "credit": "5.00"
+    },
     "comments": [
       {
         "date": "9/27/2022",

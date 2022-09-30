@@ -383,6 +383,19 @@ td label {
   border: none !important;
 }
 
+.table-auto-reload {
+  border-collapse: collapse;
+}
+.table-auto-reload thead tr {
+  background-color: #1d355d;
+  color: white;
+}
+
+.table-auto-reload td,
+.table-auto-reload th {
+  padding: 0 1rem;
+}
+
 .popup4 {
   position: fixed;
   z-index: 1;
