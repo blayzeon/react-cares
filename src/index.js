@@ -34,6 +34,14 @@ function getPreviousDate(daysBack = 1, date = new Date()) {
 
   return previous;
 }
+
+function getFutureDate(daysBack = 1, date = new Date()) {
+  const future = new Date(date.getTime());
+  future.setDate(date.getDate() + daysBack);
+
+  return future;
+}
+
 const formattedDate = formatDate(date);
 
 const formatTime = (d = date) => {
@@ -131,6 +139,8 @@ function generateData(index, account, type) {
       : returnRandomInt(1, 3);
   const oldDate = getPreviousDate(daysBack);
   const creationDate = formatDate(oldDate);
+  const expireDate = getFutureDate(180, oldDate);
+  const formattedExpireDate = formatDate(expireDate);
   const streets = streetNames;
   const lec = [
     "",
@@ -422,13 +432,11 @@ function generateData(index, account, type) {
     }
     if (type === "broken") {
       const expireTotal = depositTotal + totalCallCost;
-      const recentDate = new Date();
-      recentDate.setDate(date.getDate() + 180);
       const expireFunds = {
         account: account,
         system: "adjustment",
         date: [
-          formatDate(recentDate),
+          formattedExpireDate,
           `${randomHour}:${randomMinute + 1}:${
             randomSecond + returnRandomInt(1, 10)
           } PM`,
