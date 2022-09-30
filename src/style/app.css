@@ -291,8 +291,8 @@ td label {
 .as-comments > thead > tr > td {
   background: linear-gradient(
     0deg,
-    rgb(162, 162, 162) 0%,
-    rgb(255, 255, 255) 100%
+    rgb(201, 201, 201) 0%,
+    rgb(232, 232, 232) 100%
   );
   font-weight: bold;
 }
@@ -301,8 +301,8 @@ td label {
   width: 164px;
   background: linear-gradient(
     0deg,
-    rgb(137, 137, 137) 0%,
-    rgb(218, 218, 218) 100%
+    rgb(152, 152, 152) 0%,
+    rgb(232, 232, 232) 100%
   );
   font-weight: bold;
 }
