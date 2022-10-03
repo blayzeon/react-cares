@@ -648,7 +648,7 @@ export default function Main(props) {
             </li>
             <li>
               <strong>Cost Center: </strong>
-              {facility.centers[facIndex]}
+              {facility.centers[subIndex]}
             </li>
             <li>
               <strong>Inmate System: </strong>

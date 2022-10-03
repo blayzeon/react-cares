@@ -28,6 +28,7 @@ function paymentInput(inputObj) {
 
 export default function PopupPayment(props) {
   const FEE_PERCENTAGE = 0.0325;
+  const DEFAULT_FEE = 5.95;
 
   const submitDeposit = () => {
     const amount = document.querySelector("#as-cc-deposit-amount");
@@ -98,23 +99,26 @@ export default function PopupPayment(props) {
         summary: "Fees",
       };
 
-      const fee2 = {
-        account: props.account.account,
-        system: "3rdPartyFinancialTransactionFee",
-        date: [props.date, props.time()],
-        status: "APPROVED",
-        amount: amount.valueAsNumber * FEE_PERCENTAGE,
-        type: "3rdPartyFinancialTransactionFee",
-        added: "CARES",
-        comment: "",
-        refunded: "false",
-        refundable: "false",
-        increase: "-1",
-        summary: "Fees",
-      };
+      if (props.fee === 5.95) {
+        const fee2 = {
+          account: props.account.account,
+          system: "3rdPartyFinancialTransactionFee",
+          date: [props.date, props.time()],
+          status: "APPROVED",
+          amount: amount.valueAsNumber * FEE_PERCENTAGE,
+          type: "3rdPartyFinancialTransactionFee",
+          added: "CARES",
+          comment: "",
+          refunded: "false",
+          refundable: "false",
+          increase: "-1",
+          summary: "Fees",
+        };
+
+        deposits.push(fee2);
+      }
 
       deposits.push(fee1);
-      deposits.push(fee2);
     }
 
     deposits.push(deposit);
