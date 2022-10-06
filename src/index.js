@@ -567,13 +567,14 @@ const returnAccounts = () => {
     const newAccount = generateData(accounts.length, account, type);
 
     accounts.push(newAccount);
-    if (i > 99) {
+    if (i === 99) {
       section += 11;
       i = 0;
     }
   }
 };
-
+console.log("--- ACCOUNTS ---", accounts);
+console.log("--- TRANSACTIONS ---", transactions);
 returnAccounts();
 
 root.render(

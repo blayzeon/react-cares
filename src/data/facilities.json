@@ -1,15 +1,16 @@
 [
   {
-    "link": "",
-    "services": ["AdvancePay"],
+    "subs": [],
+    "public": "",
+    "ids": [],
+    "centers": [],
     "platform": "",
     "system": "",
+    "link": "",
+    "services": ["AdvancePay"],
     "rates": [0.0, 0.0],
     "fees": [5.95, 3.0, 5.95],
-    "names": [],
-    "subs": [],
-    "ids": [],
-    "centers": []
+    "names": []
   },
   {
     "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Ohio/OHxx_OH_DOCs.xlsx?d=w97c42b3ab1bf45f69c58a792621a929a&csf=1&web=1&e=Knh3zS",
@@ -820,16 +821,51 @@
     "centers": ["8106"]
   },
   {
-    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Florida/JPxx_Santa%20Rosa%20Co%20Jail_FL.xlsx?d=w13b66104aeed4ddcb1fe12f119bd3686&csf=1&web=1&e=eu1e9p",
-    "services": ["AdvancePay"],
+    "subs": ["OG10", "OG11", "OG15", "OG14", "OG12", "OG16", "OG13"],
+    "public": ["Orange County CA"],
+    "ids": ["7150", "7151", "7152", "7153", "7154", "7156", "7155"],
+    "centers": ["5697", "5695", "5692", "5694", "5696", "5832", "5693"],
     "platform": "ICMv",
     "system": "GTL",
-    "rates": [0.0, 0.0, 0.21, 0.21, 0.21, 0.21, 0.21, 0.21, 0.21],
-    "fees": [5.95, 3.0, 6.95],
-    "names": ["SANTA ROSA COUNTY FL-JAIL"],
-    "public": "Santa Rosa County FL-Jail",
-    "subs": ["JP10"],
-    "ids": ["9217"],
-    "centers": ["8138"]
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/OGxx_Orange%20Co_CA.xlsx?d=w7672f0424ac449feb3fb9da82752fdc8&csf=1&web=1&e=AYQKxF",
+    "services": ["AdvancePay"],
+    "rates": [0.0, 0.0, 0.07, 0.07, 0.07, 0.07, 0.07],
+    "fees": [0.0, 0.0, 0.0],
+    "names": [
+      "ORANGE COUNTY - CENTRAL JAIL COMPLEX",
+      "ORANGE COUNTY - JAMES MUSIK",
+      "ORANGE COUNTY - JOPLIN YOUTH CENTER",
+      "ORANGE COUNTY - JUVENILE  HALL",
+      "ORANGE COUNTY - LOS PINOS JUVENILE",
+      "ORANGE COUNTY - THEO LACY",
+      "ORANGE COUNTY - WESTERN MEDICAL CENTER WARD",
+      "ORANGE COUNTY - YOUTH GUIDANCE"
+    ]
+  },
+  {
+    "subs": ["LE01"],
+    "public": "Berrien County MI-Jail",
+    "ids": ["6729"],
+    "centers": ["5592"],
+    "platform": "ICMv",
+    "system": "GTL",
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Michigan/LFxx_Berrien%20Co%20Jail_MI.xlsx?d=w76dcf0ed524246e4a50da9ec5c2c053e&csf=1&web=1&e=flkbaW",
+    "services": ["AdvancePay", "Trust", "Visitation Scheduling"],
+    "rates": [0.0, 0.0, 0.65, 0.65, 1.1, 1.1, 0.21, 0.21],
+    "fees": [5.95, 3.0, 5.95],
+    "names": ["BERRIEN COUNTY JAIL"]
+  },
+  {
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20New%20York/GBxx_Dutchess%20County%20NY.xlsx?d=wfe707efeac7a49baa041a1696a2aae2b&csf=1&web=1&e=3UUg0q",
+    "services": ["AdvancePay", "Messaging"],
+    "platform": "ICMv",
+    "system": "GTL",
+    "rates": [0.0, 0.0, 0.15, 0.15, 0.15, 0.15, 0.15],
+    "fees": [4.75, 3.0, 4.75],
+    "names": ["NYSSA - DUTCHESS COUNTY JAIL"],
+    "public": "Dutchess County NY-County Jail",
+    "subs": ["GB02"],
+    "ids": ["6582"],
+    "centers": ["X341"]
   }
 ]
