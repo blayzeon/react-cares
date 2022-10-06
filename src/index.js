@@ -423,7 +423,7 @@ function generateData(index, account, type) {
         summary: "Call Usage",
       });
 
-      totalCallCost -= amount;
+      totalCallCost -= amount.toFixed(2);
 
       callMinute += duration;
       if (callMinute > 60) {
