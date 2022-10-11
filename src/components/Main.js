@@ -640,7 +640,7 @@ export default function Main(props) {
           <ul>
             <li>
               <strong>Full Name: </strong>
-              {facility.public}
+              {facility.names[facIndex]}
             </li>
             <li>
               <strong>Site ID: </strong>

@@ -157,8 +157,8 @@
     "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/CA-DOC_CA-DJJ_CA-TTY.xlsx?d=wa35f9aa8c4e0410cb9cc92b02aff27fd&csf=1&web=1&e=1YFhst",
     "public": "California DOC",
     "services": ["AdvancePay", "Trust", "Community Corrections"],
-    "platform": "VAC",
-    "system": "Focus Centralized HMP",
+    "platform": "Focus Centralized HMP",
+    "system": "GTL",
     "rates": [0.0, 0.0, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025],
     "fees": [0.0, 0.0, 0.0],
     "names": [
