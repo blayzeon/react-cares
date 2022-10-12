@@ -577,9 +577,9 @@ const returnAccounts = () => {
 /*
  random account generation 
 returnAccounts();
-*/
 console.log("--- ACCOUNTS ---", accounts);
 console.log("--- TRANSACTIONS ---", transactions);
+*/
 
 root.render(
   <React.StrictMode>
