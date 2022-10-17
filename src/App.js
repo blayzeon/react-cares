@@ -1155,6 +1155,7 @@ function App(props) {
             refund={returnTransaction.refund}
             resetClosure={returnTransaction.reset}
             returnRandomInt={props.returnRandomInt}
+            returnMixedInt={props.returnMixedInt}
             cancelAutoReload={onReloadToggle}
           />
         </div>

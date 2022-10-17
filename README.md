@@ -19,7 +19,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - View facility rates
 - Generate account data (including transactions and calls)
 
-todo
+todo ✔️
 deadline 17th
 
 - githieya settlement dollars
@@ -48,5 +48,5 @@ deadline 17th
 - L601 (partial), L287, D5s (new D5s, old D5s), BZs (line reset was done),
 - complete bna with no call history
 - dropped calls (HU/CH) over 5min/under 5min (x4 total)
-- lots of dropped calls, some eligable, some not
+- lots of dropped calls, some eligible, some not
 - 1 minute free call (TO)

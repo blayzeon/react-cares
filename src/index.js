@@ -8,6 +8,8 @@ import firstNames from "./data/firstNames.json";
 import lastNames from "./data/lastNames.json";
 import streetNames from "./data/streetNames.json";
 import address from "./data/cityStateZip.json";
+import adjectives from "./data/adjectives.json";
+import nouns from "./data/nouns.json";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const accounts = accountData;
@@ -17,6 +19,25 @@ function returnRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+function returnMixedInt(seed, minDigit = 0, maxDigit = 9999) {
+  let result = seed;
+  while (result > maxDigit) {
+    result = result * 0.5;
+  }
+
+  result = parseInt(result);
+
+  while (result < minDigit) {
+    result = result * 2;
+  }
+
+  if (result < maxDigit) {
+    return result;
+  } else {
+    return minDigit;
+  }
 }
 
 // todo - have cc refunds show in cc auths and not disappear
@@ -58,85 +79,42 @@ const formatTime = (d = date) => {
 };
 
 function generateData(index, account, type) {
-  const generateEmailAddress = (name = false) => {
-    const adjectives = [
-      "cute",
-      "hottie",
-      "cool",
-      "army",
-      "sxc",
-      "mc",
-      "mamma",
-      "phat",
-      "former",
-      "inmate",
-      "blushing",
-      "happy",
-      "baby",
-    ];
-    const spacers = ["xxx", "_", ".", "", "", "", ""];
-    const nouns = [
-      "princess",
-      "af",
-      "gurl",
-      "gamergod",
-      "gamer",
-      "kitten",
-      "bunny",
-      "lover",
-      "of6",
-      "dog",
-      "angel",
-      "devil",
-    ];
-    let number = returnRandomInt(0, 10000);
-    // make "funny" numbers slightly more likely
-    number = number > 59 && number < 70 ? 69 : number;
-    number = number > 400 && number < 500 ? 420 : number;
-    number = number > 39 && number < 50 ? 42 : number;
-    number = number > 1300 && number < 1400 ? 1337 : number;
+  function sliceNum(numberToSlice, firstIndex, secondIndex) {
+    const num = numberToSlice;
+    const lastDigit2Str = secondIndex
+      ? String(num).slice(firstIndex, secondIndex)
+      : String(num).slice(firstIndex);
+    const lastDigit2Num = Number(lastDigit2Str);
+    return parseInt(lastDigit2Num);
+  }
 
-    const domain = [
-      "cox.net",
-      "comcast.net",
-      "mail.com",
-      "aol.com",
-      "hotmail.com",
-      "outlook.com",
-      "gmail.com",
-      "icloud.com",
-      "yahoo.com",
-      "protonmail.com",
-      "zoho.com",
-      "titan.email",
-      "gmx.com",
-      "hubspot.com",
-      "tutanota.com",
-    ];
-    let generatedEmail = `${adjectives[returnRandomInt(0, adjectives.length)]}${
-      spacers[returnRandomInt(0, spacers.length)]
-    }${nouns[returnRandomInt(0, nouns.length)]}${
-      number > 9999 ? null : number
-    }`;
+  const lastIndex = sliceNum(index, -1);
+  const seed = parseInt(lastIndex) * date.getDate();
+
+  const generateEmailAddress = (name = false) => {
+    const adjIndex = adjectives[seed] ? seed : lastIndex;
+    const nounsIndex = nouns[seed] ? seed : lastIndex;
+    const emailNumber = seed;
+    let generatedEmail = `${adjectives[adjIndex]}.${nouns[nounsIndex]}${emailNumber}`;
 
     if (name) {
       generatedEmail =
-        returnRandomInt(0, 2) === 0
-          ? `${name[0]}${spacers[returnRandomInt(0, spacers.length)]}${name[1]}`
-          : generatedEmail;
+        index % 2 === 0 ? `${name[0]}.${name[1]}` : generatedEmail;
+    } else {
+      generatedEmail = false;
     }
 
-    return `${generatedEmail.toLowerCase()}@${
-      domain[returnRandomInt(0, domain.length)]
-    }`;
+    return generatedEmail === false
+      ? ""
+      : `${generatedEmail.toLowerCase()}@customer.com`;
   };
 
   const daysBack =
     type === "broken"
-      ? returnRandomInt(180, 999)
+      ? 180
       : type === "established"
-      ? returnRandomInt(2, 7)
-      : returnRandomInt(1, 3);
+      ? returnMixedInt(index, 2, 7)
+      : returnMixedInt(index, 1, 3);
   const oldDate = getPreviousDate(daysBack);
   const creationDate = formatDate(oldDate);
   const expireDate = getFutureDate(180, oldDate);
@@ -151,13 +129,13 @@ function generateData(index, account, type) {
     "MCIMETRO ATS LLC",
     "",
   ];
-  const fNameIndex = returnRandomInt(0, firstNames.length);
-  const lNameIndex = returnRandomInt(0, lastNames.length);
-  const addressIndex = returnRandomInt(0, address.length);
-  const passcode = returnRandomInt(1111, 9999);
-  const depositAmt = returnRandomInt(15, 50);
-  const facIndex = returnRandomInt(1, facilities.length);
-  const rate = returnRandomInt(5, 7);
+  const fNameIndex = returnMixedInt(index, 0, firstNames.length - 1);
+  const lNameIndex = returnMixedInt(index, 0, lastNames.length - 1);
+  const addressIndex = returnMixedInt(index, 0, address.length);
+  const passcode = sliceNum(account, 5, -1);
+  const depositAmt = returnMixedInt(index, 15, 50);
+  const facIndex = returnMixedInt(index, 1, facilities.length);
+  const rate = returnMixedInt(index, 5, 7);
   const fee =
     facilities[facIndex].fees[0] === 0
       ? "0.00"
@@ -188,7 +166,7 @@ function generateData(index, account, type) {
     exempt: false,
     notes: "",
     au: "",
-    lec: lec[returnRandomInt(0, lec.length)],
+    lec: lec[returnMixedInt(index, 0, lec.length)],
     facility: 0,
     facilities: [],
     policies: {
@@ -212,8 +190,8 @@ function generateData(index, account, type) {
       last: lastNames[lNameIndex],
     },
     address: {
-      one: `${returnRandomInt(11, 9999)} ${
-        streets[returnRandomInt(0, streets.length)]
+      one: `${returnMixedInt(index, 111, 9999)} ${
+        streets[returnMixedInt(index, 0, streets.length)]
       }`,
       two: "",
       zip: address[addressIndex].zip,
@@ -232,9 +210,9 @@ function generateData(index, account, type) {
     type: 1,
   };
 
-  const randomHour = returnRandomInt(1, 11);
-  const randomMinute = returnRandomInt(10, 34);
-  const randomSecond = returnRandomInt(10, 49);
+  const randomHour = returnMixedInt(index, 1, 11);
+  const randomMinute = returnMixedInt(index, 11, 34);
+  const randomSecond = returnMixedInt(index, 10, 49);
   const established = {
     ...partial,
     ...{
@@ -249,49 +227,35 @@ function generateData(index, account, type) {
       comments: [
         {
           date: creationDate,
-          time: `${returnRandomInt(12, 11)}:${randomMinute}:${returnRandomInt(
-            10,
-            59
-          )} PM`,
+          time: `${randomHour}:${randomMinute - 1}:${randomSecond} PM`,
           filter: "general",
           comment: "CARES User kristine.carter accessed account.",
           color: "black",
         },
         {
           date: creationDate,
-          time: `${returnRandomInt(12, 11)}:${randomMinute}:${returnRandomInt(
-            10,
-            59
-          )} PM`,
+          time: `${randomHour}:${randomMinute + 5}:${randomSecond + 5} PM`,
           filter: "general",
           comment: `kristine.carter updated the account attribute for PCCellPhone to true.`,
           color: "red",
         },
         {
           date: creationDate,
-          time: `${returnRandomInt(12, 11)}:${randomMinute}:${returnRandomInt(
-            10,
-            59
-          )} PM`,
+          time: `${randomHour}:${randomMinute + 5}:${randomSecond + 7} PM`,
           filter: "general",
           comment: `kristine.carter updated the account attribute for PCServiceFees to true.`,
           color: "red",
         },
         {
           date: creationDate,
-          time: `${returnRandomInt(12, 11)}:${randomMinute}:${returnRandomInt(
-            10,
-            59
-          )} PM`,
+          time: `${randomHour}:${randomMinute + 5}:${randomSecond + 9} PM`,
           filter: "general",
           comment: `kristine.carter updated the account attribute for PC180DaysAccountExpiration to true.`,
           color: "red",
         },
         {
           date: creationDate,
-          time: `${returnRandomInt(12, 11)}:${
-            randomMinute + returnRandomInt(5, 15)
-          }:${returnRandomInt(10, 59)} PM`,
+          time: `${randomHour}:${randomMinute + 6}:${randomSecond + 3} PM`,
           filter: "general",
           comment: `kristine.carter cx ${firstNames[fNameIndex]} ${
             lastNames[lNameIndex]
@@ -304,16 +268,16 @@ function generateData(index, account, type) {
     },
   };
 
-  const first5 = returnRandomInt(1111, 9999);
-  const first1 = returnRandomInt(0, 2) === 0 ? "5" : "4";
+  const first5 = returnMixedInt(index, 1111, 9999);
+  const first1 = returnMixedInt(index, 1111, 9999) === 0 ? "5" : "4";
   const first6 = first1.toString() + first5.toString();
-  const last4 = returnRandomInt(1111, 9999);
+  const last4 = returnMixedInt(index, 1111, 9999);
   const futureDate = new Date();
   const inmate = {
-    id: returnRandomInt(111111, 99999999),
+    id: returnMixedInt(index, 111111, 99999999),
     name: [
-      firstNames[returnRandomInt(0, firstNames.length)],
-      lastNames[returnRandomInt(0, lastNames.length)],
+      firstNames[returnMixedInt(index, 0, firstNames.length)],
+      lastNames[returnMixedInt(index, 0, lastNames.length)],
     ],
   };
   futureDate.setDate(date.getDate() + 365);
@@ -326,7 +290,7 @@ function generateData(index, account, type) {
         system: "CARES",
         date: [
           creationDate,
-          `${randomHour}:${randomMinute}:${returnRandomInt(10, 59)} PM`,
+          `${randomHour}:${randomMinute}:${returnMixedInt(index, 10, 59)} PM`,
         ],
         status: "APPROVED",
         amount: "0.00",
@@ -347,16 +311,16 @@ function generateData(index, account, type) {
         ],
         cc: [first6, last4],
         exp: [
-          `0${returnRandomInt(1, 9)}`,
+          `0${returnMixedInt(index, 1, 9)}`,
           futureDate.getFullYear().toString().slice(-2),
         ],
         status: "APPROVED",
         amount: depositAmt.toFixed(2),
         code: [
-          returnRandomInt(1111111111111, 9999999999999),
-          returnRandomInt(111111, 999999),
+          returnMixedInt(index, 1111111111111, 9999999999999),
+          returnMixedInt(index, 111111, 999999),
         ],
-        order: [`D${returnRandomInt(1111111111, 9999999999)}`, ""],
+        order: [`D${returnMixedInt(index, 1111111111, 9999999999)}`, ""],
         reject: ["ACCEPT", "00"],
         vendor: ["ReD", "PaymenTech"],
         transaction: ["Post-Auth", "Payment"],
@@ -377,11 +341,30 @@ function generateData(index, account, type) {
         date: [
           creationDate,
           `${randomHour}:${randomMinute + 1}:${
-            randomSecond + returnRandomInt(1, 10)
+            randomSecond + returnMixedInt(index, 1, 10)
           } PM`,
         ],
         system: "DepositTransactionFee",
-        amount: fee,
+        amount: facilities[facIndex].fees[0],
+        type: "DepositTransactionFee",
+        added: "CARES",
+        comment: "",
+        refunded: "false",
+        refundable: "false",
+        increase: "-1",
+        summary: "Fees",
+      });
+
+      newTransactions.push({
+        account: account,
+        date: [
+          creationDate,
+          `${randomHour}:${randomMinute + 1}:${
+            randomSecond + returnMixedInt(index, 1, 10)
+          } PM`,
+        ],
+        system: "DepositTransactionFee",
+        amount: depositAmt * 0.0325,
         type: "3rdPartyFinancialTransactionFee",
         added: "CARES",
         comment: "",
@@ -395,19 +378,20 @@ function generateData(index, account, type) {
     transactions.push(...newTransactions);
 
     // add calls to the account
-    let callMinute = returnRandomInt(1, 30);
+    const hour = returnMixedInt(index, 1, 9);
+    let callMinute = returnMixedInt(index, 1, 30);
     let totalCallCost = 0;
-    for (let i = 0; i < returnRandomInt(1, 10); i += 1) {
-      const duration = returnRandomInt(1, 15);
+    let newDuration = sliceNum(index, -2);
+    newDuration = newDuration > 15 ? 14 : newDuration;
+    const seconds = (i) => `${i + 1}${lastIndex}`;
+    for (let i = 0; i < returnMixedInt(index, 1, 3); i += 1) {
+      const duration = newDuration + i;
       const amount = facilities[facIndex].rates[rate - 1] * duration;
       transactions.push({
         account: account,
         system: "CallUsage",
         inmate: inmate,
-        date: [
-          creationDate,
-          `${randomHour + 1}:${callMinute}:${returnRandomInt(10, 59)} PM`,
-        ],
+        date: [creationDate, `${hour + i}:${callMinute}:${seconds(i)} PM`],
         status: "APPROVED",
         facIndex: facIndex,
         subIndex: 0,
@@ -426,9 +410,6 @@ function generateData(index, account, type) {
       totalCallCost -= amount.toFixed(2);
 
       callMinute += duration;
-      if (callMinute > 60) {
-        i = 99;
-      }
     }
     if (type === "broken") {
       const expireTotal = depositTotal + totalCallCost;
@@ -437,9 +418,7 @@ function generateData(index, account, type) {
         system: "adjustment",
         date: [
           formattedExpireDate,
-          `${randomHour}:${randomMinute + 1}:${
-            randomSecond + returnRandomInt(1, 10)
-          } PM`,
+          `${randomHour}:${randomMinute + 1}:${seconds(1)} PM`,
         ],
         amount: expireTotal.toString(),
         type: "ExpFunds",
@@ -454,14 +433,16 @@ function generateData(index, account, type) {
     }
   } else if (type === "partial") {
     const system =
-      returnRandomInt(0, 5) === 0 ? "GTL-PINDEBIT-WEB" : "DSI-TRUSTDEPOSIT-WEB";
+      returnMixedInt(index, 0, 5) === 0
+        ? "GTL-PINDEBIT-WEB"
+        : "DSI-TRUSTDEPOSIT-WEB";
     const newTransactions = [
       {
         account: account,
         system: "ConnectNetwork",
         date: [
           creationDate,
-          `${randomHour}:${randomMinute}:${returnRandomInt(10, 59)} PM`,
+          `${randomHour}:${randomMinute}:${returnMixedInt(index, 10, 59)} PM`,
         ],
         status: "APPROVED",
         amount: "0.00",
@@ -482,16 +463,16 @@ function generateData(index, account, type) {
         ],
         cc: [first6, last4],
         exp: [
-          `0${returnRandomInt(1, 9)}`,
+          `0${returnMixedInt(index, 1, 9)}`,
           futureDate.getFullYear().toString().slice(-2),
         ],
         status: "APPROVED",
         amount: depositAmt.toFixed(2),
         code: [
-          returnRandomInt(1111111111111, 9999999999999),
-          returnRandomInt(111111, 999999),
+          returnMixedInt(index, 1111111111111, 9999999999999),
+          returnMixedInt(index, 111111, 999999),
         ],
-        order: [`D${returnRandomInt(1111111111, 9999999999)}`, ""],
+        order: [`D${returnMixedInt(index, 1111111111, 9999999999)}`, ""],
         reject: ["ACCEPT", "00"],
         vendor: ["ReD", "PaymenTech"],
         transaction: ["Post-Auth", "Payment"],
@@ -510,10 +491,11 @@ function generateData(index, account, type) {
       inmate: inmate,
       date: [
         creationDate,
-        `${returnRandomInt(6, 11)}:${returnRandomInt(10, 59)}:${returnRandomInt(
+        `${returnMixedInt(index, 6, 11)}:${returnMixedInt(
+          index,
           10,
           59
-        )} AM`,
+        )}:${returnMixedInt(index, 10, 59)} AM`,
       ],
       facIndex: facIndex,
       subIndex: 0,
@@ -574,12 +556,8 @@ const returnAccounts = () => {
   }
 };
 
-/*
- random account generation 
+// random account generation
 returnAccounts();
-console.log("--- ACCOUNTS ---", accounts);
-console.log("--- TRANSACTIONS ---", transactions);
-*/
 
 root.render(
   <React.StrictMode>
@@ -590,6 +568,7 @@ root.render(
       formattedDate={formattedDate}
       formatTime={formatTime}
       returnRandomInt={returnRandomInt}
+      returnMixedInt={returnMixedInt}
     />
   </React.StrictMode>
 );

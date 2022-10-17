@@ -626,10 +626,7 @@ export default function Main(props) {
         parseFloat(transaction.amount) > 0.0
           ? parseInt(transaction.amount / rateType)
           : 0;
-      const seconds =
-        minutes === 0 || minutes === 15 || minutes === 60
-          ? 0
-          : props.returnRandomInt(1, 30);
+      const seconds = minutes === 15 ? "0" : transaction.date[1].slice(5, 7);
       const feeIcon = `${process.env.PUBLIC_URL}/images/info_italic.png`;
       const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
       const startCode = minutes > 0 ? "D0" : "D5";
