@@ -308,6 +308,7 @@ function App(props) {
       const current = old ? old : transactions;
 
       setTransactions([...current, ...depositArray]);
+      console.log(depositArray);
       return transactions;
     },
     ccTable: function (number = accounts[index].account) {

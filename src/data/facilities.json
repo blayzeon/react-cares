@@ -829,7 +829,7 @@
     "system": "GTL",
     "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20California/OGxx_Orange%20Co_CA.xlsx?d=w7672f0424ac449feb3fb9da82752fdc8&csf=1&web=1&e=AYQKxF",
     "services": ["AdvancePay"],
-    "rates": [0.0, 0.0, 0.07, 0.07, 0.07, 0.07, 0.07],
+    "rates": [0.0, 0.0, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07],
     "fees": [0.0, 0.0, 0.0],
     "names": [
       "ORANGE COUNTY - CENTRAL JAIL COMPLEX",

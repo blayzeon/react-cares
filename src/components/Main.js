@@ -220,6 +220,7 @@ function Adjustments(props) {
       });
     }
 
+    // @todo make these show up in refunds
     const isRefundable = type[0] === "Deposit" ? "true" : "false";
     const summary =
       type[0] === "AdjustmentIncrease"
@@ -240,7 +241,7 @@ function Adjustments(props) {
       added: "new.trainee",
       comment: comment,
       refunded: "false",
-      refundable: isRefundable,
+      refundable: false,
       increase: type[1],
       summary: summary,
     });
@@ -609,9 +610,8 @@ export default function Main(props) {
     // create comments for transaction & call records pages
     if (props.account.account === transaction.account) {
       // todo program in tax
-      const pin = transaction.inmate
-        ? transaction.inmate.id
-        : props.returnRandomInt(111111, 999999);
+
+      const pin = transaction.inmate ? transaction.inmate.id : "111111";
       const inmateName = transaction.inmate
         ? transaction.inmate.name
         : ["unknown", "unknown"];
@@ -626,11 +626,26 @@ export default function Main(props) {
         parseFloat(transaction.amount) > 0.0
           ? parseInt(transaction.amount / rateType)
           : 0;
-      const seconds = minutes === 15 ? "0" : transaction.date[1].slice(5, 7);
+      const seconds =
+        minutes === 15
+          ? "0"
+          : minutes === 0
+          ? "0"
+          : minutes === 60
+          ? "0"
+          : transaction.date[1].slice(5, 7);
       const feeIcon = `${process.env.PUBLIC_URL}/images/info_italic.png`;
       const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
-      const startCode = minutes > 0 ? "D0" : "D5";
-      const endCode = minutes > 0 ? "HU" : "";
+      const startCode = transaction.startCode
+        ? transaction.startCode
+        : minutes > 0
+        ? "D0"
+        : "D5";
+      const endCode = transaction.endCode
+        ? transaction.endCode
+        : minutes > 0
+        ? "HU"
+        : "";
       const callType = transaction.callType ? transaction.callType : "H";
       const content = {
         sub: (
@@ -772,8 +787,14 @@ export default function Main(props) {
         H: <span>Prepaid</span>,
         D: <span>Debit</span>,
         X: <span>Advance Pay One Call</span>,
+        L6: <span>BNS Missing Customer Record</span>,
+        BZ: <span>Busy</span>,
+        TO: <span>Timeout</span>,
+        L2: <span>Missing Start Code</span>,
+        "01": <span>BNS Missing Customer Record</span>,
         0: <span>Free, Operator Default, Misc</span>,
         9: <span>Collect Station to Station</span>,
+        87: <span>Insufficient Funds</span>,
       };
       if (transaction.type === "CallUsage") {
         const handleOpenPopup3 = (e) => {
@@ -847,7 +868,8 @@ export default function Main(props) {
 
       if (
         (transaction.amount === "0.00" && transaction.type === "CallUsage") ||
-        transaction.callType === "X"
+        transaction.callType === "X" ||
+        transaction.callType === "D"
       ) {
         // skip zero charge transactions
       } else {
@@ -870,7 +892,7 @@ export default function Main(props) {
           </span>,
           <span
             className={
-              transaction.fontColor ? transaction.fontColor : "black-text"
+              transaction.color ? `${transaction.color}-text` : "black-text"
             }
           >
             {transaction.comment}

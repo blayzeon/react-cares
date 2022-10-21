@@ -98,7 +98,9 @@ export default function Refund(props) {
             })}
             {returnInput({
               label: "Credit Card Number",
-              value: trans[i].cc[0] + "******" + trans[i].cc[1],
+              value: trans[i].cc[0]
+                ? trans[i].cc[0] + "******" + trans[i].cc[1]
+                : "",
             })}
             {returnInput({
               label: "Ledger Balance",
@@ -153,7 +155,10 @@ export default function Refund(props) {
       };
 
       const handleCcClick = () => {
-        alert(trans[i].cc);
+        // @todo hookup with popup4
+        alert(
+          trans[i].cc ? trans[i].cc : "Unable to find credit card information"
+        );
       };
 
       const handleClick = () => {

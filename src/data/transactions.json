@@ -260,7 +260,7 @@
     "status": "APPROVED",
     "facIndex": 5,
     "subIndex": 0,
-    "amount": "4.56",
+    "amount": "4.21",
     "rate": 7,
     "tax": true,
     "type": "CallUsage",

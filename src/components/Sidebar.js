@@ -12,7 +12,7 @@ export default function Sidebar(props) {
     * Last 4 of 2200-2299 are partial accounts
     * Last 4 of 3300-3399 are broken accounts
     * Last 4 of 4400-4499 are established accounts \n
-    Last major update: September 2022`;
+    Last major update: October 2022`;
     alert(msg);
   };
 

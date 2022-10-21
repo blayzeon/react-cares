@@ -267,6 +267,7 @@ td label {
 
 .as-calls td:first-child {
   background-color: hsla(0, 0%, 40%, 0.1);
+  min-width: 8rem;
 }
 
 .as-calls tr:nth-child(even) {
