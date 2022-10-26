@@ -1228,24 +1228,122 @@ const newTransactions = [
     date: ["10/20/2022", "8:10:34 PM"],
     amount: "10",
     type: "Deposit",
-    added: "new.trainee",
+    added: "kiosk",
     comment: "",
     refunded: "false",
     refundable: false,
     increase: "1",
     summary: "Deposit",
   },
+  {
+    account: "2085554411",
+    system: "CallUsage",
+    inmate: {
+      id: "544266",
+      name: ["MACK", "TORSON"],
+    },
+    date: [formattedDate, currentTime],
+    status: "APPROVED",
+    facIndex: 1,
+    subIndex: 0,
+    amount: "0.00",
+    rate: 5,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: "X",
+    callType: "X",
+    summary: "Call Usage",
+    startCode: "D5",
+    endCode: "",
+  },
+  {
+    account: "2085554422",
+    system: "CallUsage",
+    inmate: {
+      id: "544266",
+      name: ["TRANT", "HEIDELSTAM"],
+    },
+    date: [formattedDate, currentTime],
+    status: "APPROVED",
+    facIndex: 2,
+    subIndex: 0,
+    amount: "0.00",
+    rate: 5,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: "X",
+    callType: "H",
+    summary: "Call Usage",
+    startCode: "L2",
+    endCode: 85,
+  },
+  {
+    account: "2085554433",
+    system: "CallUsage",
+    inmate: {
+      id: "544266",
+      name: ["TRANT", "HEIDELSTAM"],
+    },
+    date: [formattedDate, currentTime],
+    status: "APPROVED",
+    facIndex: 3,
+    subIndex: 0,
+    amount: "0.00",
+    rate: 5,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: "X",
+    callType: "H",
+    summary: "Call Usage",
+    startCode: "L2",
+    endCode: 10,
+  },
 ];
 
 transactions = [...transactions, ...newTransactions];
 
 accounts.forEach((account) => {
-  if (account.created === true || account.created === "true") {
-    return;
-  }
-
   transactions.forEach((tran) => {
     if (tran.account === account.account) {
+      // makes accounts that received blocked calls, blocked.
+      if (tran.endCode === 85) {
+        account.status = "4";
+        console.log(account);
+        // @todo add comment that someone set it to blocked
+        return;
+      }
+
+      if (tran.endCode === 10) {
+        account.block = true;
+        console.log(account);
+        // @todo add comment that someone set it to blocked
+        return;
+      }
+
+      // makes accounts that received APOC calls inactive.
+      if (tran.callType === "X") {
+        account.status = "2";
+        // @todo add comment that someone set it to inactive
+        return;
+      }
+
+      // creates accounts that have a balance
+      if (account.created === true || account.created === "true") {
+        return;
+      }
+
       if (tran.increase === "1" || tran.increase === 1) {
         account.created = "true";
         account.type = 1;

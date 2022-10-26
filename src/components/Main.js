@@ -795,6 +795,7 @@ export default function Main(props) {
         0: <span>Free, Operator Default, Misc</span>,
         9: <span>Collect Station to Station</span>,
         87: <span>Insufficient Funds</span>,
+        85: <span>Blocked</span>,
       };
       if (transaction.type === "CallUsage") {
         const handleOpenPopup3 = (e) => {
