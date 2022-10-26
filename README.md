@@ -33,6 +33,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - 2085551144 - missing payment (went to trust instead of advance pay) ✔️
 - 2085551155 - APOC ✔️
 - 2085551166 - account with no bna. there are payments & bduty notes ✔️
+- 2085551177 - balance but no cc on file
 
 # Partial
 
@@ -40,36 +41,32 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - 2085552222 - L601 (partial) ✔️
 - 2085552233 - L287 ✔️
 - 2085552244 - D5s (new D5s, old D5s) ✔️
+- 2085552255 - rates (complete bna, call logs, 2 facility) ✔️
+- 2085552266 - rates (complete bna, call logs, 2 facility) ✔️
 
 # Broken - Expired
 
-- All 20855533\*\* numbers have ExpFunds
+- All 20855533xx numbers have ExpFunds
 
 # Complete
 
-- 2085554411 - rates (complete bna, call logs, 1 facility) ✔️
-- 2085554422 - rates (complete bna, call logs, 1 facility) ✔️
-- 2085554433 - rates (complete bna, call logs, 2 facility) ✔️
-- 2085554444 - rates (complete bna, call logs, 2 facility) ✔️
-- rates (complete bna, no call logs) x2
-- cpni (4 fully established accounts)
-- payment (complete bna, call records) x3
-- au account (complete bna with no au) x1
-- au account (complete bna with AU) x4
-- au account (complete bna with AU already removed) x1
-- refunds (2x auto reload, 30 days no use, complete bna x3 - one with no cc on file, one with refund already pending, one with already complete)
-- APOC
-- blocked accounts (L2 85, L2 10 (x2), L2 04 - cobb county)
-- dropped calls (HU/CH) over 5min/under 5min (x4 total)
-- 1 minute free call (TO)
-- lots of dropped calls, some eligible, some not
-- BZs (line reset was done)
+- 20855544xx numbers ending with odd last digits have AUs, evens have none ✔️
+- 2085554411 - APOC ✔️
+- 2085554422 - blocked account L2 85 ✔️
+- 2085554433 - L2 10 ✔️
+- 2085554444 - L2 04 - cobb county ✔️
+- 2085554455 - au account (complete BNA with AU already removed) ✔️
+- 2085554466 - dropped calls (HU/CH) over 5min/under 5min (x4 total) ✔️
+- 2085554477 - 1 minute free call (TO) ✔️
+- 2085554488 - BZs (line reset was done) ✔️
 
 # Other
 
-- international numbers x3
-- complete bna with no call history
+- 0114401205551111 - international number ✔️
+- 2085559911 - complete bna with no call history & auto reload ✔️
 - write off over $1
 - write off under $1
 - write off bc of bduty
 - recycled numbers (3mo x2/6mo x4)
+- refund pending
+- refund complete with already complete

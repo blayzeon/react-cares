@@ -569,8 +569,18 @@ export default function Main(props) {
 
     const a = window.confirm(msg);
 
+    const blockStatus = checked.checked ? "Activated" : "Deactivated";
+
     if (a) {
+      props.addComment({
+        date: props.date,
+        time: props.time(),
+        filter: "general",
+        comment: `Customer Block was ${blockStatus.toLowerCase()}. ${blockStatus} by new.trainee`,
+        color: "black",
+      });
       props.updateAccount({ block: checked.checked });
+      return true;
     } else {
       checked.checked = !checked.checked;
     }
@@ -622,18 +632,20 @@ export default function Main(props) {
       const orig = facility.orig ? facility.orig[subIndex] : "8005551234";
       const rateIndex = transaction.rate ? transaction.rate : 5;
       const rateType = facility.rates[rateIndex];
-      const minutes =
-        parseFloat(transaction.amount) > 0.0
-          ? parseInt(transaction.amount / rateType)
-          : 0;
-      const seconds =
-        minutes === 15
-          ? "0"
-          : minutes === 0
-          ? "0"
-          : minutes === 60
-          ? "0"
-          : transaction.date[1].slice(5, 7);
+      const minutes = transaction.duration
+        ? transaction.duration[0]
+        : parseFloat(transaction.amount) > 0.0
+        ? parseInt(transaction.amount / rateType)
+        : 0;
+      const seconds = transaction.duration
+        ? transaction.duration[1]
+        : minutes === 15
+        ? "0"
+        : minutes === 0
+        ? "0"
+        : minutes === 60
+        ? "0"
+        : transaction.date[1].slice(5, 7);
       const feeIcon = `${process.env.PUBLIC_URL}/images/info_italic.png`;
       const researchIcon = `${process.env.PUBLIC_URL}/images/info_r.png`;
       const startCode = transaction.startCode
@@ -799,7 +811,7 @@ export default function Main(props) {
       };
       if (transaction.type === "CallUsage") {
         const handleOpenPopup3 = (e) => {
-          const key = e.target.getAttribute("data-info");
+          const key = String(e.target.getAttribute("data-info"));
           setPopup3Content(content[key]);
 
           if (key === "rate" || key === "fees") {

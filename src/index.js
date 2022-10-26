@@ -97,7 +97,7 @@ function generateData(index, account, type) {
   }
 
   const lastIndex = sliceNum(index, -1);
-  const seed = parseInt(lastIndex) * date.getDate();
+  const seed = parseInt(lastIndex) * 9; // date.getDate();
 
   const generateEmailAddress = (name = false) => {
     const adjIndex = adjectives[seed] ? seed : lastIndex;
@@ -408,7 +408,7 @@ function generateData(index, account, type) {
         account: account,
         system: "CallUsage",
         inmate: inmate,
-        date: [formattedDate, `${hour + i}:${callMinute}:${seconds(i)} PM`],
+        date: [creationDate, `${hour + i}:${callMinute}:${seconds(i)} PM`],
         status: "APPROVED",
         facIndex: facIndex,
         subIndex: 0,
@@ -1289,15 +1289,15 @@ const newTransactions = [
     account: "2085554433",
     system: "CallUsage",
     inmate: {
-      id: "544266",
-      name: ["TRANT", "HEIDELSTAM"],
+      id: "654357",
+      name: ["GARY", "CRYPTO"],
     },
     date: [formattedDate, currentTime],
     status: "APPROVED",
     facIndex: 3,
     subIndex: 0,
     amount: "0.00",
-    rate: 5,
+    rate: 6,
     tax: true,
     type: "CallUsage",
     added: "HOUPASWVALSQL06",
@@ -1310,32 +1310,237 @@ const newTransactions = [
     startCode: "L2",
     endCode: 10,
   },
+  {
+    account: "2085554444",
+    system: "CallUsage",
+    inmate: {
+      id: "264446",
+      name: ["MICHAEL", "THOMASON"],
+    },
+    date: [formattedDate, currentTime],
+    status: "APPROVED",
+    facIndex: 8,
+    subIndex: 0,
+    amount: "0.00",
+    rate: 1,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: "X",
+    callType: "H",
+    summary: "Call Usage",
+    startCode: "L2",
+    endCode: "04",
+  },
+  {
+    account: "2085554466",
+    system: "CallUsage",
+    inmate: {
+      id: "743263",
+      name: ["GORACY", "KUBEK"],
+    },
+    date: [getFormattedDate(-4), "7:52:11 PM"],
+    status: "APPROVED",
+    facIndex: 7,
+    subIndex: 0,
+    amount: "0.65",
+    rate: 5,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: false,
+    summary: "Call Usage",
+  },
+  {
+    account: "2085554466",
+    system: "CallUsage",
+    inmate: {
+      id: "743263",
+      name: ["GORACY", "KUBEK"],
+    },
+    date: [getFormattedDate(-3), "4:52:11 AM"],
+    status: "APPROVED",
+    facIndex: 7,
+    subIndex: 0,
+    amount: "0.15",
+    rate: 5,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: false,
+    summary: "Call Usage",
+  },
+  {
+    account: "2085554466",
+    system: "CallUsage",
+    inmate: {
+      id: "743263",
+      name: ["GORACY", "KUBEK"],
+    },
+    date: [getFormattedDate(-2), currentTime],
+    status: "APPROVED",
+    facIndex: 7,
+    subIndex: 0,
+    amount: "0.45",
+    rate: 5,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: false,
+    summary: "Call Usage",
+  },
+  {
+    account: "2085554477",
+    system: "CallUsage",
+    inmate: {
+      id: "623842",
+      name: ["KLAASJE ", "AMANDOU"],
+    },
+    date: [formattedDate, currentTime],
+    status: "APPROVED",
+    facIndex: 2,
+    subIndex: 1,
+    amount: "0.00",
+    rate: 1,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: "X",
+    summary: "Call Usage",
+    startCode: "D0",
+    endCode: "TO",
+    duration: ["1", "0"],
+  },
+  {
+    account: "2085554488",
+    system: "CallUsage",
+    inmate: {
+      id: "743263",
+      name: ["LAWRENCE", "GARTE"],
+    },
+    date: [getFormattedDate(-2), "3:11:22 PM"],
+    status: "APPROVED",
+    facIndex: 6,
+    subIndex: 0,
+    amount: "0.00",
+    rate: 6,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: false,
+    summary: "Call Usage",
+    startCode: "D5",
+  },
+  {
+    account: "2085554488",
+    system: "CallUsage",
+    inmate: {
+      id: "743263",
+      name: ["LAWRENCE", "GARTE"],
+    },
+    date: [getFormattedDate(-1), "11:22:35 PM"],
+    status: "APPROVED",
+    facIndex: 6,
+    subIndex: 0,
+    amount: "0.00",
+    rate: 6,
+    tax: true,
+    type: "CallUsage",
+    added: "HOUPASWVALSQL06",
+    comment: "",
+    refunded: "true",
+    refundable: "false",
+    increase: false,
+    summary: "Call Usage",
+    startCode: "BZ",
+  },
 ];
 
+console.log(facilities[7]);
 transactions = [...transactions, ...newTransactions];
 
 accounts.forEach((account) => {
   transactions.forEach((tran) => {
     if (tran.account === account.account) {
       // makes accounts that received blocked calls, blocked.
-      if (tran.endCode === 85) {
-        account.status = "4";
-        console.log(account);
-        // @todo add comment that someone set it to blocked
+      if (tran.endCode === 85 || tran.endCode === "85") {
+        account.status = "3";
+        account.comments.push({
+          date: getFormattedDate(-1),
+          time: "12:21:44 PM",
+          filter: "general",
+          comment: "new.trainee changed the account status to BLOCKED.",
+          color: "black",
+        });
         return;
       }
 
-      if (tran.endCode === 10) {
+      if (tran.endCode === 10 || tran.endCode === "10") {
         account.block = true;
-        console.log(account);
-        // @todo add comment that someone set it to blocked
+        account.comments.push({
+          date: getFormattedDate(-1),
+          time: "1:55:22 PM",
+          filter: "general",
+          comment: "Customer Block was activated. Activated by new.trainee",
+          color: "black",
+        });
+        return;
+      }
+
+      // calls aren't connecting
+      if (tran.startCode === "BZ") {
+        account.comments.push({
+          date: getFormattedDate(-1),
+          time: "12:21:44 PM",
+          filter: "general",
+          comment: "new.trainee changed the account status to BLOCKED.",
+          color: "black",
+        });
+        account.comments.push({
+          date: getFormattedDate(-1),
+          time: "12:23:12 PM",
+          filter: "general",
+          comment: "new.trainee changed the account status to ACTIVE.",
+          color: "black",
+        });
+        account.comments.push({
+          date: getFormattedDate(-1),
+          time: "12:25:45 PM",
+          filter: "general",
+          comment: "new.trainee cx wanted line reset / carrier is METRO PCS.",
+          color: "black",
+        });
         return;
       }
 
       // makes accounts that received APOC calls inactive.
       if (tran.callType === "X") {
         account.status = "2";
-        // @todo add comment that someone set it to inactive
+        account.comments.push({
+          date: getFormattedDate(-1),
+          time: "12:21:44 PM",
+          filter: "general",
+          comment: "new.trainee changed the account status to INACTIVE.",
+          color: "black",
+        });
         return;
       }
 

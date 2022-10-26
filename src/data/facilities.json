@@ -867,5 +867,18 @@
     "subs": ["GB02"],
     "ids": ["6582"],
     "centers": ["X341"]
+  },
+  {
+    "link": "https://gtlcorp.sharepoint.com/:x:/r/BillingCustomerService/GTL%20FACILITY%20RATES/State%20of%20Georgia/JXxx_Cobb%20Co%20_GA.xlsx?d=w0ebf0e9a702f4918ab011e1a7728d3dd&csf=1&web=1&e=xSUlK2",
+    "services": ["AdvancePay", "Trust"],
+    "platform": "ICMv",
+    "system": "GTL",
+    "rates": [0.0, 0.0, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12],
+    "fees": [5.95, 2.75, 6.95],
+    "names": ["COBB COUNTY ADULT DETENTION FACILITY"],
+    "public": "Cobb County Adult Detention Facility",
+    "subs": ["JX10"],
+    "ids": ["8104"],
+    "centers": ["X329"]
   }
 ]

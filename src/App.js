@@ -903,15 +903,25 @@ function App(props) {
     if (index === 0) {
       return;
     }
-    console.log("--- NEW ACCOUNT ---");
-    const accTrans = transactions.filter(
-      (tran) => tran.account === accounts[index].account
-    );
-    console.log(accounts[index], accTrans);
+
+    const currStatus = document.querySelector('[data-form="status"]');
+    if (accounts[index].status === currStatus.selectedIndex) {
+      // nothing has changed
+    } else {
+      accounts[index].comments.push({
+        date: formattedDate,
+        time: props.formatTime(),
+        filter: "general",
+        comment: `new.trainee changed the account status to ${currStatus.value.toUpperCase()}.`,
+        color: "black",
+      });
+    }
+
     const msg = returnLoadAlert(accounts[index].account, "updated");
     setAlert(msg);
     const data = returnSavedAccount();
     const result = returnAccount.update(data, index);
+
     setAccounts([...result]);
   }
 
