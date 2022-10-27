@@ -1,5 +1,25 @@
 [
   {
+    "account": "",
+    "system": "",
+    "date": [],
+    "cc": [],
+    "exp": [],
+    "status": "APPROVED",
+    "amount": "",
+    "code": ["", ""],
+    "order": ["", ""],
+    "reject": ["ACCEPT", "00"],
+    "vendor": ["ReD", "PaymenTech"],
+    "transaction": ["Post-Auth", "Payment"],
+    "type": "",
+    "added": "",
+    "comment": "",
+    "refunded": "false",
+    "refundable": "true",
+    "increase": "0"
+  },
+  {
     "account": "8004838314",
     "system": "ADVANCEPAY-IVR",
     "date": ["6/05/2022", "2:15:19 PM"],
@@ -154,7 +174,7 @@
     "system": "CallUsage",
     "inmate": {
       "id": "021174",
-      "name": ["Alex", "Jones"]
+      "name": ["ALEX", "JONES"]
     },
     "date": ["9/27/22", "11:15:11 PM"],
     "status": "APPROVED",
@@ -176,7 +196,7 @@
     "system": "CallUsage",
     "inmate": {
       "id": "021174",
-      "name": ["Alex", "Jones"]
+      "name": ["ALEX", "JONES"]
     },
     "date": ["9/27/22", "11:42:11 PM"],
     "status": "APPROVED",
@@ -198,7 +218,7 @@
     "system": "AP_ONECALL_USAGE",
     "inmate": {
       "id": "011584",
-      "name": ["Benjamin", "Shapiro"]
+      "name": ["BENJAMIN", "SHAPIRO"]
     },
     "facIndex": 5,
     "subIndex": 0,
@@ -226,7 +246,7 @@
     "system": "AP_ONECALL_USAGE",
     "inmate": {
       "id": "011584",
-      "name": ["Benjamin", "Shapiro"]
+      "name": ["BENJAMIN", "SHAPIRO"]
     },
     "facIndex": 5,
     "subIndex": 0,
@@ -254,7 +274,7 @@
     "system": "CallUsage",
     "inmate": {
       "id": "011584",
-      "name": ["Benjamin", "Shapiro"]
+      "name": ["BENJAMIN", "SHAPIRO"]
     },
     "date": ["9/30/22", "11:29:00 PM"],
     "status": "APPROVED",
@@ -271,26 +291,6 @@
     "increase": "X",
     "callType": "X",
     "summary": "Call Usage"
-  },
-  {
-    "account": "",
-    "system": "",
-    "date": [],
-    "cc": [],
-    "exp": [],
-    "status": "APPROVED",
-    "amount": "",
-    "code": ["", ""],
-    "order": ["", ""],
-    "reject": ["ACCEPT", "00"],
-    "vendor": ["ReD", "PaymenTech"],
-    "transaction": ["Post-Auth", "Payment"],
-    "type": "",
-    "added": "",
-    "comment": "",
-    "refunded": "false",
-    "refundable": "true",
-    "increase": "0"
   },
   {
     "account": "2085559911",
@@ -312,5 +312,53 @@
     "refundable": "true",
     "increase": "1",
     "summary": "Deposit"
+  },
+  {
+    "account": "2085559922",
+    "system": "adjustment",
+    "date": ["7/25/2022", "5:34:00 PM"],
+    "amount": "1.00",
+    "type": "Deposit",
+    "added": "Kiosk",
+    "comment": "",
+    "refunded": "false",
+    "refundable": false,
+    "increase": "1",
+    "summary": "Deposit"
+  },
+  {
+    "account": "2085559922",
+    "system": "CallUsage",
+    "inmate": {
+      "id": "221905",
+      "name": ["ANDY", "RANDY"]
+    },
+    "date": ["7/25/2022", "5:44:01 PM"],
+    "status": "APPROVED",
+    "facIndex": 3,
+    "subIndex": 0,
+    "amount": "1.05",
+    "rate": 5,
+    "tax": true,
+    "type": "CallUsage",
+    "added": "HOUPASWVALSQL06",
+    "comment": "",
+    "refunded": "true",
+    "refundable": "false",
+    "increase": "-1",
+    "summary": "Call Usage"
+  },
+  {
+    "account": "2085559922",
+    "system": "adjustment",
+    "date": ["10/27/2022", "5:36:16 PM"],
+    "amount": "0.05",
+    "type": "WriteOff",
+    "added": "Breakage AMES AdvancePay",
+    "comment": "",
+    "refunded": "false",
+    "refundable": false,
+    "increase": "1",
+    "summary": "WriteOff"
   }
 ]

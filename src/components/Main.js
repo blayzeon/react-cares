@@ -874,7 +874,9 @@ export default function Main(props) {
             </strong>
           </span>,
           <span>Feature Disabled</span>,
-          <img className="hover-pointer" src={researchIcon} />,
+          <a href="http://hcares/csguide/default.aspx">
+            <img className="hover-pointer" src={researchIcon} />
+          </a>,
           ,
         ]);
       }

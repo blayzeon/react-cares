@@ -144,10 +144,11 @@ function generateData(index, account, type) {
   const depositAmt = returnMixedInt(index, 15, 50);
   const facIndex = returnMixedInt(index, 1, facilities.length);
   const rate = returnMixedInt(index, 5, 7);
-  const fee =
+  let fee =
     facilities[facIndex].fees[0] === 0
-      ? "0.00"
+      ? 0.0
       : facilities[facIndex].fees[0] + depositAmt * 0.0325;
+  fee = fee.toFixed(2);
   const depositTotal = depositAmt - fee;
   const randomAu =
     index % 2 === 0
@@ -429,22 +430,48 @@ function generateData(index, account, type) {
       callMinute += duration;
     }
     if (type === "broken") {
-      const expireTotal = depositTotal + totalCallCost;
+      const type = index % 2 === 0 ? "WriteOff" : "ExpFunds";
+      const summary = type === "WriteOff" ? "Write Off" : "Exp Funds";
+      const increase = type === "WriteOff" ? "1" : "-1";
+      // write off = CallUsage + 3rdParty fee + Deposit fee
+      const expireTotal =
+        type === "WriteOff"
+          ? Number(fee) + Math.abs(totalCallCost)
+          : depositTotal + totalCallCost;
+      if (type === "WriteOff") {
+        // add a charge back
+        const chargeback = {
+          account: account,
+          system: "adjustment",
+          date: [
+            getFormattedDate(10, oldDate),
+            `${randomHour}:${randomMinute + 1}:${seconds(1)} PM`,
+          ],
+          amount: String(depositAmt),
+          type: "Chargeback",
+          added: "bduty",
+          comment: `1 chargeback dispute(s) ($${depositAmt}). CB Reason (Card Holder Not Present).`,
+          refunded: "false",
+          refundable: "false",
+          increase: "-1",
+          summary: "Chargeback",
+          color: "orange",
+        };
+        transactions.push(chargeback);
+      }
+      const expireTime = `${randomHour}:${randomMinute + 1}:${seconds(2)} PM`;
       const expireFunds = {
         account: account,
         system: "adjustment",
-        date: [
-          formattedExpireDate,
-          `${randomHour}:${randomMinute + 1}:${seconds(1)} PM`,
-        ],
-        amount: expireTotal.toString(),
-        type: "ExpFunds",
+        date: [formattedExpireDate, expireTime],
+        amount: String(expireTotal),
+        type: type,
         added: "Breakage AMES AdvancePay",
         comment: "",
         refunded: "false",
         refundable: "false",
-        increase: "-1",
-        summary: "Exp Funds",
+        increase: increase,
+        summary: summary,
       };
       transactions.push(expireFunds);
     }
@@ -1474,12 +1501,22 @@ const newTransactions = [
   },
 ];
 
-console.log(facilities[7]);
 transactions = [...transactions, ...newTransactions];
 
 accounts.forEach((account) => {
   transactions.forEach((tran) => {
     if (tran.account === account.account) {
+      // write off & expire funds
+      if (tran.type === "ExpFunds" || tran.type === "WriteOff") {
+        account.comments.push({
+          date: tran.date[0],
+          time: tran.date[1],
+          filter: "general",
+          comment: "Account expired due to inactivity.",
+          color: "black",
+        });
+      }
+
       // makes accounts that received blocked calls, blocked.
       if (tran.endCode === 85 || tran.endCode === "85") {
         account.status = "3";
@@ -1547,11 +1584,10 @@ accounts.forEach((account) => {
       // creates accounts that have a balance
       if (account.created === true || account.created === "true") {
         return;
-      }
-
-      if (tran.increase === "1" || tran.increase === 1) {
+      } else if (tran.increase === "1" || tran.increase === 1) {
         account.created = "true";
         account.type = 1;
+        return;
       }
     }
   });
