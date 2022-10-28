@@ -1571,6 +1571,11 @@ accounts.forEach((account) => {
       // makes accounts that received APOC calls inactive.
       if (tran.callType === "X") {
         account.status = "2";
+
+        if (account.ivrPc === "") {
+          return;
+        }
+
         account.comments.push({
           date: getFormattedDate(-1),
           time: "12:21:44 PM",

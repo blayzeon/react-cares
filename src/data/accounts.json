@@ -362,7 +362,7 @@
       "one": "2085559922",
       "two": ""
     },
-    "email": "vevuvuiphone@customer.com",
+    "email": "",
     "tax": "",
     "ivrPc": "1984",
     "exempt": false,
@@ -396,6 +396,69 @@
         "time": "5:35:00 PM",
         "filter": "general",
         "comment": "kristine.carter cx Charles Parks ci to su acc / cpni passed / pc 1984 / provided rate of $0.07/min plus tax",
+        "color": "red"
+      }
+    ]
+  },
+  {
+    "index": 7,
+    "account": "2085559933",
+    "name": {
+      "first": "WALDO",
+      "last": "DONDE"
+    },
+    "address": {
+      "one": "4128 WALDECK ST",
+      "two": "",
+      "zip": "75034",
+      "city": "FRISCO",
+      "state": "TX"
+    },
+    "phone": {
+      "one": "2085559933",
+      "two": ""
+    },
+    "email": "",
+    "tax": "",
+    "ivrPc": "2424",
+    "exempt": false,
+    "notes": "",
+    "au": "WILMA DONDE",
+    "lec": "",
+    "facility": 0,
+    "facilities": [],
+    "policies": {
+      "cell": true,
+      "fees": true,
+      "exp90": true,
+      "exp180": true
+    },
+    "status": 3,
+    "block": false,
+    "ccBlock": false,
+    "type": 1,
+    "created": true,
+    "indicator": 3,
+    "comments": [
+      {
+        "date": "10/28/2022",
+        "time": "4:17:43 PM",
+        "filter": "general",
+        "comment": "CARES User kristine.carter accessed account.",
+        "color": "black"
+      },
+      {
+        "date": "10/28/2022",
+        "time": "4:17:43 PM",
+        "filter": "general",
+        "comment": "kristine.carter added refund request amount for 25.00. Transaction date: 10/28/2022 4:20:02 PM.",
+        "color": "red"
+      },
+      {
+        "date": "10/28/2022",
+        "time": "4:20:21 PM",
+        "filter": "general",
+        "comment": "kristine.carter cx waldo donde ci for payment but changed mind after deposit / cpni passed / pc 2424 / submitted request",
         "color": "red"
       }
     ]

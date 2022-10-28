@@ -360,5 +360,58 @@
     "refundable": false,
     "increase": "1",
     "summary": "WriteOff"
-  }
+  },
+  [
+    {
+      "account": "2085559933",
+      "system": "3rdPartyFinancialTransactionFee",
+      "date": ["10/28/2022", "4:20:02 PM"],
+      "status": "APPROVED",
+      "amount": 0.8125,
+      "type": "3rdPartyFinancialTransactionFee",
+      "added": "CARES",
+      "comment": "",
+      "refunded": "false",
+      "refundable": "false",
+      "increase": "-1",
+      "summary": "Fees"
+    },
+    {
+      "account": "2085559933",
+      "system": "DepositTransactionFee",
+      "date": ["10/28/2022", "4:20:02 PM"],
+      "status": "APPROVED",
+      "amount": 5.95,
+      "type": "DepositTransactionFee",
+      "added": "CARES",
+      "comment": "",
+      "refunded": "false",
+      "refundable": "false",
+      "increase": "-1",
+      "summary": "Fees"
+    },
+    {
+      "account": "2085559933",
+      "system": "CARES",
+      "date": ["10/28/2022", "4:20:02 PM"],
+      "cc": ["512366", "4525"],
+      "exp": ["12", "30"],
+      "status": "APPROVED",
+      "amount": "25.00",
+      "code": ["B8209A5CA12540199A3D7D52D726743B", "123456"],
+      "order": ["", "D1234567890"],
+      "reject": ["ACCEPT", "00"],
+      "vendor": ["ReD", "PaymenTech"],
+      "transaction": ["Post-Auth", "Payment"],
+      "tax": "",
+      "type": "Deposit",
+      "added": "CARES",
+      "comment": "GTL\\new.trainee: Name WALDO DONDE CCNum: 512366******4525:",
+      "refunded": true,
+      "refundable": "false",
+      "increase": "1",
+      "summary": "Deposit",
+      "forClosure": true
+    }
+  ]
 ]
