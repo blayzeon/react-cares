@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## How to use
+Enter any of the phone numbers under the Accounts heading to pull up an account with generated information.  The simulator is detached from the main system so any changes made will only last as long as the browser is opened. It is safe to click anything within the simulator, although some links to documents or images may not properly load if not connected to the Viapath/GTL VPN.
+
 ## Available Features
 
 - Search/view accounts
